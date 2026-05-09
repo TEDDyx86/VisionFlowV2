@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisionFlow | Navegação sem Toque</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- MediaPipe Hands via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    
+    <!-- Overlay de Consentimento e Onboarding -->
+    <div id="overlay" class="overlay active">
+        <!-- Consentimento -->
+        <div id="consent-modal" class="modal glass-panel active">
+            <h2>VisionFlow</h2>
+            <p>Navegue no sistema sem tocar na tela. Utilizaremos sua webcam para rastrear os movimentos da sua mão localmente. Nenhuma imagem é enviada para servidores externos.</p>
+            <div class="actions">
+                <button id="btn-accept-camera" class="btn primary">Permitir Câmera</button>
+                <button id="btn-deny-camera" class="btn secondary">Continuar com Teclado</button>
+            </div>
+        </div>
+
+        <!-- Onboarding Etapa 1 -->
+        <div id="onboarding-step1" class="modal glass-panel hidden">
+            <div class="icon">🖐️</div>
+            <h2>Posicione sua mão</h2>
+            <p>Mantenha sua mão visível para a câmera. O cursor na tela acompanhará o seu movimento.</p>
+            <button id="btn-next-step1" class="btn primary">Continuar</button>
+        </div>
+
+        <!-- Onboarding Etapa 2 -->
+        <div id="onboarding-step2" class="modal glass-panel hidden">
+            <div class="icon">🤏</div>
+            <h2>Gesto de Clique</h2>
+            <p>Para clicar, faça o gesto de "pinça" (junte o polegar e o dedo indicador).</p>
+            <button id="btn-next-step2" class="btn primary" onclick="alert('Clique por pinça funcionando!')">Testar Clique</button>
+            <button id="btn-finish-onboarding" class="btn text">Pular Teste</button>
+        </div>
+    </div>
+
+    <!-- UI Principal -->
+    <div id="main-content" class="dashboard">
+        <!-- Header -->
+        <header class="glass-header">
+            <div class="logo">VisionFlow<span class="dot"></span></div>
+            <div class="status-bar">
+                <span id="status-cam" class="status-badge offline">Câmera Off</span>
+                <span id="status-hand" class="status-badge offline">Mão não detectada</span>
+                <span id="status-gesture" class="status-badge">Pronto</span>
+            </div>
+            <button id="btn-revoke" class="btn-icon" title="Revogar Câmera">🛑</button>
+        </header>
+
+        <!-- Preview da Câmera (Oculto ou pequeno) -->
+        <div class="cam-container glass-panel">
+            <video id="input-video" class="input_video" autoplay playsinline muted></video>
+            <canvas id="output-canvas" class="output_canvas" width="320" height="240"></canvas>
+            <div class="cam-overlay">Live Feed</div>
+        </div>
+
+        <!-- Painel de Calibração -->
+        <aside class="side-panel glass-panel">
+            <h3>Calibração</h3>
+            <div class="preset-controls">
+                <button class="preset-btn active" data-preset="smooth">Suave</button>
+                <button class="preset-btn" data-preset="standard">Padrão</button>
+                <button class="preset-btn" data-preset="fast">Rápido</button>
+            </div>
+            <div class="event-log">
+                <h4>Eventos Recentes</h4>
+                <ul id="log-list">
+                    <li>Sistema iniciado</li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Área de Interação -->
+        <main class="interaction-area">
+            <h1>Área de Teste</h1>
+            <p>Mova sua mão para guiar o cursor. Faça o gesto de pinça para interagir.</p>
+            
+            <div class="test-grid">
+                <div class="test-card interactable">Card 1</div>
+                <div class="test-card interactable">Card 2</div>
+                <div class="test-card interactable">Card 3</div>
+                <div class="test-card interactable">Card 4</div>
+                <div class="test-card interactable">Card 5</div>
+                <div class="test-card interactable">Card 6</div>
+                <div class="test-card interactable">Card 7</div>
+                <div class="test-card interactable">Card 8</div>
+            </div>
+            
+            <!-- Conteúdo extra para permitir scroll -->
+            <div class="scroll-spacer"></div>
+            <h2 class="interactable">Fim da Página</h2>
+        </main>
+    </div>
+
+    <!-- Cursor Customizado -->
+    <div id="custom-cursor" class="cursor hidden">
+        <div class="cursor-ring"></div>
+        <div class="cursor-dot"></div>
+    </div>
+
+    <!-- Scripts Modulares -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>
