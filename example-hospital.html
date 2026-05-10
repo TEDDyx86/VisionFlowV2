@@ -9,10 +9,199 @@
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <style>
+        :root {
+            --wing-north: #3b82f6; /* Blue */
+            --wing-south: #ef4444; /* Red */
+            --wing-east: #8b5cf6;  /* Violet */
+            --wing-west: #06b6d4;  /* Cyan */
+        }
+
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
+        
+        /* Layout & Gestures */
+        .hovered { filter: brightness(1.1) contrast(1.1); transform: scale(1.02); transition: all 0.2s; cursor: pointer; z-index: 9999; }
+        .bg-radial-gradient { background: radial-gradient(circle at center, white 0%, transparent 70%); }
+        
+        /* 3D Map Utilities */
+        .perspective-1000 { perspective: 2000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .translate-z-4 { transform: translateZ(40px); }
+        .translate-z-8 { transform: translateZ(80px); }
+        .translate-z-12 { transform: translateZ(120px); }
+
+        @keyframes dash {
+            to { stroke-dashoffset: -32; }
+        }
+
+        @keyframes pulse-marker {
+            0% { transform: translateZ(50px) scale(1); opacity: 1; }
+            50% { transform: translateZ(70px) scale(1.2); opacity: 0.7; }
+            100% { transform: translateZ(50px) scale(1); opacity: 1; }
+        }
+
+        @keyframes pulse-custom {
+            0% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.1); filter: brightness(1.2); }
+            100% { transform: scale(1); filter: brightness(1); }
+        }
+
+        @keyframes slide-up {
+            from { transform: translate(-50%, 100%); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
+        }
+
+        .shadow-glow {
+            filter: drop-shadow(0 0 8px var(--wing-south));
+        }
+
+
+        /* 3D Room Walls - Enhanced with Glassmorphism and Lighting */
+        .room-3d {
+            position: absolute;
+            transform-style: preserve-3d;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            background-image: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 100%);
+        }
+
+        .room-3d:hover {
+            transform: translateZ(60px) scale(1.05);
+            background: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 60px 120px rgba(0,0,0,0.25);
+            z-index: 100;
+        }
+
+        .glass-roof {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 100%);
+            pointer-events: none;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        /* Front Wall / Floor shadow with Lighting and Baseboard */
+        .room-3d::before {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            background: inherit;
+            filter: brightness(0.85);
+            transform: rotateX(-90deg);
+            transform-origin: bottom;
+            background-image: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, transparent 80%);
+            border-bottom: 4px solid rgba(0,0,0,0.2); /* Baseboard Detail */
+        }
+
+        /* Side Wall with Depth and Edge Lighting */
+        .room-3d::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -20px;
+            width: 20px;
+            height: 100%;
+            background: inherit;
+            filter: brightness(0.75);
+            transform: rotateY(90deg);
+            transform-origin: left;
+            background-image: linear-gradient(to left, rgba(0,0,0,0.15) 0%, transparent 90%);
+            border-left: 2px solid rgba(255,255,255,0.3); /* Edge Lighting */
+            border-bottom: 4px solid rgba(0,0,0,0.25); /* Baseboard Detail */
+        }
+
+        /* Global Lighting & Vignette */
+        #map-container {
+            background: radial-gradient(circle at center, #ffffff 0%, #f3f4f6 100%) !important;
+            overflow: hidden;
+        }
+
+        #map-container::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, transparent 65%, rgba(0,0,0,0.05) 90%, rgba(0,0,0,0.1) 100%);
+            pointer-events: none;
+            z-index: 50;
+            border-radius: 1rem;
+        }
+
+        /* Marker Pulse Enhancement */
+        .animate-ping {
+            animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+            background: var(--wing-north);
+            opacity: 0.4;
+        }
+
+        @keyframes ping {
+            75%, 100% {
+                transform: scale(2.5);
+                opacity: 0;
+            }
+        }
+
+        /* Glass Effect for ICU */
+        .glass-room {
+            background: rgba(255, 255, 255, 0.1) !important;
+            backdrop-filter: blur(8px);
+            border: 2px solid rgba(255, 255, 255, 0.5) !important;
+        }
+
+        .glass-room::before, .glass-room::after {
+            background: rgba(255, 255, 255, 0.2) !important;
+            backdrop-filter: blur(4px);
+        }
+
+        /* Door Indicator */
+        .door {
+            position: absolute;
+            background: rgba(0,0,0,0.2);
+            width: 30px;
+            height: 4px;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Corridor Column */
+        .column-3d {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: #e2e8f0;
+            transform: translateZ(60px);
+            transform-style: preserve-3d;
+        }
+        .column-3d::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 15px;
+            height: 60px;
+            background: #cbd5e1;
+            transform: rotateX(-90deg);
+            transform-origin: bottom;
+        }
+        .column-3d::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 15px;
+            height: 60px;
+            background: #94a3b8;
+            transform: rotateY(90deg);
+            transform-origin: right;
+        }
     </style>
+
 <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -121,9 +310,15 @@
 <!-- Main Canvas -->
 <main class="flex-grow pt-[160px] pb-[160px] px-margin-page flex flex-col">
 <div class="max-w-[1400px] mx-auto w-full flex-grow flex flex-col justify-center">
-<div class="mb-stack-lg text-center">
-<h1 class="font-headline-xl text-headline-xl text-on-surface mb-stack-sm">Como podemos ajudar?</h1>
-<p class="font-body-lg text-body-lg text-secondary">Selecione uma das opções abaixo para iniciar seu atendimento.</p>
+<div class="mb-stack-lg text-center flex flex-col items-center">
+    <h1 class="font-headline-xl text-headline-xl text-on-surface mb-stack-sm">Como podemos ajudar?</h1>
+    <p class="font-body-lg text-body-lg text-secondary mb-stack-md">Selecione uma das opções abaixo para iniciar seu atendimento.</p>
+    
+    <!-- Botão de Triagem (Hero) -->
+    <button id="btn-triage" class="bg-[#DC2626] text-on-primary flex items-center justify-center gap-stack-sm px-[60px] h-[100px] rounded-2xl shadow-[0_8px_30px_rgba(220,38,38,0.3)] hover:shadow-[0_12px_40px_rgba(220,38,38,0.4)] hover:scale-[0.98] transition-all duration-200 border border-[#b70011] group mb-8">
+        <span class="material-symbols-outlined text-[40px] group-hover:rotate-12 transition-transform" data-icon="confirmation_number">confirmation_number</span>
+        <span class="font-headline-md text-headline-md uppercase tracking-tight">Retirar Senha de Triagem</span>
+    </button>
 </div>
 <!-- Services Grid -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
@@ -240,59 +435,410 @@
     </div>
 
     <!-- 3D Map Modal -->
-    <div id="modal-map" class="hidden bg-surface-container-lowest rounded-3xl p-stack-lg w-full max-w-[1200px] h-[800px] shadow-2xl flex flex-col items-center">
+    <div id="modal-map" class="hidden bg-surface-container-lowest rounded-3xl p-stack-lg w-full max-w-[1200px] h-[850px] shadow-2xl flex flex-col items-center">
         <div class="w-full flex justify-between items-center mb-6">
-            <h2 class="font-headline-xl text-headline-xl text-primary">Mapa Interativo 3D</h2>
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white">map</span>
+                </div>
+                <div>
+                    <h2 class="font-headline-xl text-headline-xl text-primary leading-none">Mapa do Hospital</h2>
+                    <p class="text-secondary text-lg">Localize alas e consultórios</p>
+                </div>
+            </div>
             <button class="close-modal bg-surface-variant text-on-surface-variant w-[60px] h-[60px] rounded-full flex items-center justify-center hover:bg-error hover:text-on-error transition-colors">
                 <span class="material-symbols-outlined text-[32px]">close</span>
             </button>
         </div>
         
-        <div class="flex-grow w-full bg-surface-variant rounded-2xl overflow-hidden relative perspective-1000 flex items-center justify-center group cursor-move" id="map-container">
-            <!-- Simulated 3D Plane -->
-            <div class="relative w-[800px] h-[600px] bg-white rounded-3xl shadow-[0_50px_100px_rgba(0,0,0,0.2)] transition-transform duration-1000 transform-style-3d rotate-x-60 rotate-z-[-20deg] group-hover:rotate-x-45 group-hover:rotate-z-0 flex items-center justify-center overflow-hidden border-8 border-surface-container-high" style="transform: rotateX(60deg) rotateZ(-20deg);">
-                <!-- Blueprint pattern -->
-                <div class="absolute inset-0" style="background-image: linear-gradient(#e5e7eb 1px, transparent 1px), linear-gradient(90deg, #e5e7eb 1px, transparent 1px); background-size: 40px 40px;"></div>
-                
-                <!-- 3D Buildings -->
-                <div class="absolute top-[20%] left-[20%] w-[150px] h-[200px] bg-blue-100 border-2 border-blue-300 shadow-[20px_20px_0_#93c5fd] flex items-center justify-center font-bold text-blue-800 text-2xl">Pronto Socorro</div>
-                
-                <div class="absolute top-[10%] right-[20%] w-[250px] h-[150px] bg-green-100 border-2 border-green-300 shadow-[30px_30px_0_#86efac] flex items-center justify-center font-bold text-green-800 text-2xl">Internação</div>
-                
-                <div class="absolute bottom-[20%] left-[40%] w-[200px] h-[200px] bg-purple-100 border-2 border-purple-300 shadow-[40px_40px_0_#d8b4fe] flex items-center justify-center font-bold text-purple-800 text-2xl">Consultórios</div>
-
-                <!-- Path indicator -->
-                <svg class="absolute inset-0 w-full h-full pointer-events-none" style="filter: drop-shadow(0 10px 0 rgba(220,38,38,0.3));">
-                    <path d="M 100 500 L 250 500 L 250 300 L 450 300 L 450 400" fill="none" stroke="#dc2626" stroke-width="8" stroke-dasharray="16" class="animate-[dash_1s_linear_infinite]" />
-                    <circle cx="100" cy="500" r="12" fill="#dc2626" />
-                    <circle cx="450" cy="400" r="12" fill="#dc2626" />
-                </svg>
+        <div class="flex-grow w-full bg-surface-container/30 rounded-2xl overflow-hidden relative perspective-1000 flex items-center justify-center group cursor-move" id="map-container">
+            
+            <!-- Legend (Bottom Left) -->
+            <div class="map-overlay-panel map-legend hidden md:block">
+                <h3 class="font-bold text-sm text-on-surface mb-2 uppercase tracking-wider">Setores do Hospital</h3>
+                <div class="legend-item">
+                    <div class="color-dot" style="background: var(--wing-north);"></div>
+                    <span><b>Norte:</b> Diagnóstico e Pediatria</span>
+                </div>
+                <div class="legend-item">
+                    <div class="color-dot" style="background: var(--wing-south);"></div>
+                    <span><b>Sul:</b> Urgência e Reabilitação</span>
+                </div>
+                <div class="legend-item">
+                    <div class="color-dot" style="background: var(--wing-east);"></div>
+                    <span><b>Leste:</b> Internação e Especialidades</span>
+                </div>
+                <div class="legend-item">
+                    <div class="color-dot" style="background: var(--wing-west);"></div>
+                    <span><b>Oeste:</b> Ambulatório</span>
+                </div>
             </div>
 
-            <!-- Overlay text -->
-            <div class="absolute bottom-8 bg-white/90 backdrop-blur px-8 py-4 rounded-full shadow-lg font-bold text-xl text-primary flex items-center gap-2">
-                <span class="material-symbols-outlined">swipe</span>
-                Arraste para rotacionar (Simulado)
+            <!-- Controls (Bottom Right) -->
+            <div class="map-controls">
+                <button id="zoom-in" class="control-btn shadow-lg flex items-center justify-center">
+                    <span class="material-symbols-outlined">add</span>
+                </button>
+                <button id="zoom-out" class="control-btn shadow-lg flex items-center justify-center">
+                    <span class="material-symbols-outlined">remove</span>
+                </button>
+                <button id="reset-view" class="control-btn shadow-lg flex items-center justify-center">
+                    <span class="material-symbols-outlined">restart_alt</span>
+                </button>
+            </div>
+
+            <!-- Simulated 3D Plane -->
+            <div class="relative w-[1200px] h-[900px] transform-style-3d transition-transform duration-700 ease-out" id="map-3d-plane" style="transform: rotateX(55deg) rotateZ(-15deg);">
+
+                
+                <!-- Floor Grid -->
+                <div class="absolute inset-0 bg-white/40 rounded-[40px] shadow-[0_40px_100px_rgba(0,0,0,0.15)] border-4 border-white/60">
+                    <div class="absolute inset-0" style="background-image: linear-gradient(#e1e2e4 1px, transparent 1px), linear-gradient(90deg, #e1e2e4 1px, transparent 1px); background-size: 80px 80px; opacity: 0.2;"></div>
+                </div>
+
+
+                <!-- --- CORRIDORS & COLUMNS --- -->
+                <div class="absolute top-[310px] left-[50px] right-[50px] h-[80px] bg-surface-variant/10 rounded-full blur-[2px]"></div>
+                <div class="absolute top-[560px] left-[50px] right-[50px] h-[80px] bg-surface-variant/10 rounded-full blur-[2px]"></div>
+                <div class="absolute left-[400px] top-[50px] bottom-[50px] w-[80px] bg-surface-variant/10 rounded-full blur-[2px]"></div>
+                <div class="absolute right-[400px] top-[50px] bottom-[50px] w-[80px] bg-surface-variant/10 rounded-full blur-[2px]"></div>
+
+                <!-- Columns -->
+                <div class="column-3d top-[340px] left-[430px]"></div>
+                <div class="column-3d top-[340px] right-[430px]"></div>
+                <div class="column-3d top-[590px] left-[430px]"></div>
+                <div class="column-3d top-[590px] right-[430px]"></div>
+
+
+                <!-- --- NÚCLEO CENTRAL --- -->
+                <div class="room-3d top-[390px] left-[500px] w-[200px] h-[170px] flex flex-col items-center justify-center z-10" style="border-top: 4px solid var(--wing-west);">
+                    <div class="glass-roof"></div>
+                    <span class="material-symbols-outlined text-primary text-[40px] mb-1">concierge</span>
+                    <span class="font-bold text-lg text-primary">Recepção</span>
+                    <div class="door"></div>
+                    <!-- You Are Here Marker -->
+                    <div class="absolute -top-12 -right-12 w-24 h-24 bg-primary/20 rounded-full flex items-center justify-center animate-ping"></div>
+                    <div class="absolute -top-12 -right-12 w-24 h-24 bg-primary rounded-full flex items-center justify-center shadow-2xl">
+                        <span class="material-symbols-outlined text-white text-[40px]">person_pin_circle</span>
+                    </div>
+                </div>
+
+
+                <!-- Farmácia -->
+                <div class="room-3d top-[425px] left-[720px] w-[150px] h-[100px] flex flex-col items-center justify-center" style="border-top: 4px solid var(--wing-west);">
+                    <div class="glass-roof"></div>
+                    <span class="material-symbols-outlined text-emerald-600 text-[32px] mb-1">local_pharmacy</span>
+                    <span class="font-bold text-sm text-emerald-800">Farmácia</span>
+                    <div class="door"></div>
+                </div>
+
+
+                <!-- Laboratório -->
+                <div class="room-3d top-[80px] left-[490px] w-[220px] h-[180px] flex flex-col items-center justify-center" style="border-top: 4px solid var(--wing-north);">
+                    <div class="glass-roof"></div>
+                    <span class="material-symbols-outlined text-blue-600 text-[40px] mb-1">science</span>
+                    <span class="font-bold text-lg text-blue-800">Laboratório</span>
+                    <div class="door"></div>
+                </div>
+
+
+                <!-- Centro de Imagem -->
+                <div class="room-3d top-[80px] left-[80px] w-[250px] h-[180px] flex flex-col items-center justify-center" style="border-top: 4px solid var(--wing-north);">
+                    <div class="glass-roof"></div>
+                    <span class="material-symbols-outlined text-indigo-600 text-[40px] mb-1">settings_overscan</span>
+                    <span class="font-bold text-lg text-indigo-800">Imagem / RX</span>
+                    <div class="door"></div>
+                </div>
+
+
+                <!-- Pediatria -->
+                <div class="room-3d top-[80px] right-[80px] w-[250px] h-[180px] flex flex-col items-center justify-center" style="border-top: 4px solid var(--wing-north);">
+                    <div class="glass-roof"></div>
+                    <span class="material-symbols-outlined text-sky-600 text-[40px] mb-1">child_care</span>
+                    <span class="font-bold text-lg text-sky-800">Pediatria</span>
+                    <div class="door"></div>
+                </div>
+
+
+                <!-- --- ALA LESTE (Internação & Especialidades) --- -->
+                <!-- UTI (Glass Effect) -->
+                <div class="room-3d top-[350px] right-[80px] w-[280px] h-[200px] flex flex-col items-center justify-center" style="border-top: 4px solid var(--wing-east); background: rgba(139, 92, 246, 0.15);">
+                    <div class="glass-roof"></div>
+                    <span class="material-symbols-outlined text-white text-[48px] mb-1 drop-shadow-md">vital_signs</span>
+                    <span class="font-black text-xl text-white drop-shadow-md">U.T.I.</span>
+                    <span class="text-white/80 text-[10px] font-bold tracking-widest uppercase">Acesso Restrito</span>
+                </div>
+
+
+                <!-- Cardiologia & Endocrino -->
+                <div class="room-3d top-[650px] right-[100px] w-[220px] h-[220px] flex flex-col items-center justify-around" style="border-top: 4px solid var(--wing-east);">
+                    <div class="glass-roof"></div>
+                    <div class="flex flex-col items-center">
+                        <span class="material-symbols-outlined text-rose-600 text-[32px]">favorite</span>
+                        <span class="font-bold text-md text-rose-800">Cardiologia</span>
+                    </div>
+                    <div class="w-4/5 h-[1px] bg-rose-200"></div>
+                    <div class="flex flex-col items-center">
+                        <span class="material-symbols-outlined text-orange-600 text-[32px]">medication</span>
+                        <span class="font-bold text-md text-orange-800">Endocrino</span>
+                    </div>
+                    <div class="door"></div>
+                </div>
+
+
+                <!-- --- ALA OESTE (Ambulatório) --- -->
+                <!-- Oftalmo & Dermato -->
+                <div class="room-3d top-[350px] left-[80px] w-[220px] h-[220px] flex flex-col items-center justify-around" style="border-top: 4px solid var(--wing-west);">
+                    <div class="glass-roof"></div>
+                    <div class="flex flex-col items-center">
+                        <span class="material-symbols-outlined text-cyan-600 text-[32px]">visibility</span>
+                        <span class="font-bold text-md text-cyan-800">Oftalmo</span>
+                    </div>
+                    <div class="w-4/5 h-[1px] bg-cyan-200"></div>
+                    <div class="flex flex-col items-center">
+                        <span class="material-symbols-outlined text-emerald-600 text-[32px]">face</span>
+                        <span class="font-bold text-md text-emerald-800">Dermato</span>
+                    </div>
+                    <div class="door"></div>
+                </div>
+
+
+                <!-- Ginecologia -->
+                <div class="room-3d top-[650px] left-[80px] w-[220px] h-[180px] flex flex-col items-center justify-center" style="border-top: 4px solid var(--wing-west);">
+                    <div class="glass-roof"></div>
+                    <span class="material-symbols-outlined text-pink-600 text-[40px] mb-1">female</span>
+                    <span class="font-bold text-lg text-pink-800">Ginecologia</span>
+                    <div class="door"></div>
+                </div>
+
+
+                <!-- --- ALA SUL (Urgência) --- -->
+                <!-- Emergência -->
+                <div class="room-3d top-[650px] left-[425px] w-[350px] h-[200px] flex flex-col items-center justify-center" style="border-top: 4px solid var(--wing-south); background: rgba(239, 68, 68, 0.1);">
+                    <div class="glass-roof"></div>
+                    <div class="absolute inset-0 bg-red-500/5 animate-pulse rounded-xl"></div>
+                    <span class="material-symbols-outlined text-red-600 text-[56px] mb-1">emergency</span>
+                    <span class="font-black text-2xl text-red-800 uppercase tracking-tight">Emergência</span>
+                    <span class="text-red-600/60 text-sm font-bold">PRONTO SOCORRO</span>
+                    <div class="door w-[60px] h-[6px] bg-red-500/40"></div>
+                </div>
+
+
+                <!-- Ortopedia & Fisioterapia -->
+                <div class="room-3d top-[650px] right-[400px] w-[220px] h-[180px] flex flex-col items-center justify-around" style="border-top: 4px solid var(--wing-south);">
+                    <div class="glass-roof"></div>
+                    <div class="flex flex-col items-center">
+                        <span class="material-symbols-outlined text-orange-600 text-[32px]">bone</span>
+                        <span class="font-bold text-md text-orange-800">Ortopedia</span>
+                    </div>
+                    <div class="w-4/5 h-[1px] bg-orange-200"></div>
+                    <div class="flex flex-col items-center">
+                        <span class="material-symbols-outlined text-amber-600 text-[32px]">fitness_center</span>
+                        <span class="font-bold text-md text-amber-800">Fisioterapia</span>
+                    </div>
+                    <div class="door"></div>
+                </div>
+
+
+                <!-- --- APOIO & INFRA --- -->
+                <!-- Administração -->
+                <div class="room-3d top-[80px] left-[350px] w-[120px] h-[100px] flex flex-col items-center justify-center" style="border-top: 4px solid var(--wing-north);">
+                    <div class="glass-roof"></div>
+                    <span class="material-symbols-outlined text-blue-700 text-[24px]">business</span>
+                    <span class="font-bold text-[10px] text-blue-900">Administração</span>
+                    <div class="door"></div>
+                </div>
+
+                <!-- Auditório -->
+                <div class="room-3d top-[480px] left-[100px] w-[180px] h-[120px] flex flex-col items-center justify-center" style="border-top: 4px solid var(--wing-west);">
+                    <div class="glass-roof"></div>
+                    <span class="material-symbols-outlined text-cyan-700 text-[32px]">groups</span>
+                    <span class="font-bold text-xs text-cyan-900">Auditório</span>
+                    <div class="door"></div>
+                </div>
+
+                <!-- Internação (Ala Leste) -->
+                <div class="room-3d top-[100px] right-[400px] w-[200px] h-[150px] flex flex-col items-center justify-center" style="border-top: 4px solid var(--wing-east);">
+                    <div class="glass-roof"></div>
+                    <span class="material-symbols-outlined text-violet-700 text-[40px] mb-1">bed</span>
+                    <span class="font-bold text-lg text-violet-800">Internação</span>
+                    <div class="door"></div>
+                </div>
+
+                <!-- Área Externa: Ambulâncias -->
+                <div class="room-3d top-[860px] left-[475px] w-[250px] h-[100px] flex flex-col items-center justify-center opacity-80" style="border-top: 4px solid var(--wing-south); transform: translateZ(5px);">
+                    <div class="glass-roof"></div>
+                    <span class="material-symbols-outlined text-red-600 text-[32px] mb-1">local_shipping</span>
+                    <span class="font-bold text-sm text-red-800">Estacionamento Ambulâncias</span>
+                </div>
+
+                <!-- Cafeteria & WC (Norte) -->
+                <div class="absolute top-[20px] left-[480px] flex gap-4 transform-style-3d">
+                    <div class="room-3d w-[150px] h-[80px] flex items-center justify-center gap-2">
+                        <div class="glass-roof"></div>
+                        <span class="material-symbols-outlined text-yellow-700">coffee</span>
+                        <span class="font-bold text-xs text-yellow-900">Cafeteria</span>
+                    </div>
+                    <div class="room-3d w-[100px] h-[80px] flex items-center justify-center gap-2">
+                        <div class="glass-roof"></div>
+                        <span class="material-symbols-outlined text-slate-600">wc</span>
+                        <span class="font-bold text-xs text-slate-800">W.C.</span>
+                    </div>
+                </div>
+
+                <!-- Elevadores & Escadas -->
+                <div class="room-3d top-[350px] right-[480px] w-[80px] h-[100px] flex flex-col items-center justify-center">
+                    <div class="glass-roof"></div>
+                    <span class="material-symbols-outlined text-slate-700 text-[32px] animate-pulse">elevator</span>
+                    <div class="w-full h-[2px] bg-slate-300 my-2"></div>
+                    <span class="material-symbols-outlined text-slate-700 text-[24px]">stairs</span>
+                </div>
+
+
+                <!-- Floating Path Line (Neon Effect) -->
+                <svg class="absolute inset-0 w-full h-full pointer-events-none transform-style-3d" style="transform: translateZ(30px);">
+                    <path d="M 600 475 L 600 750" fill="none" stroke="var(--wing-south)" stroke-width="6" stroke-linecap="round" class="animate-pulse shadow-glow" />
+                    <circle cx="600" cy="475" r="8" fill="var(--wing-south)" class="shadow-glow" />
+                    <circle cx="600" cy="750" r="8" fill="var(--wing-south)" class="shadow-glow" />
+                </svg>
+
+
+            </div>
+
+            <!-- Legends and Controls -->
+            <div class="absolute bottom-6 left-6 right-6 flex justify-between items-end pointer-events-none">
+                <!-- Sector Legend -->
+                <div class="bg-white/80 backdrop-blur-xl p-5 rounded-3xl shadow-2xl border border-white/50 flex flex-col gap-3 pointer-events-auto transition-all hover:bg-white/95">
+                    <h4 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">Setores</h4>
+                    <div class="grid grid-cols-2 gap-x-6 gap-y-2">
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full" style="background: var(--wing-north);"></div>
+                            <span class="text-xs font-bold text-slate-700">Ala Norte (Clínica)</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full" style="background: var(--wing-east);"></div>
+                            <span class="text-xs font-bold text-slate-700">Ala Leste (UTI)</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full" style="background: var(--wing-west);"></div>
+                            <span class="text-xs font-bold text-slate-700">Ala Oeste (Ambulatório)</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full" style="background: var(--wing-south);"></div>
+                            <span class="text-xs font-bold text-slate-700">Ala Sul (Urgência)</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full bg-primary animate-pulse"></div>
+                            <span class="text-xs font-bold text-primary">Você está aqui</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Navigation Controls -->
+                <div class="flex flex-col gap-3 pointer-events-auto">
+                    <div class="flex flex-col bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-white/50 overflow-hidden">
+                        <button id="zoom-in" class="w-12 h-12 flex items-center justify-center hover:bg-primary hover:text-white transition-all active:scale-90 border-b border-slate-100">
+                            <span class="material-symbols-outlined">add</span>
+                        </button>
+                        <button id="zoom-out" class="w-12 h-12 flex items-center justify-center hover:bg-primary hover:text-white transition-all active:scale-90">
+                            <span class="material-symbols-outlined">remove</span>
+                        </button>
+                    </div>
+                    
+                    <button id="reset-view" class="h-12 px-4 bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-white/50 flex items-center gap-2 hover:bg-primary hover:text-white transition-all active:scale-95 group">
+                        <span class="material-symbols-outlined group-hover:rotate-180 transition-transform duration-500">restart_alt</span>
+                        <span class="text-xs font-black uppercase tracking-tight">Resetar</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
+    
+    <!-- Services Specialty Modal -->
+    <div id="modal-services" class="hidden bg-surface-container-lowest rounded-3xl p-stack-lg w-full max-w-[1000px] shadow-2xl flex flex-col items-center">
+        <div class="w-full flex justify-between items-center mb-8">
+            <h2 class="font-headline-xl text-headline-xl text-primary">Nossos Serviços</h2>
+            <button class="close-modal bg-surface-variant text-on-surface-variant w-[60px] h-[60px] rounded-full flex items-center justify-center hover:bg-error hover:text-on-error transition-colors">
+                <span class="material-symbols-outlined text-[32px]">close</span>
+            </button>
+        </div>
+        
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 w-full">
+            <!-- Oftalmo -->
+            <button class="flex flex-col items-center p-6 bg-surface-container-low rounded-2xl hover:bg-primary-container hover:text-on-primary-container transition-all group">
+                <span class="material-symbols-outlined text-[48px] mb-2 group-hover:scale-110 transition-transform">visibility</span>
+                <span class="font-bold text-lg text-center">Oftalmologia</span>
+            </button>
+            <!-- Endocrino -->
+            <button class="flex flex-col items-center p-6 bg-surface-container-low rounded-2xl hover:bg-primary-container hover:text-on-primary-container transition-all group">
+                <span class="material-symbols-outlined text-[48px] mb-2 group-hover:scale-110 transition-transform">medication</span>
+                <span class="font-bold text-lg text-center">Endocrinologia</span>
+            </button>
+            <!-- Cardio -->
+            <button class="flex flex-col items-center p-6 bg-surface-container-low rounded-2xl hover:bg-primary-container hover:text-on-primary-container transition-all group">
+                <span class="material-symbols-outlined text-[48px] mb-2 group-hover:scale-110 transition-transform">favorite</span>
+                <span class="font-bold text-lg text-center">Cardiologia</span>
+            </button>
+            <!-- Pediatria -->
+            <button class="flex flex-col items-center p-6 bg-surface-container-low rounded-2xl hover:bg-primary-container hover:text-on-primary-container transition-all group">
+                <span class="material-symbols-outlined text-[48px] mb-2 group-hover:scale-110 transition-transform">child_care</span>
+                <span class="font-bold text-lg text-center">Pediatria</span>
+            </button>
+            <!-- Ortopedia -->
+            <button class="flex flex-col items-center p-6 bg-surface-container-low rounded-2xl hover:bg-primary-container hover:text-on-primary-container transition-all group">
+                <span class="material-symbols-outlined text-[48px] mb-2 group-hover:scale-110 transition-transform">bone</span>
+                <span class="font-bold text-lg text-center">Ortopedia</span>
+            </button>
+            <!-- Ginecologia -->
+            <button class="flex flex-col items-center p-6 bg-surface-container-low rounded-2xl hover:bg-primary-container hover:text-on-primary-container transition-all group">
+                <span class="material-symbols-outlined text-[48px] mb-2 group-hover:scale-110 transition-transform">female</span>
+                <span class="font-bold text-lg text-center">Ginecologia</span>
+            </button>
+            <!-- Neurologia -->
+            <button class="flex flex-col items-center p-6 bg-surface-container-low rounded-2xl hover:bg-primary-container hover:text-on-primary-container transition-all group">
+                <span class="material-symbols-outlined text-[48px] mb-2 group-hover:scale-110 transition-transform">psychology</span>
+                <span class="font-bold text-lg text-center">Neurologia</span>
+            </button>
+            <!-- Dermatologia -->
+            <button class="flex flex-col items-center p-6 bg-surface-container-low rounded-2xl hover:bg-primary-container hover:text-on-primary-container transition-all group">
+                <span class="material-symbols-outlined text-[48px] mb-2 group-hover:scale-110 transition-transform">face</span>
+                <span class="font-bold text-lg text-center">Dermatologia</span>
+            </button>
+        </div>
+        <p class="mt-8 text-secondary italic text-center">Toque em uma especialidade para ver o local de atendimento ou realizar check-in.</p>
+    </div>
 </div>
 
-<!-- Fullscreen Emergency Overlay -->
-<div id="emergency-overlay" class="fixed inset-0 z-[1000] hidden bg-[#DC2626] flex-col items-center justify-center text-white">
-    <span class="material-symbols-outlined text-[120px] mb-8 animate-pulse" data-icon="emergency" data-weight="fill" style="font-variation-settings: 'FILL' 1;">emergency</span>
-    <h1 class="font-headline-xl text-[80px] font-bold text-center mb-4 uppercase tracking-widest">Emergência<br>Acionada</h1>
-    <p class="text-3xl opacity-90 mb-12">Por favor, aguarde. Uma equipe está a caminho.</p>
+
+<!-- Fullscreen Emergency Overlay (Redesigned Option B) -->
+<div id="emergency-overlay" class="fixed inset-0 z-[1000] hidden bg-[#DC2626] flex-col items-center justify-center text-white text-center p-margin-page overflow-hidden">
+    <!-- Background Effect -->
+    <div class="absolute inset-0 bg-radial-gradient opacity-20 pointer-events-none"></div>
     
-    <!-- Dwell to cancel ring -->
-    <div class="relative w-[150px] h-[150px] flex items-center justify-center group cursor-pointer" id="cancel-emergency-btn">
-        <svg class="absolute inset-0 w-full h-full -rotate-90">
-            <circle cx="75" cy="75" r="70" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="10"/>
-            <circle id="cancel-progress" cx="75" cy="75" r="70" fill="none" stroke="white" stroke-width="10" stroke-dasharray="440" stroke-dashoffset="440" class="transition-all duration-100 ease-linear"/>
-        </svg>
-        <span class="material-symbols-outlined text-[50px]">close</span>
+    <div class="relative z-10 flex flex-col items-center max-w-[900px]">
+        <span class="material-symbols-outlined text-[180px] mb-8 animate-[pulse-custom_2s_infinite] drop-shadow-2xl" data-icon="emergency_share" data-weight="fill" style="font-variation-settings: 'FILL' 1;">emergency_share</span>
+        <h1 class="font-headline-xl text-[96px] leading-tight font-black uppercase tracking-tighter mb-6 drop-shadow-lg">Emergência<br>Acionada</h1>
+        <p class="text-4xl opacity-90 font-medium mb-16 tracking-wide">Uma equipe de resposta rápida foi notificada e está a caminho.</p>
+        
+        <!-- Dwell to cancel ring -->
+        <div class="relative w-[180px] h-[180px] flex items-center justify-center group cursor-pointer" id="cancel-emergency-btn">
+            <svg class="absolute inset-0 w-full h-full -rotate-90">
+                <circle cx="90" cy="90" r="85" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="12"/>
+                <circle id="cancel-progress" cx="90" cy="90" r="85" fill="none" stroke="white" stroke-width="12" stroke-dasharray="534" stroke-dashoffset="534" class="transition-all duration-100 ease-linear"/>
+            </svg>
+            <span class="material-symbols-outlined text-[60px] group-hover:scale-110 transition-transform">close</span>
+        </div>
+        <p class="mt-8 text-2xl font-bold uppercase tracking-[0.2em] opacity-80">Mantenha a mão para cancelar</p>
     </div>
-    <p class="mt-4 text-xl font-bold uppercase tracking-wider">Mantenha a mão para cancelar</p>
+</div>
+
+<!-- Help Notification Toast -->
+<div id="help-toast" class="fixed bottom-[120px] left-1/2 -translate-x-1/2 z-[2000] hidden flex items-center gap-4 bg-inverse-surface/90 text-inverse-on-surface backdrop-blur-xl px-8 py-4 rounded-full shadow-2xl border border-white/20 animate-[slide-up_0.5s_ease-out]">
+    <span class="material-symbols-outlined text-amber-400 text-[32px] animate-pulse">support_agent</span>
+    <div class="flex flex-col">
+        <span class="font-bold text-xl">Colaborador Acionado!</span>
+        <span class="text-lg opacity-90">Um assistente está a caminho para auxiliá-lo.</span>
+    </div>
 </div>
 
 <!-- VisionFlow Iframe Integration -->
@@ -304,6 +850,8 @@
     const modalNumpad = document.getElementById('modal-numpad');
     const modalQr = document.getElementById('modal-qr');
     const modalMap = document.getElementById('modal-map');
+    const modalServices = document.getElementById('modal-services');
+    const helpToast = document.getElementById('help-toast');
     
     const cpfDisplay = document.getElementById('cpf-display');
     let currentCpf = '';
@@ -345,6 +893,44 @@
         cards[4].addEventListener('click', () => showModal('modal-map')); // Mapa
     }
 
+    // Bottom Navigation Wiring
+    const navBtns = document.querySelectorAll('nav button');
+    if (navBtns.length >= 4) {
+        navBtns[0].addEventListener('click', () => hideModals()); // Início
+        navBtns[1].addEventListener('click', () => showModal('modal-map')); // Mapa
+        navBtns[2].addEventListener('click', () => showModal('modal-services')); // Serviços
+        navBtns[3].addEventListener('click', () => { // Ajuda
+            helpToast.classList.remove('hidden');
+            helpToast.classList.add('flex');
+            setTimeout(() => {
+                helpToast.classList.add('hidden');
+                helpToast.classList.remove('flex');
+            }, 5000);
+        });
+    }
+
+    // Lógica do Botão de Triagem
+    const btnTriage = document.getElementById('btn-triage');
+    if (btnTriage) {
+        btnTriage.addEventListener('click', () => {
+            const originalContent = btnTriage.innerHTML;
+            btnTriage.innerHTML = '<span class="material-symbols-outlined animate-spin" data-icon="print">print</span><span class="font-headline-md">Imprimindo...</span>';
+            btnTriage.classList.add('opacity-80', 'pointer-events-none');
+            
+            setTimeout(() => {
+                btnTriage.innerHTML = '<span class="material-symbols-outlined text-green-400" data-icon="check_circle">check_circle</span><span class="font-headline-md text-white">Senha Emitida!</span>';
+                btnTriage.classList.remove('bg-[#DC2626]');
+                btnTriage.classList.add('bg-green-700');
+                
+                setTimeout(() => {
+                    btnTriage.innerHTML = originalContent;
+                    btnTriage.classList.remove('bg-green-700', 'opacity-80', 'pointer-events-none');
+                    btnTriage.classList.add('bg-[#DC2626]');
+                }, 3000);
+            }, 2000);
+        });
+    }
+
     // Numpad events
     document.querySelectorAll('.numpad-btn').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -374,6 +960,18 @@
         });
     });
 
+    // --- 3D Map State & Global Variables ---
+    let mapRotationX = 60;
+    let mapRotationZ = -20;
+    let mapScale = 1.0;
+    const mapPlane = document.querySelector('.map-3d-plane');
+
+    function updateMapTransform() {
+        if (mapPlane) {
+            mapPlane.style.transform = `rotateX(${mapRotationX}deg) rotateZ(${mapRotationZ}deg) scale(${mapScale})`;
+        }
+    }
+
     // Close modals
     document.querySelectorAll('.close-modal').forEach(btn => {
         btn.addEventListener('click', hideModals);
@@ -381,7 +979,7 @@
 
     // --- DWELL EMERGENCY LOGIC ---
     const emergencyOverlay = document.getElementById('emergency-overlay');
-    const emergencyBtns = document.querySelectorAll('.group.bg-\\[\\#DC2626\\], header button');
+    const emergencyBtns = document.querySelectorAll('.group.bg-\\[\\#DC2626\\]:not(#btn-triage), header button');
     
     // Adiciona classe para identificar botões de emergência
     emergencyBtns.forEach(btn => {
@@ -422,7 +1020,7 @@
         isEmergencyActive = false;
         emergencyOverlay.classList.add('hidden');
         emergencyOverlay.classList.remove('flex');
-        cancelProgress.style.strokeDashoffset = 440;
+        cancelProgress.style.strokeDashoffset = 534;
     }
 
     // Lógica para cancelar emergência (outro dwell)
@@ -457,7 +1055,7 @@
                     if (cancelTimer) {
                         clearInterval(cancelTimer);
                         cancelTimer = null;
-                        cancelProgress.style.strokeDashoffset = 440;
+                        cancelProgress.style.strokeDashoffset = 534;
                     }
                 }
                 
@@ -493,7 +1091,7 @@
                             const elapsed = Date.now() - cancelStartTime;
                             const progress = Math.min(elapsed / 2000, 1); // 2s cancel
                             
-                            const offset = 440 - (440 * progress);
+                            const offset = 534 - (534 * progress);
                             cancelProgress.style.strokeDashoffset = offset;
                             
                             if (progress >= 1) {
@@ -511,35 +1109,34 @@
         } else if (event.data.type === 'VISIONFLOW_DRAG') {
             // Support drag for 3D map rotation
             if (!modalsContainer.classList.contains('hidden') && !modalMap.classList.contains('hidden')) {
-                const mapInner = document.querySelector('#map-container > div');
-                if (mapInner) {
-                    // Extract current rotation
-                    const style = mapInner.style.transform;
-                    let rotX = 60;
-                    let rotZ = -20;
-                    
-                    const matchX = style.match(/rotateX\(([-0-9.]+)deg\)/);
-                    const matchZ = style.match(/rotateZ\(([-0-9.]+)deg\)/);
-                    if (matchX) rotX = parseFloat(matchX[1]);
-                    if (matchZ) rotZ = parseFloat(matchZ[1]);
-
-                    // Apply drag deltas
-                    rotX = Math.max(20, Math.min(80, rotX - event.data.dy * 0.1));
-                    rotZ = rotZ - event.data.dx * 0.1;
-                    
-                    mapInner.style.transform = `rotateX(${rotX}deg) rotateZ(${rotZ}deg)`;
-                }
+                mapRotationX = Math.max(20, Math.min(80, mapRotationX - event.data.dy * 0.1));
+                mapRotationZ = mapRotationZ - event.data.dx * 0.1;
+                updateMapTransform();
             }
         }
     });
-</script>
-<style>
-    .hovered { filter: brightness(1.1) contrast(1.1); transform: scale(1.02); transition: all 0.2s; cursor: pointer; z-index: 9999; }
-    .perspective-1000 { perspective: 1000px; }
-    .transform-style-3d { transform-style: preserve-3d; }
-    @keyframes dash {
-        to { stroke-dashoffset: -32; }
-    }
-</style>
 
+    function updateMapTransform() {
+        if (mapPlane) {
+            mapPlane.style.transform = `rotateX(${mapRotationX}deg) rotateZ(${mapRotationZ}deg) scale(${mapScale})`;
+        }
+    }
+
+    document.getElementById('zoom-in')?.addEventListener('click', () => {
+        mapScale = Math.min(2.5, mapScale + 0.2);
+        updateMapTransform();
+    });
+
+    document.getElementById('zoom-out')?.addEventListener('click', () => {
+        mapScale = Math.max(0.4, mapScale - 0.2);
+        updateMapTransform();
+    });
+
+    document.getElementById('reset-view')?.addEventListener('click', () => {
+        mapRotationX = 60;
+        mapRotationZ = -20;
+        mapScale = 1.0;
+        updateMapTransform();
+    });
+</script>
 </body></html>
