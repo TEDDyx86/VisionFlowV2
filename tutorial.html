@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial VisionFlow Touchless</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at 50% 50%, #111827 0%, #000000 100%);
+            color: #ffffff;
+            margin: 0;
+            overflow: hidden; /* Totem style, no scrollbars */
+        }
+        
+        .interactable {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .interactable.hovered {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
+            border-color: #3b82f6;
+        }
+
+        .interactable.clicked {
+            transform: scale(0.95);
+            background-color: rgba(59, 130, 246, 0.2);
+        }
+
+        /* Simple animation for tutorial illustration */
+        @keyframes pinch {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.85); }
+            100% { transform: scale(1); }
+        }
+
+        .pinch-animation {
+            animation: pinch 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col items-center justify-center relative p-8">
+
+    <!-- Header / Title -->
+    <div class="text-center mb-12">
+        <h1 class="text-5xl font-extrabold tracking-tight mb-4">Como usar o Totem?</h1>
+        <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+            Nossa interface funciona sem toques físicos. Apenas use sua mão para controlar o sistema!
+        </p>
+    </div>
+
+    <!-- Steps Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl mb-16">
+        
+        <!-- Step 1 -->
+        <div class="bg-gray-800/50 border border-gray-700 rounded-3xl p-8 flex flex-col items-center text-center">
+            <div class="w-24 h-24 bg-blue-600/20 rounded-full flex items-center justify-center mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11" />
+                </svg>
+            </div>
+            <h2 class="text-2xl font-bold mb-3">1. Levante a mão</h2>
+            <p class="text-gray-400">Posicione sua mão aberta em frente à câmera para que o cursor apareça na tela.</p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="bg-gray-800/50 border border-gray-700 rounded-3xl p-8 flex flex-col items-center text-center">
+            <div class="w-24 h-24 bg-blue-600/20 rounded-full flex items-center justify-center mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+                </svg>
+            </div>
+            <h2 class="text-2xl font-bold mb-3">2. Navegue</h2>
+            <p class="text-gray-400">Mova a mão para mover o cursor pela tela. Pare sobre um botão para selecioná-lo.</p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="bg-gray-800/50 border border-gray-700 rounded-3xl p-8 flex flex-col items-center text-center">
+            <div class="w-24 h-24 bg-blue-600/20 rounded-full flex items-center justify-center mb-6 pinch-animation">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+            <h2 class="text-2xl font-bold mb-3">3. Feche os dedos</h2>
+            <p class="text-gray-400">Para "clicar", faça um movimento de pinça encostando a ponta do polegar no indicador.</p>
+        </div>
+
+    </div>
+
+    <!-- Back Button -->
+    <button class="interactable px-12 py-5 bg-blue-600 hover:bg-blue-500 rounded-full text-2xl font-bold shadow-lg shadow-blue-500/30 transition-all border border-blue-400/30"
+            onclick="voltarAoInicio()">
+        Entendi, voltar ao início
+    </button>
+
+    <!-- Logo / Branding -->
+    <div class="absolute bottom-8 right-8 text-gray-500 font-bold tracking-widest text-sm opacity-50">
+        VISIONFLOW 2.0
+    </div>
+
+    <script>
+        // O inject.py iria carregar o listener, mas agora está embutido para controle offline
+        function voltarAoInicio() {
+            if (window.parent && window.parent !== window) {
+                // Envia comando para o Host fechar a sub-tela
+                window.parent.postMessage({ type: 'VISIONFLOW_CLOSE_MODULE' }, '*');
+            } else {
+                window.location.href = 'index.html'; // Fallback
+            }
+        }
+        
+        let currentHoverElement = null;
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'VISIONFLOW_CLICK') {
+                const el = document.elementFromPoint(event.data.x, event.data.y);
+                if (el) {
+                    el.click();
+                }
+            } else if (event.data.type === 'VISIONFLOW_HOVER') {
+                const el = document.elementFromPoint(event.data.x, event.data.y);
+                if (currentHoverElement !== el) {
+                    if (currentHoverElement) {
+                        currentHoverElement.dispatchEvent(new MouseEvent('mouseout', { bubbles: true }));
+                        currentHoverElement.classList.remove('hovered');
+                    }
+                    if (el && event.data.x >= 0 && event.data.y >= 0) {
+                        el.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+                        el.classList.add('hovered');
+                    }
+                    currentHoverElement = el;
+                }
+            } else if (event.data.type === 'VISIONFLOW_SCROLL') {
+                window.scrollBy(0, event.data.dy);
+            }
+        });
+
+        // Listener manual para desenvolvimento
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') voltarAoInicio();
+        });
+    </script>
+</body>
+</html>

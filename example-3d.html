@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VisionFlow 3D Configurator</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;family=Space+Grotesk:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#ffd8e7",
+                        "surface-bright": "#31394d",
+                        "primary-container": "#22d3ee",
+                        "error-container": "#93000a",
+                        "surface-variant": "#2d3449",
+                        "outline-variant": "#3c494c",
+                        "surface-container-lowest": "#060e20",
+                        "primary": "#8aebff",
+                        "on-background": "#dae2fd",
+                        "on-primary-fixed-variant": "#004e5a",
+                        "on-secondary-fixed": "#2c0051",
+                        "error": "#ffb4ab",
+                        "on-tertiary": "#620040",
+                        "on-tertiary-fixed-variant": "#85145a",
+                        "secondary-fixed": "#f0dbff",
+                        "primary-fixed-dim": "#2fd9f4",
+                        "secondary-container": "#6f00be",
+                        "primary-fixed": "#a2eeff",
+                        "on-error-container": "#ffdad6",
+                        "inverse-on-surface": "#283044",
+                        "surface-container-low": "#131b2e",
+                        "secondary-fixed-dim": "#ddb7ff",
+                        "surface-container-high": "#222a3d",
+                        "background": "#0b1326",
+                        "on-secondary-fixed-variant": "#6900b3",
+                        "on-tertiary-container": "#8f1e62",
+                        "on-primary-container": "#005763",
+                        "on-error": "#690005",
+                        "on-primary": "#00363e",
+                        "tertiary-container": "#ffa6cf",
+                        "outline": "#859397",
+                        "on-surface-variant": "#bbc9cd",
+                        "secondary": "#ddb7ff",
+                        "surface-dim": "#0b1326",
+                        "on-primary-fixed": "#001f25",
+                        "inverse-primary": "#006877",
+                        "on-secondary": "#490080",
+                        "tertiary-fixed-dim": "#ffafd3",
+                        "surface": "#0b1326",
+                        "surface-container-highest": "#2d3449",
+                        "surface-container": "#171f33",
+                        "on-surface": "#dae2fd",
+                        "inverse-surface": "#dae2fd",
+                        "on-secondary-container": "#d6a9ff",
+                        "tertiary": "#ffd0e3",
+                        "on-tertiary-fixed": "#3d0026",
+                        "surface-tint": "#2fd9f4"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xs": "0.25rem",
+                        "gutter": "1rem",
+                        "base": "4px",
+                        "xl": "2.5rem",
+                        "lg": "1.5rem",
+                        "sm": "0.5rem",
+                        "md": "1rem",
+                        "container-max": "1440px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Space Grotesk"],
+                        "headline-md": ["Space Grotesk"],
+                        "body-md": ["Space Grotesk"],
+                        "code-sm": ["JetBrains Mono"],
+                        "display-lg-mobile": ["Space Grotesk"],
+                        "label-caps": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "code-sm": ["13px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #3c494c; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #859397; }
+    </style>
+</head>
+<body class="bg-surface-container-lowest text-on-surface h-screen w-full overflow-hidden flex flex-col font-body-md selection:bg-primary/30 selection:text-primary-fixed">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-lg h-16 bg-surface/60 backdrop-blur-md border-b border-white/10 shadow-[0_0_20px_rgba(47,217,244,0.1)]">
+<!-- Brand Logo -->
+<div class="flex items-center gap-sm w-1/3">
+<span class="material-symbols-outlined text-primary text-[32px]">view_in_ar</span>
+<h1 class="font-display-lg text-display-lg-mobile md:text-[24px] md:leading-[32px] text-primary tracking-tighter uppercase">VisionFlow</h1>
+</div>
+<!-- Navigation Links (Center Aligned) -->
+<nav class="hidden md:flex flex-row justify-center items-center gap-xl w-1/3">
+<a class="text-primary border-b-2 border-primary pb-1 hover:text-primary-fixed-dim hover:bg-white/5 transition-all active:scale-95 duration-200" href="#">
+                Dashboard
+            </a>
+<a class="text-on-surface-variant font-body-md text-body-md hover:text-primary-fixed-dim hover:bg-white/5 transition-all active:scale-95 duration-200" href="#">
+                Assets
+            </a>
+<a class="text-on-surface-variant font-body-md text-body-md hover:text-primary-fixed-dim hover:bg-white/5 transition-all active:scale-95 duration-200" href="#">
+                Library
+            </a>
+</nav>
+<!-- Trailing Actions & Profile -->
+<div class="flex items-center justify-end gap-md w-1/3">
+<button class="p-2 rounded-full text-on-surface-variant hover:text-primary-fixed-dim hover:bg-white/5 transition-all active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<button class="p-2 rounded-full text-on-surface-variant hover:text-primary-fixed-dim hover:bg-white/5 transition-all active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<div class="h-8 w-8 rounded-full border border-outline/50 overflow-hidden ml-2">
+<img alt="User avatar" class="w-full h-full object-cover" data-alt="A tightly cropped headshot of a person looking directly at the camera. The lighting is dramatic and moody, with deep shadows and sharp highlights, suggesting a high-tech or futuristic setting. The individual is wearing subtle, futuristic apparel. The background is a solid, dark abyss, focusing all attention on the glowing accents reflecting off the subject's features." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5U6zIoQMlGMl9rf2yGtZoJMrhQDs0H99wnq7AVhl5_xhZD6XQH_fE3F65jVqkF_a3BLZpHsx5vA72yUbvYpfnxvhVKg20JFjMroAn69YVxSEmdKziSNtmwQZ9OvKGjNe2yMHU9LpOSob2rqZRu4tPLTsIKzJ3T85ut3wT9AzbfV1csDSoVKkslAfpPIdKSXdCorYY_KTAAQwG43eMGGgJgleXoVpPZHgIBqU-sfLQRrzrSslRJBcLUinDSGPrrnu1hmw7yKIpa5Y"/>
+</div>
+</div>
+</header>
+<!-- Main Workspace -->
+<main class="flex-1 w-full pt-16 relative flex">
+<!-- SideNavBar -->
+<aside class="fixed left-4 top-20 bottom-4 w-72 z-40 flex flex-col justify-between py-lg bg-surface-variant/60 backdrop-blur-xl border-r border-white/10 shadow-[5px_0_15px_rgba(0,0,0,0.5)] rounded-r-xl">
+<!-- Header -->
+<div class="px-md pb-md border-b border-white/10 mb-sm">
+<div class="flex items-center gap-sm mb-xs">
+<div class="w-8 h-8 rounded bg-primary/10 border border-primary/30 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">dns</span>
+</div>
+<div>
+<h2 class="font-headline-md text-[16px] leading-[20px] text-on-surface">Controller</h2>
+</div>
+</div>
+<div class="flex items-center gap-xs px-1">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_8px_#8aebff]"></span>
+<span class="font-code-sm text-code-sm text-primary-fixed-dim">V-01 Active</span>
+</div>
+</div>
+<!-- Navigation Tabs -->
+<nav class="flex flex-col gap-1 px-sm flex-1 overflow-y-auto">
+<a class="bg-primary/20 text-primary border-r-4 border-primary p-md flex items-center gap-md hover:bg-white/5 hover:text-primary transition-all active:bg-primary-container/30 duration-150 rounded-l" href="#">
+<span class="material-symbols-outlined" data-icon="open_with">open_with</span>
+<span class="font-label-caps text-label-caps">Transform</span>
+</a>
+<a class="text-on-surface-variant p-md flex items-center gap-md hover:bg-white/5 hover:text-primary transition-all active:bg-primary-container/30 duration-150 rounded-l" href="#">
+<span class="material-symbols-outlined" data-icon="texture">texture</span>
+<span class="font-label-caps text-label-caps">Materials</span>
+</a>
+<a class="text-on-surface-variant p-md flex items-center gap-md hover:bg-white/5 hover:text-primary transition-all active:bg-primary-container/30 duration-150 rounded-l" href="#">
+<span class="material-symbols-outlined" data-icon="wb_sunny">wb_sunny</span>
+<span class="font-label-caps text-label-caps">Lighting</span>
+</a>
+<a class="text-on-surface-variant p-md flex items-center gap-md hover:bg-white/5 hover:text-primary transition-all active:bg-primary-container/30 duration-150 rounded-l" href="#">
+<span class="material-symbols-outlined" data-icon="category">category</span>
+<span class="font-label-caps text-label-caps">Physics</span>
+</a>
+<a class="text-on-surface-variant p-md flex items-center gap-md hover:bg-white/5 hover:text-primary transition-all active:bg-primary-container/30 duration-150 rounded-l" href="#">
+<span class="material-symbols-outlined" data-icon="ios_share">ios_share</span>
+<span class="font-label-caps text-label-caps">Export</span>
+</a>
+</nav>
+<!-- Footer & CTA -->
+<div class="px-md pt-md border-t border-white/10 mt-sm flex flex-col gap-md">
+<div class="flex flex-col gap-1">
+<a class="text-on-surface-variant p-2 flex items-center gap-sm hover:bg-white/5 hover:text-primary transition-all rounded font-code-sm text-code-sm" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="help">help</span>
+                        Help
+                    </a>
+<a class="text-on-surface-variant p-2 flex items-center gap-sm hover:bg-white/5 hover:text-primary transition-all rounded font-code-sm text-code-sm" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="terminal">terminal</span>
+                        Logs
+                    </a>
+</div>
+<button class="w-full py-2 bg-primary/10 border border-primary text-primary font-label-caps text-label-caps uppercase tracking-widest rounded hover:bg-primary/20 hover:shadow-[0_0_15px_rgba(138,235,255,0.4)] transition-all active:scale-95 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">play_circle</span>
+                    Render Model
+                </button>
+</div>
+</aside>
+<!-- Configuration Panel (Extending Sidebar Context) -->
+<section class="absolute left-[300px] top-4 bottom-4 w-80 z-30 flex flex-col gap-md pl-md pr-sm overflow-y-auto hidden md:flex">
+<!-- Transform Panel -->
+<div class="bg-surface-container/60 backdrop-blur-[12px] border border-white/10 rounded-lg p-md relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<h3 class="font-label-caps text-label-caps text-primary mb-md flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">transform</span> Transform Controls
+                </h3>
+<div class="flex flex-col gap-lg">
+<!-- Rotation Slider -->
+<div class="flex flex-col gap-xs">
+<div class="flex justify-between font-code-sm text-[11px] text-on-surface-variant">
+<span>Rotation Z</span>
+<span class="text-primary-fixed">145°</span>
+</div>
+<div class="h-1 w-full bg-outline-variant rounded-full relative flex items-center">
+<div class="absolute left-0 h-full bg-gradient-to-r from-primary to-secondary-container w-[40%] rounded-full"></div>
+<div class="absolute left-[40%] w-3 h-3 bg-primary rounded-sm transform -translate-x-1/2 -rotate-45 shadow-[0_0_10px_#22d3ee] border border-white/50 cursor-pointer hover:scale-125 transition-transform"></div>
+</div>
+</div>
+<!-- Zoom Slider -->
+<div class="flex flex-col gap-xs">
+<div class="flex justify-between font-code-sm text-[11px] text-on-surface-variant">
+<span>Camera Zoom</span>
+<span class="text-primary-fixed">1.2x</span>
+</div>
+<div class="h-1 w-full bg-outline-variant rounded-full relative flex items-center">
+<div class="absolute left-0 h-full bg-gradient-to-r from-primary to-secondary-container w-[65%] rounded-full"></div>
+<div class="absolute left-[65%] w-3 h-3 bg-primary rounded-sm transform -translate-x-1/2 -rotate-45 shadow-[0_0_10px_#22d3ee] border border-white/50 cursor-pointer hover:scale-125 transition-transform"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- View Panel -->
+<div class="bg-surface-container/60 backdrop-blur-[12px] border border-white/10 rounded-lg p-md">
+<h3 class="font-label-caps text-label-caps text-primary mb-md flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">visibility</span> View Options
+                </h3>
+<div class="flex flex-col gap-sm">
+<div class="flex items-center justify-between p-2 bg-background/50 rounded border border-white/5 hover:border-primary/30 transition-colors cursor-pointer">
+<span class="font-code-sm text-code-sm text-on-surface">Explode View</span>
+<div class="w-8 h-4 bg-primary/20 rounded-full relative border border-primary/50 shadow-[0_0_8px_rgba(34,211,238,0.2)]">
+<div class="absolute right-[2px] top-[1px] w-[12px] h-[12px] bg-primary rounded-full shadow-[0_0_5px_#22d3ee]"></div>
+</div>
+</div>
+<button class="w-full py-2 bg-transparent border border-white/20 text-primary font-label-caps text-label-caps uppercase tracking-widest rounded hover:bg-white/5 hover:border-primary/50 transition-all active:scale-95 mt-2">
+                        Reset Camera
+                    </button>
+</div>
+</div>
+<!-- Materials Panel -->
+<div class="bg-surface-container/60 backdrop-blur-[12px] border border-white/10 rounded-lg p-md flex-1">
+<h3 class="font-label-caps text-label-caps text-primary mb-md flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">palette</span> Material Presets
+                </h3>
+<div class="grid grid-cols-2 gap-sm">
+<!-- Preset: Metallic (Active) -->
+<div class="bg-surface/80 border border-primary shadow-[0_0_15px_rgba(34,211,238,0.15)] rounded p-sm cursor-pointer relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-8 h-8 bg-gradient-to-bl from-primary/30 to-transparent"></div>
+<div class="w-full h-12 rounded bg-gradient-to-br from-gray-300 to-gray-600 mb-2 border border-white/20"></div>
+<span class="font-code-sm text-[11px] text-primary block text-center">Metallic</span>
+</div>
+<!-- Preset: Carbon Fiber -->
+<div class="bg-surface/40 border border-white/10 rounded p-sm cursor-pointer hover:border-white/30 transition-colors">
+<div class="w-full h-12 rounded bg-[#1a1a1a] mb-2 border border-white/10 bg-[radial-gradient(#333_1px,transparent_1px)] bg-[size:4px_4px]"></div>
+<span class="font-code-sm text-[11px] text-on-surface-variant block text-center">Carbon Fiber</span>
+</div>
+<!-- Preset: Glass -->
+<div class="bg-surface/40 border border-white/10 rounded p-sm cursor-pointer hover:border-white/30 transition-colors">
+<div class="w-full h-12 rounded bg-cyan-900/30 backdrop-blur-md mb-2 border border-cyan-400/30"></div>
+<span class="font-code-sm text-[11px] text-on-surface-variant block text-center">Glass</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 3D Canvas Viewport -->
+<section class="flex-1 h-full relative ml-[320px] md:ml-[630px] bg-background">
+<!-- Environment Grid / Depth Cue -->
+<div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:60px_60px] opacity-50" style="perspective: 1000px;">
+<div class="w-full h-full border-t border-primary/20 shadow-[0_-20px_50px_rgba(34,211,238,0.05)] transform rotate-x-60 origin-bottom"></div>
+</div>
+<!-- HUD Stats -->
+<div class="absolute top-6 right-6 flex gap-4 z-20 pointer-events-none">
+<div class="bg-background/80 backdrop-blur-md border border-white/10 px-sm py-xs rounded flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[16px]">polyline</span>
+<span class="font-code-sm text-code-sm text-on-surface">Polygons: <span class="text-primary-fixed">1.2M</span></span>
+</div>
+<div class="bg-background/80 backdrop-blur-md border border-white/10 px-sm py-xs rounded flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary-fixed text-[16px]">speed</span>
+<span class="font-code-sm text-code-sm text-on-surface">Render Mode: <span class="text-secondary-fixed-dim">Real-time</span></span>
+</div>
+</div>
+<!-- Central 3D Placeholder -->
+<div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+<!-- Abstract Wireframe Representation -->
+<div class="relative w-96 h-96">
+<!-- Core Glow -->
+<div class="absolute inset-0 bg-primary/5 rounded-full blur-3xl"></div>
+<!-- Geometric Structure -->
+<div class="absolute inset-0 border border-primary/40 rounded-full transform rotate-45 border-dashed scale-75 opacity-50"></div>
+<div class="absolute inset-0 border border-secondary/30 rounded-full transform -rotate-12 scale-90"></div>
+<!-- Center Artifact -->
+<div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 border border-primary/60 bg-surface/20 backdrop-blur-sm rotate-45 shadow-[inset_0_0_20px_rgba(34,211,238,0.2)] flex items-center justify-center">
+<div class="w-32 h-32 border border-secondary-fixed/50 -rotate-45"></div>
+</div>
+<!-- Axis Gizmo (Bottom Left of Object) -->
+<div class="absolute bottom-10 left-10 w-16 h-16 pointer-events-auto cursor-pointer group">
+<div class="absolute bottom-0 left-0 w-full h-[2px] bg-red-500 origin-left group-hover:bg-red-400"></div>
+<div class="absolute bottom-0 left-0 w-[2px] h-full bg-green-500 origin-bottom group-hover:bg-green-400"></div>
+<div class="absolute bottom-0 left-0 w-full h-[2px] bg-blue-500 origin-left transform -rotate-45 -translate-y-2 translate-x-2 group-hover:bg-blue-400"></div>
+<div class="absolute bottom-[-4px] left-[-4px] w-2 h-2 bg-white rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- View Controls Toolbar (Floating Bottom Center) -->
+<div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-surface-container/80 backdrop-blur-xl border border-white/10 rounded-full px-md py-xs flex gap-md z-20 shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors tooltip" title="Pan">
+<span class="material-symbols-outlined text-[20px]">pan_tool</span>
+</button>
+<button class="p-2 text-primary bg-primary/10 rounded-full transition-colors tooltip" title="Orbit">
+<span class="material-symbols-outlined text-[20px]">360</span>
+</button>
+<div class="w-[1px] h-6 bg-white/10 my-auto mx-2"></div>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors tooltip" title="Wireframe">
+<span class="material-symbols-outlined text-[20px]">grid_4x4</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors tooltip" title="Shaded">
+<span class="material-symbols-outlined text-[20px]">light_mode</span>
+</button>
+</div>
+</section>
+</main>
+
+<!-- VisionFlow Iframe Integration -->
+<script>
+    let currentHoverElement = null;
+    window.addEventListener('message', (event) => {
+        if (event.data.type === 'VISIONFLOW_CLICK') {
+            const el = document.elementFromPoint(event.data.x, event.data.y);
+            if (el) {
+                el.click();
+            }
+        } else if (event.data.type === 'VISIONFLOW_HOVER') {
+            const el = document.elementFromPoint(event.data.x, event.data.y);
+            if (currentHoverElement !== el) {
+                if (currentHoverElement) {
+                    currentHoverElement.dispatchEvent(new MouseEvent('mouseout', { bubbles: true }));
+                    currentHoverElement.classList.remove('hovered');
+                }
+                if (el && event.data.x >= 0 && event.data.y >= 0) {
+                    el.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+                    el.classList.add('hovered');
+                }
+                currentHoverElement = el;
+            }
+        } else if (event.data.type === 'VISIONFLOW_SCROLL') {
+            window.scrollBy(0, event.data.dy);
+        }
+    });
+</script>
+<style>
+    .hovered { filter: brightness(1.1) contrast(1.1); transform: scale(1.02); transition: all 0.2s; cursor: pointer; z-index: 9999; }
+</style>
+
+</body></html>

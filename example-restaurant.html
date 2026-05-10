@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html class="light" lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Digital Greenhouse - Menu</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary-fixed": "#002113",
+                      "on-secondary": "#ffffff",
+                      "on-primary": "#ffffff",
+                      "surface-container": "#dcf3e7",
+                      "surface-variant": "#d0e8dc",
+                      "tertiary-fixed": "#caead6",
+                      "on-secondary-container": "#306d58",
+                      "on-tertiary-fixed-variant": "#314d3e",
+                      "surface-container-low": "#e1f9ec",
+                      "primary-fixed-dim": "#4edea3",
+                      "tertiary": "#486554",
+                      "error": "#ba1a1a",
+                      "on-tertiary-container": "#243f30",
+                      "on-surface": "#0b1f18",
+                      "surface-tint": "#006c49",
+                      "primary-fixed": "#6ffbbe",
+                      "secondary": "#2b6954",
+                      "surface-container-highest": "#d0e8dc",
+                      "on-secondary-fixed-variant": "#0b513d",
+                      "secondary-container": "#adedd3",
+                      "on-background": "#0b1f18",
+                      "on-primary-fixed-variant": "#005236",
+                      "on-tertiary": "#ffffff",
+                      "surface-bright": "#e7fff2",
+                      "error-container": "#ffdad6",
+                      "secondary-fixed-dim": "#95d3ba",
+                      "background": "#e7fff2",
+                      "surface-container-high": "#d6eee1",
+                      "outline-variant": "#bbcabf",
+                      "on-error": "#ffffff",
+                      "inverse-surface": "#20342c",
+                      "surface": "#e7fff2",
+                      "primary-container": "#10b981",
+                      "secondary-fixed": "#b0f0d6",
+                      "primary": "#006c49",
+                      "on-surface-variant": "#3c4a42",
+                      "inverse-on-surface": "#dff6ea",
+                      "on-tertiary-fixed": "#042014",
+                      "tertiary-container": "#8caa97",
+                      "tertiary-fixed-dim": "#afceba",
+                      "inverse-primary": "#4edea3",
+                      "surface-dim": "#c8dfd3",
+                      "outline": "#6c7a71",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary-container": "#00422b",
+                      "on-error-container": "#93000a",
+                      "on-secondary-fixed": "#002117"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "8px",
+                      "card-gap": "32px",
+                      "margin-desktop": "48px",
+                      "gutter": "24px",
+                      "margin-mobile": "16px",
+                      "container-max": "1280px"
+              },
+              "fontFamily": {
+                      "headline-md": ["Space Grotesk"],
+                      "headline-lg": ["Space Grotesk"],
+                      "body-md": ["Plus Jakarta Sans"],
+                      "label-bold": ["Space Grotesk"],
+                      "body-lg": ["Plus Jakarta Sans"],
+                      "display-lg": ["Space Grotesk"]
+              },
+              "fontSize": {
+                      "headline-md": ["28px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                      "headline-lg": ["40px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                      "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                      "label-bold": ["14px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                      "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                      "display-lg": ["56px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+              }
+            }
+          }
+        }
+    </script>
+    <style>
+        .glass-panel {
+            background: rgba(231, 255, 242, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 32px 0 rgba(6, 78, 59, 0.05);
+        }
+        
+        @keyframes swallow {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.9); border-radius: 40px; background-color: var(--color-primary-container); }
+            100% { transform: scale(1); }
+        }
+        .animate-swallow {
+            animation: swallow 0.4s ease-out forwards;
+        }
+
+        @keyframes floatUpFade {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-80px) scale(1.5); }
+        }
+        .floating-plus-one {
+            position: absolute;
+            color: #006c49; /* primary */
+            font-size: 3rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            pointer-events: none;
+            animation: floatUpFade 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            z-index: 9999;
+            text-shadow: 0 4px 15px rgba(0, 108, 73, 0.3);
+        }
+        
+        .hovered { filter: brightness(1.1) contrast(1.1); transform: scale(1.02); transition: all 0.2s; cursor: pointer; z-index: 999; box-shadow: 0 0 0 4px rgba(0, 108, 73, 0.2); }
+        button.hovered, a.hovered { outline: none; }
+        
+        button > *, a > * { pointer-events: none; }
+
+        /* Hide scrollbar for cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 108, 73, 0.2);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md h-screen flex overflow-hidden antialiased">
+    
+    <!-- Side NavBar for Touchless -->
+    <aside class="w-32 md:w-48 lg:w-64 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-2xl border-r border-on-surface-variant/10 shadow-lg flex flex-col items-center py-8 gap-8 overflow-y-auto z-40 flex-shrink-0">
+        <div class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed-dim tracking-tight text-center px-4">
+            Greenhouse
+        </div>
+        <nav class="flex flex-col gap-4 w-full px-4 flex-grow">
+            <a class="flex flex-col items-center justify-center gap-2 text-primary dark:text-primary-fixed-dim bg-surface-container-low/80 p-6 rounded-2xl shadow-md transition-all duration-300" href="#cat-hamburguer">
+                <span class="material-symbols-outlined text-5xl">lunch_dining</span>
+                <span class="font-label-bold text-label-bold">Hambúrguer</span>
+            </a>
+            <a class="flex flex-col items-center justify-center gap-2 text-on-surface-variant dark:text-outline-variant hover:text-primary hover:bg-surface-container-low/80 p-6 rounded-2xl transition-all duration-300" href="#cat-vegetal">
+                <span class="material-symbols-outlined text-5xl">eco</span>
+                <span class="font-label-bold text-label-bold">Vegetal</span>
+            </a>
+            <a class="flex flex-col items-center justify-center gap-2 text-on-surface-variant dark:text-outline-variant hover:text-primary hover:bg-surface-container-low/80 p-6 rounded-2xl transition-all duration-300" href="#cat-acompanhamentos">
+                <span class="material-symbols-outlined text-5xl">tapas</span>
+                <span class="font-label-bold text-label-bold">Acompanhamentos</span>
+            </a>
+            <a class="flex flex-col items-center justify-center gap-2 text-on-surface-variant dark:text-outline-variant hover:text-primary hover:bg-surface-container-low/80 p-6 rounded-2xl transition-all duration-300" href="#cat-bebidas">
+                <span class="material-symbols-outlined text-5xl">local_drink</span>
+                <span class="font-label-bold text-label-bold">Bebidas</span>
+            </a>
+            <a class="flex flex-col items-center justify-center gap-2 text-on-surface-variant dark:text-outline-variant hover:text-primary hover:bg-surface-container-low/80 p-6 rounded-2xl transition-all duration-300" href="#cat-sobremesas">
+                <span class="material-symbols-outlined text-5xl">cake</span>
+                <span class="font-label-bold text-label-bold">Sobremesas</span>
+            </a>
+        </nav>
+        <div class="mt-auto px-4 w-full">
+            <button id="open-cart-btn" class="relative w-full flex flex-col items-center justify-center gap-2 bg-primary text-on-primary hover:bg-primary-container hover:text-on-primary-container transition-all duration-300 p-6 rounded-2xl shadow-xl">
+                <span class="material-symbols-outlined text-4xl">shopping_cart</span>
+                <span class="font-label-bold text-label-bold">Carrinho</span>
+                <span id="cart-badge" class="absolute top-2 right-2 bg-error text-on-error rounded-full w-8 h-8 flex items-center justify-center text-label-bold shadow-md hidden">0</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="flex-grow overflow-y-auto relative scroll-smooth" id="scrollable-main">
+        <main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-12 md:py-16">
+            <!-- Hero Section -->
+            <section class="mb-16">
+                <div class="glass-panel rounded-3xl overflow-hidden shadow-2xl relative grid grid-cols-1 lg:grid-cols-2 gap-8 items-center p-8 md:p-12">
+                    <div class="z-10 flex flex-col items-start gap-6">
+                        <span class="inline-block px-4 py-1.5 rounded-full bg-primary-container/20 text-primary font-label-bold text-label-bold uppercase tracking-wider backdrop-blur-md">Item do Dia</span>
+                        <h1 class="text-display-lg font-display-lg text-on-surface">Whopper Clássico</h1>
+                        <p class="text-body-lg font-body-lg text-on-surface-variant max-w-lg">
+                            O clássico inconfundível. Pão com gergelim, maionese, alface fresca, tomate, cebola, ketchup, picles, queijo derretido e um suculento hambúrguer grelhado.
+                        </p>
+                        <div class="flex flex-wrap items-center gap-6 mt-4">
+                            <span class="text-headline-lg font-headline-lg text-primary mr-2">R$ 39,97</span>
+                            
+                            <button id="customize-btn" class="bg-surface-container text-on-surface-variant px-8 py-5 rounded-full font-label-bold text-headline-md shadow-md hover:bg-outline-variant transition-all duration-300 transform hover:scale-105 flex items-center gap-3">
+                                <span class="material-symbols-outlined text-3xl">tune</span> Personalizar
+                            </button>
+                            
+                            <button id="add-to-order-btn" data-name="Whopper Clássico" data-price="39.97" class="add-item-btn relative bg-primary text-on-primary px-8 py-5 rounded-full font-label-bold text-headline-md shadow-xl shadow-primary/30 hover:bg-primary-container hover:text-on-primary-container transition-all duration-300 transform hover:scale-105 flex items-center gap-3">
+                                <span class="material-symbols-outlined text-3xl">add_shopping_cart</span> Adicionar ao Pedido
+                            </button>
+                        </div>
+                    </div>
+                    <div class="relative w-full aspect-square md:aspect-[4/3] lg:aspect-square rounded-2xl overflow-hidden shadow-inner">
+                        <img alt="Delicious classic burger" class="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-700" src="assets/whopper_classico.png"/>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Menu Sections -->
+            <!-- Hambúrguer -->
+            <section id="cat-hamburguer" class="mb-16 scroll-mt-16">
+                <h2 class="text-headline-lg font-headline-lg text-on-surface mb-8 border-b-4 border-primary inline-block pb-2">Hambúrguer</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-card-gap pb-8">
+                    <!-- Whopper Duplo -->
+                    <article class="glass-card rounded-2xl overflow-hidden flex flex-col group transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                        <div class="h-64 overflow-hidden relative">
+                            <img alt="Whopper Burger" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500" src="assets/whopper_duplo.png"/>
+                        </div>
+                        <div class="p-8 flex flex-col flex-grow">
+                            <h3 class="text-headline-md font-headline-md text-on-surface mb-2">Whopper Duplo</h3>
+                            <p class="text-body-md font-body-md text-on-surface-variant flex-grow mb-8">O dobro de sabor com duas carnes grelhadas e muito mais queijo.</p>
+                            <div class="flex items-center justify-between mt-auto gap-2">
+                                <span class="text-headline-md font-headline-md text-primary font-bold">R$ 49,90</span>
+                                <div class="flex gap-2">
+                                    <button data-name="Whopper Duplo" data-price="49.90" class="customize-btn-card bg-surface-container text-on-surface-variant hover:bg-outline-variant w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                        <span class="material-symbols-outlined text-3xl">tune</span>
+                                    </button>
+                                    <button data-name="Whopper Duplo" data-price="49.90" class="add-item-btn bg-surface-variant text-primary hover:bg-primary hover:text-on-primary w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                        <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">add</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <!-- Cheeseburger Clássico -->
+                    <article class="glass-card rounded-2xl overflow-hidden flex flex-col group transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                        <div class="h-64 overflow-hidden relative bg-surface-container flex items-center justify-center">
+                            <img alt="Cheeseburger" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500" src="assets/cheeseburger.png"/>
+                        </div>
+                        <div class="p-8 flex flex-col flex-grow">
+                            <h3 class="text-headline-md font-headline-md text-on-surface mb-2">Cheeseburger Clássico</h3>
+                            <p class="text-body-md font-body-md text-on-surface-variant flex-grow mb-8">Pão macio, carne suculenta e queijo derretido perfeito.</p>
+                            <div class="flex items-center justify-between mt-auto gap-2">
+                                <span class="text-headline-md font-headline-md text-primary font-bold">R$ 25,90</span>
+                                <div class="flex gap-2">
+                                    <button data-name="Cheeseburger Clássico" data-price="25.90" class="customize-btn-card bg-surface-container text-on-surface-variant hover:bg-outline-variant w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                        <span class="material-symbols-outlined text-3xl">tune</span>
+                                    </button>
+                                    <button data-name="Cheeseburger Clássico" data-price="25.90" class="add-item-btn bg-surface-variant text-primary hover:bg-primary hover:text-on-primary w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                        <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">add</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <!-- Bacon Burger -->
+                    <article class="glass-card rounded-2xl overflow-hidden flex flex-col group transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                        <div class="h-64 overflow-hidden relative bg-surface-container flex items-center justify-center">
+                            <img alt="Bacon Burger" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500" src="assets/bacon_burger.png"/>
+                        </div>
+                        <div class="p-8 flex flex-col flex-grow">
+                            <h3 class="text-headline-md font-headline-md text-on-surface mb-2">Bacon Burger</h3>
+                            <p class="text-body-md font-body-md text-on-surface-variant flex-grow mb-8">Tiras de bacon crocante, queijo e molho especial.</p>
+                            <div class="flex items-center justify-between mt-auto gap-2">
+                                <span class="text-headline-md font-headline-md text-primary font-bold">R$ 35,50</span>
+                                <div class="flex gap-2">
+                                    <button data-name="Bacon Burger" data-price="35.50" class="customize-btn-card bg-surface-container text-on-surface-variant hover:bg-outline-variant w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                        <span class="material-symbols-outlined text-3xl">tune</span>
+                                    </button>
+                                    <button data-name="Bacon Burger" data-price="35.50" class="add-item-btn bg-surface-variant text-primary hover:bg-primary hover:text-on-primary w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                        <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">add</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- Vegetal -->
+            <section id="cat-vegetal" class="mb-16 scroll-mt-16">
+                <h2 class="text-headline-lg font-headline-lg text-on-surface mb-8 border-b-4 border-primary inline-block pb-2">Vegetal</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-card-gap pb-8">
+                    <!-- Veggie Burger -->
+                    <article class="glass-card rounded-2xl overflow-hidden flex flex-col group transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                        <div class="h-64 overflow-hidden relative bg-surface-container flex items-center justify-center">
+                            <img alt="Veggie Burger" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500" src="assets/veggie_burger.png"/>
+                        </div>
+                        <div class="p-8 flex flex-col flex-grow">
+                            <h3 class="text-headline-md font-headline-md text-on-surface mb-2">Veggie Burger</h3>
+                            <p class="text-body-md font-body-md text-on-surface-variant flex-grow mb-8">Hambúrguer 100% vegetal com sabor impressionante.</p>
+                            <div class="flex items-center justify-between mt-auto gap-2">
+                                <span class="text-headline-md font-headline-md text-primary font-bold">R$ 32,90</span>
+                                <div class="flex gap-2">
+                                    <button data-name="Veggie Burger" data-price="32.90" class="customize-btn-card bg-surface-container text-on-surface-variant hover:bg-outline-variant w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                        <span class="material-symbols-outlined text-3xl">tune</span>
+                                    </button>
+                                    <button data-name="Veggie Burger" data-price="32.90" class="add-item-btn bg-surface-variant text-primary hover:bg-primary hover:text-on-primary w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                        <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">add</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <!-- Salada Tropical -->
+                    <article class="glass-card rounded-2xl overflow-hidden flex flex-col group transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                        <div class="h-64 overflow-hidden relative bg-surface-container flex items-center justify-center">
+                            <img alt="Salada Tropical" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500" src="assets/salada_tropical.png"/>
+                        </div>
+                        <div class="p-8 flex flex-col flex-grow">
+                            <h3 class="text-headline-md font-headline-md text-on-surface mb-2">Salada Tropical</h3>
+                            <p class="text-body-md font-body-md text-on-surface-variant flex-grow mb-8">Mix de folhas frescas, manga, tomate cereja e molho especial.</p>
+                            <div class="flex items-center justify-between mt-auto gap-2">
+                                <span class="text-headline-md font-headline-md text-primary font-bold">R$ 24,50</span>
+                                <div class="flex gap-2">
+                                    <button data-name="Salada Tropical" data-price="24.50" class="customize-btn-card bg-surface-container text-on-surface-variant hover:bg-outline-variant w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                        <span class="material-symbols-outlined text-3xl">tune</span>
+                                    </button>
+                                    <button data-name="Salada Tropical" data-price="24.50" class="add-item-btn bg-surface-variant text-primary hover:bg-primary hover:text-on-primary w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                        <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">add</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- Acompanhamentos -->
+            <section id="cat-acompanhamentos" class="mb-16 scroll-mt-16">
+                <h2 class="text-headline-lg font-headline-lg text-on-surface mb-8 border-b-4 border-primary inline-block pb-2">Acompanhamentos</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-card-gap pb-8">
+                    <!-- Batata Frita -->
+                    <article class="glass-card rounded-2xl overflow-hidden flex flex-col group transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                        <div class="h-64 overflow-hidden relative">
+                            <img alt="French Fries" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500" src="assets/batata_frita.png"/>
+                        </div>
+                        <div class="p-8 flex flex-col flex-grow">
+                            <h3 class="text-headline-md font-headline-md text-on-surface mb-2">Batata Frita Grande</h3>
+                            <p class="text-body-md font-body-md text-on-surface-variant flex-grow mb-8">Batatas crocantes e irresistíveis, fritas na hora com um toque de sal.</p>
+                            <div class="flex items-center justify-between mt-auto gap-2">
+                                <span class="text-headline-md font-headline-md text-primary font-bold">R$ 18,50</span>
+                                <div class="flex gap-2">
+                                    <button data-name="Batata Frita Grande" data-price="18.50" class="customize-btn-card bg-surface-container text-on-surface-variant hover:bg-outline-variant w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                        <span class="material-symbols-outlined text-3xl">tune</span>
+                                    </button>
+                                    <button data-name="Batata Frita Grande" data-price="18.50" class="add-item-btn bg-surface-variant text-primary hover:bg-primary hover:text-on-primary w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                        <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">add</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <!-- Onion Rings -->
+                    <article class="glass-card rounded-2xl overflow-hidden flex flex-col group transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                        <div class="h-64 overflow-hidden relative bg-surface-container flex items-center justify-center">
+                            <img alt="Onion Rings" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500" src="assets/onion_rings.png"/>
+                        </div>
+                        <div class="p-8 flex flex-col flex-grow">
+                            <h3 class="text-headline-md font-headline-md text-on-surface mb-2">Onion Rings</h3>
+                            <p class="text-body-md font-body-md text-on-surface-variant flex-grow mb-8">Anéis de cebola empanados e super crocantes.</p>
+                            <div class="flex items-center justify-between mt-auto gap-2">
+                                <span class="text-headline-md font-headline-md text-primary font-bold">R$ 16,90</span>
+                                <div class="flex gap-2">
+                                    <button data-name="Onion Rings" data-price="16.90" class="customize-btn-card bg-surface-container text-on-surface-variant hover:bg-outline-variant w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                        <span class="material-symbols-outlined text-3xl">tune</span>
+                                    </button>
+                                    <button data-name="Onion Rings" data-price="16.90" class="add-item-btn bg-surface-variant text-primary hover:bg-primary hover:text-on-primary w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                        <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">add</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- Bebidas -->
+            <section id="cat-bebidas" class="mb-16 scroll-mt-16">
+                <h2 class="text-headline-lg font-headline-lg text-on-surface mb-8 border-b-4 border-primary inline-block pb-2">Bebidas</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-card-gap pb-8">
+                    <!-- Drink 1 -->
+                    <article class="glass-card rounded-2xl overflow-hidden flex flex-col group transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                        <div class="h-64 overflow-hidden relative bg-surface-container flex items-center justify-center">
+                            <img alt="Refrigerante" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500" src="assets/refrigerante.png"/>
+                        </div>
+                        <div class="p-8 flex flex-col flex-grow">
+                            <h3 class="text-headline-md font-headline-md text-on-surface mb-2">Refrigerante 500ml</h3>
+                            <p class="text-body-md font-body-md text-on-surface-variant flex-grow mb-8">Refresco gelado para acompanhar sua refeição perfeita.</p>
+                            <div class="flex items-center justify-between mt-auto gap-2">
+                                <span class="text-headline-md font-headline-md text-primary font-bold">R$ 14,90</span>
+                                <div class="flex gap-2">
+                                    <button data-name="Refrigerante 500ml" data-price="14.90" class="customize-btn-card bg-surface-container text-on-surface-variant hover:bg-outline-variant w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                        <span class="material-symbols-outlined text-3xl">tune</span>
+                                    </button>
+                                    <button data-name="Refrigerante 500ml" data-price="14.90" class="add-item-btn bg-surface-variant text-primary hover:bg-primary hover:text-on-primary w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                        <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">add</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <!-- Drink 2 -->
+                    <article class="glass-card rounded-2xl overflow-hidden flex flex-col group transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                        <div class="h-64 overflow-hidden relative bg-surface-container flex items-center justify-center">
+                            <img alt="Suco Natural" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500" src="assets/suco_laranja.png"/>
+                        </div>
+                        <div class="p-8 flex flex-col flex-grow">
+                            <h3 class="text-headline-md font-headline-md text-on-surface mb-2">Suco Natural Laranja</h3>
+                            <p class="text-body-md font-body-md text-on-surface-variant flex-grow mb-8">Refrescante, espremido na hora. Rico em Vitamina C.</p>
+                            <div class="flex items-center justify-between mt-auto gap-2">
+                                <span class="text-headline-md font-headline-md text-primary font-bold">R$ 12,50</span>
+                                <div class="flex gap-2">
+                                    <button data-name="Suco Natural Laranja" data-price="12.50" class="customize-btn-card bg-surface-container text-on-surface-variant hover:bg-outline-variant w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                        <span class="material-symbols-outlined text-3xl">tune</span>
+                                    </button>
+                                    <button data-name="Suco Natural Laranja" data-price="12.50" class="add-item-btn bg-surface-variant text-primary hover:bg-primary hover:text-on-primary w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                        <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">add</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- Sobremesas -->
+            <section id="cat-sobremesas" class="mb-16 scroll-mt-16">
+                <h2 class="text-headline-lg font-headline-lg text-on-surface mb-8 border-b-4 border-primary inline-block pb-2">Sobremesas</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-card-gap pb-24">
+                    <!-- Dessert 1 -->
+                    <article class="glass-card rounded-2xl overflow-hidden flex flex-col group transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                        <div class="h-64 overflow-hidden relative bg-surface-container flex items-center justify-center">
+                            <img alt="Sundae" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500" src="assets/sundae_chocolate.png"/>
+                        </div>
+                        <div class="p-8 flex flex-col flex-grow">
+                            <h3 class="text-headline-md font-headline-md text-on-surface mb-2">Sundae Chocolate</h3>
+                            <p class="text-body-md font-body-md text-on-surface-variant flex-grow mb-8">Sorvete de baunilha cremoso com muita calda de chocolate.</p>
+                            <div class="flex items-center justify-between mt-auto gap-2">
+                                <span class="text-headline-md font-headline-md text-primary font-bold">R$ 11,00</span>
+                                <div class="flex gap-2">
+                                    <button data-name="Sundae Chocolate" data-price="11.00" class="customize-btn-card bg-surface-container text-on-surface-variant hover:bg-outline-variant w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                        <span class="material-symbols-outlined text-3xl">tune</span>
+                                    </button>
+                                    <button data-name="Sundae Chocolate" data-price="11.00" class="add-item-btn bg-surface-variant text-primary hover:bg-primary hover:text-on-primary w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                        <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">add</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="bg-surface-container-lowest dark:bg-inverse-surface full-width py-12 border-t border-outline-variant/30">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+                <div>
+                    <div class="text-headline-sm font-headline-md text-primary mb-4">Digital Greenhouse</div>
+                    <p class="text-body-md font-body-md text-on-surface-variant mb-6 md:mb-0">© 2024 Digital Greenhouse. Freshness delivered at the speed of light.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modal Personalizar -->
+    <div id="customize-modal" class="fixed inset-0 bg-on-background/60 backdrop-blur-md z-[110] hidden items-center justify-center p-4 md:p-12 transition-opacity duration-300 opacity-0">
+        <div class="bg-surface rounded-[2rem] shadow-2xl w-full max-w-4xl overflow-hidden flex flex-col h-[85vh] border border-outline-variant/30 transform transition-transform duration-300 scale-95" id="customize-modal-content">
+            <div class="p-8 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-low">
+                <h2 id="customize-title" class="text-display-sm font-headline-lg text-primary font-bold">Personalizar Item</h2>
+                <button id="close-customize" class="text-on-surface-variant hover:text-error transition-colors p-4 rounded-full bg-surface-container hover:bg-error-container shadow-sm">
+                    <span class="material-symbols-outlined text-4xl">close</span>
+                </button>
+            </div>
+            <div class="p-8 flex-grow overflow-y-auto flex flex-col gap-6" id="modal-scrollable">
+                <!-- Items will be injected dynamically -->
+            </div>
+            <div class="p-8 border-t border-outline-variant/30 bg-surface-container-low flex justify-end">
+                <button id="confirm-customization" class="bg-primary text-on-primary px-16 py-8 rounded-full font-headline-md text-headline-lg font-bold shadow-2xl hover:bg-primary-container hover:text-on-primary-container transition-all transform hover:scale-105 flex items-center gap-4">
+                    Confirmar (+ R$ <span id="customize-extra-total">0,00</span>) <span class="material-symbols-outlined text-4xl">check_circle</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Carrinho -->
+    <div id="cart-modal" class="fixed inset-0 bg-on-background/60 backdrop-blur-md z-[100] hidden items-center justify-end p-0 md:p-4 transition-opacity duration-300 opacity-0">
+        <div class="bg-surface rounded-l-[2rem] md:rounded-[2rem] shadow-2xl w-full max-w-md overflow-hidden flex flex-col h-full md:h-[90vh] border border-outline-variant/30 transform transition-transform duration-300 translate-x-full" id="cart-modal-content">
+            <div class="p-6 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-low">
+                <h2 class="text-headline-md font-headline-lg text-primary font-bold flex items-center gap-2"><span class="material-symbols-outlined text-4xl">shopping_cart</span> Seu Pedido</h2>
+                <button id="close-cart" class="text-on-surface-variant hover:text-error transition-colors p-3 rounded-full bg-surface-container hover:bg-error-container shadow-sm">
+                    <span class="material-symbols-outlined text-3xl">close</span>
+                </button>
+            </div>
+            <div class="p-6 flex-grow overflow-y-auto flex flex-col gap-4" id="cart-items">
+                <!-- Items will be injected here -->
+                <div class="text-center text-on-surface-variant py-12 flex flex-col items-center gap-4">
+                    <span class="material-symbols-outlined text-6xl opacity-50">remove_shopping_cart</span>
+                    <p class="font-body-lg">Seu carrinho está vazio.</p>
+                </div>
+            </div>
+            <div class="p-6 border-t border-outline-variant/30 bg-surface-container-low flex flex-col gap-4">
+                <div class="flex justify-between items-center text-headline-sm font-bold text-on-surface">
+                    <span>Total:</span>
+                    <span id="cart-total" class="text-primary">R$ 0,00</span>
+                </div>
+                <button id="checkout-btn" class="bg-primary text-on-primary w-full py-5 rounded-full font-headline-md font-bold shadow-xl hover:bg-primary-container hover:text-on-primary-container transition-all transform hover:scale-105 flex justify-center items-center gap-3">
+                    Finalizar Pedido <span class="material-symbols-outlined">arrow_forward</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- VisionFlow Iframe Integration & Interactions -->
+    <script>
+        // Data Definitions
+        const PRODUCT_CATEGORIES = {
+            "Whopper Clássico": "hamburger",
+            "Whopper Duplo": "hamburger",
+            "Cheeseburger Clássico": "hamburger",
+            "Bacon Burger": "hamburger",
+            "Veggie Burger": "hamburger",
+            "Salada Tropical": "salada",
+            "Batata Frita Grande": "acompanhamento",
+            "Onion Rings": "acompanhamento",
+            "Refrigerante 500ml": "bebida",
+            "Suco Natural Laranja": "bebida",
+            "Sundae Chocolate": "sobremesa"
+        };
+
+        const CUSTOMIZATIONS = {
+            hamburger: [
+                { id: 'queijo', name: 'Queijo Cheddar', price: 3.00, icon: 'assets/queijo_cheddar.png', isImage: true, max: 3, min: 0, default: 1 },
+                { id: 'alface', name: 'Alface Fresca', price: 0, icon: 'assets/alface_fresca.png', isImage: true, max: 1, min: 0, default: 1 },
+                { id: 'carne', name: 'Carne Extra', price: 12.00, icon: 'assets/carne_extra.png', isImage: true, max: 3, min: 0, default: 0 },
+                { id: 'maionese', name: 'Maionese', price: 0, icon: 'water_drop', isImage: false, max: 2, min: 0, default: 1 }
+            ],
+            salada: [
+                { id: 'molho', name: 'Molho Especial', price: 2.00, icon: 'water_drop', isImage: false, max: 3, min: 0, default: 1 },
+                { id: 'cebola', name: 'Cebola Roxa', price: 0, icon: 'trip_origin', isImage: false, max: 1, min: 0, default: 1 },
+                { id: 'crutons', name: 'Croutons Crocantes', price: 1.50, icon: 'bakery_dining', isImage: false, max: 2, min: 0, default: 0 },
+                { id: 'tomate', name: 'Tomate Cereja', price: 2.00, icon: 'nutrition', isImage: false, max: 2, min: 0, default: 1 }
+            ],
+            bebida: [
+                { id: 'gelo', name: 'Gelo', price: 0, icon: 'ac_unit', isImage: false, max: 2, min: 0, default: 1 },
+                { id: 'limao', name: 'Rodela de Limão', price: 0.50, icon: 'lens_blur', isImage: false, max: 2, min: 0, default: 0 },
+                { id: 'canudo', name: 'Canudo Ecológico', price: 0, icon: 'local_drink', isImage: false, max: 1, min: 0, default: 1 }
+            ],
+            acompanhamento: [
+                { id: 'ketchup', name: 'Ketchup', price: 0, icon: 'water_drop', isImage: false, max: 3, min: 0, default: 1 },
+                { id: 'maionese_extra', name: 'Maionese Temperada', price: 1.50, icon: 'water_drop', isImage: false, max: 3, min: 0, default: 0 }
+            ],
+            sobremesa: [
+                { id: 'calda', name: 'Calda de Chocolate', price: 1.50, icon: 'water_drop', isImage: false, max: 2, min: 0, default: 1 },
+                { id: 'amendoim', name: 'Farofa de Amendoim', price: 2.00, icon: 'grain', isImage: false, max: 2, min: 0, default: 0 }
+            ]
+        };
+
+        // Modal Logic
+        const modal = document.getElementById('customize-modal');
+        const modalContent = document.getElementById('customize-modal-content');
+        const modalScrollable = document.getElementById('modal-scrollable');
+        const customizeTitle = document.getElementById('customize-title');
+        const customizeExtraTotal = document.getElementById('customize-extra-total');
+        
+        let currentCustomizingCartIndex = -1;
+        let currentCustomizingItem = null;
+        let tempCustomizations = {};
+
+        function openCustomizeModal(name, price, cartIndex = -1) {
+            const category = PRODUCT_CATEGORIES[name] || 'hamburger';
+            currentCustomizingItem = { name, price, category };
+            currentCustomizingCartIndex = cartIndex;
+            
+            customizeTitle.textContent = `Personalizar ${name}`;
+            
+            if (cartIndex !== -1) {
+                tempCustomizations = { ...cart[cartIndex].customizations };
+            } else {
+                tempCustomizations = {};
+                CUSTOMIZATIONS[category].forEach(opt => {
+                    tempCustomizations[opt.id] = opt.default;
+                });
+            }
+            
+            renderCustomizeOptions();
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+            }, 10);
+        }
+
+        window.updateTempCustomization = function(optId, delta) {
+            const category = currentCustomizingItem.category;
+            const optDef = CUSTOMIZATIONS[category].find(o => o.id === optId);
+            if(optDef) {
+                let newVal = tempCustomizations[optId] + delta;
+                if(newVal >= optDef.min && newVal <= optDef.max) {
+                    tempCustomizations[optId] = newVal;
+                    renderCustomizeOptions();
+                }
+            }
+        };
+
+        function renderCustomizeOptions() {
+            const category = currentCustomizingItem.category;
+            const options = CUSTOMIZATIONS[category] || [];
+            
+            modalScrollable.innerHTML = '';
+            let extraTotal = 0;
+            
+            options.forEach(opt => {
+                const currentVal = tempCustomizations[opt.id];
+                const isExtra = currentVal > opt.default;
+                const extraCost = isExtra ? (currentVal - opt.default) * opt.price : 0;
+                extraTotal += extraCost;
+                
+                const iconHtml = opt.isImage 
+                    ? `<img src="${opt.icon}" class="w-24 h-24 rounded-full object-cover shadow-md mix-blend-multiply" alt="${opt.name}">`
+                    : `<div class="w-24 h-24 rounded-full bg-primary-container/20 flex items-center justify-center shadow-md"><span class="material-symbols-outlined text-6xl text-primary">${opt.icon}</span></div>`;
+
+                let priceText = opt.price > 0 ? `+ R$ ${opt.price.toFixed(2).replace('.', ',')}` : 'Grátis';
+
+                // Calculate disabled states
+                const canRemove = currentVal > opt.min;
+                const canAdd = currentVal < opt.max;
+                
+                const removeBtnClass = canRemove 
+                    ? 'bg-surface text-error hover:bg-error-container interactable cursor-pointer' 
+                    : 'bg-surface-container text-outline-variant opacity-50 cursor-not-allowed';
+                    
+                const addBtnClass = canAdd 
+                    ? 'bg-primary text-on-primary hover:bg-primary-container hover:text-on-primary-container interactable cursor-pointer' 
+                    : 'bg-surface-container text-outline-variant opacity-50 cursor-not-allowed';
+
+                modalScrollable.innerHTML += `
+                    <div class="flex items-center justify-between bg-surface-container-lowest p-6 rounded-3xl shadow-sm border border-outline-variant/20">
+                        <div class="flex items-center gap-8">
+                            ${iconHtml}
+                            <div>
+                                <span class="block text-headline-md font-headline-md text-on-surface">${opt.name}</span>
+                                <span class="block text-body-lg text-on-surface-variant">${priceText}</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-6 bg-surface-container rounded-full p-2 shadow-inner">
+                            <button data-action="customize-remove" data-id="${opt.id}" class="w-20 h-20 rounded-full flex items-center justify-center shadow-md transition-colors ${removeBtnClass}" ${!canRemove ? 'disabled' : ''}><span class="material-symbols-outlined text-5xl">remove</span></button>
+                            <span class="text-display-sm font-headline-lg w-12 text-center text-primary font-bold">${currentVal}</span>
+                            <button data-action="customize-add" data-id="${opt.id}" class="w-20 h-20 rounded-full flex items-center justify-center shadow-lg transition-colors ${addBtnClass}" ${!canAdd ? 'disabled' : ''}><span class="material-symbols-outlined text-5xl">add</span></button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            customizeExtraTotal.textContent = extraTotal.toFixed(2).replace('.', ',');
+        }
+
+        const closeModal = () => {
+            modal.classList.add('opacity-0');
+            modalContent.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 300);
+        };
+
+        // Event delegation for dynamically added modal buttons
+        modalScrollable.addEventListener('click', (e) => {
+            const btn = e.target.closest('button[data-action]');
+            if (!btn) return;
+            const action = btn.getAttribute('data-action');
+            if (action === 'customize-add') {
+                updateTempCustomization(btn.getAttribute('data-id'), 1);
+            } else if (action === 'customize-remove') {
+                updateTempCustomization(btn.getAttribute('data-id'), -1);
+            }
+        });
+
+        document.getElementById('customize-btn').addEventListener('click', function() {
+            const name = this.getAttribute('data-name');
+            const price = parseFloat(this.getAttribute('data-price'));
+            openCustomizeModal(name, price);
+        });
+        
+        window.openCustomizeModalFromCart = function(index) {
+            const item = cart[index];
+            openCustomizeModal(item.name, item.basePrice, index);
+        };
+
+        document.getElementById('close-customize').addEventListener('click', closeModal);
+        document.getElementById('confirm-customization').addEventListener('click', () => {
+            if (currentCustomizingCartIndex !== -1) {
+                // Update existing
+                cart[currentCustomizingCartIndex].customizations = { ...tempCustomizations };
+            } else {
+                // Add new
+                addToCart(currentCustomizingItem.name, currentCustomizingItem.price, { ...tempCustomizations });
+                playFloatingAnimation(document.getElementById('customize-btn'));
+            }
+            updateCartUI();
+            closeModal();
+        });
+
+        // Cart Logic
+        let cart = [];
+        const cartBadge = document.getElementById('cart-badge');
+        const cartItemsContainer = document.getElementById('cart-items');
+        const cartTotalElement = document.getElementById('cart-total');
+        const cartModal = document.getElementById('cart-modal');
+        const cartModalContent = document.getElementById('cart-modal-content');
+
+        function updateCartUI() {
+            let totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+            if (totalQty > 0) {
+                cartBadge.textContent = totalQty;
+                cartBadge.classList.remove('hidden');
+            } else {
+                cartBadge.classList.add('hidden');
+            }
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <div class="text-center text-on-surface-variant py-12 flex flex-col items-center gap-4">
+                        <span class="material-symbols-outlined text-6xl opacity-50">remove_shopping_cart</span>
+                        <p class="font-body-lg">Seu carrinho está vazio.</p>
+                    </div>
+                `;
+                cartTotalElement.textContent = 'R$ 0,00';
+                return;
+            }
+
+            let total = 0;
+            cartItemsContainer.innerHTML = '';
+            cart.forEach((item, index) => {
+                let customText = '';
+                let itemExtraPrice = 0;
+                if (item.customizations) {
+                    Object.entries(item.customizations).forEach(([optId, qty]) => {
+                        const optDef = CUSTOMIZATIONS[item.category].find(o => o.id === optId);
+                        if(optDef && qty !== optDef.default) {
+                            if(qty > optDef.default) {
+                                customText += `<span class="block text-sm text-on-surface-variant">+ ${qty - optDef.default} ${optDef.name}</span>`;
+                                itemExtraPrice += (qty - optDef.default) * optDef.price;
+                            } else if(qty < optDef.default) {
+                                customText += `<span class="block text-sm text-error">Sem ${optDef.name}</span>`;
+                            }
+                        }
+                    });
+                }
+                const finalPrice = item.basePrice + itemExtraPrice;
+                total += finalPrice * item.qty;
+
+                cartItemsContainer.innerHTML += `
+                    <div class="flex flex-col gap-3 bg-surface-container-lowest p-4 rounded-2xl shadow-sm border border-outline-variant/20">
+                        <div class="flex items-center justify-between">
+                            <div class="flex-grow">
+                                <span class="block text-body-lg font-bold text-on-surface">${item.name}</span>
+                                <span class="block text-body-md text-primary font-bold">R$ ${finalPrice.toFixed(2).replace('.', ',')}</span>
+                                ${customText}
+                            </div>
+                            <div class="flex items-center gap-3 bg-surface-container rounded-full p-1 shadow-inner">
+                                <button class="w-10 h-10 rounded-full bg-surface flex items-center justify-center text-error hover:bg-error-container shadow-md transition-colors interactable" data-action="cart-remove" data-index="${index}"><span class="material-symbols-outlined">remove</span></button>
+                                <span class="text-body-lg font-bold w-6 text-center text-primary">${item.qty}</span>
+                                <button class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center hover:bg-primary-container shadow-lg transition-colors interactable" data-action="cart-add" data-index="${index}"><span class="material-symbols-outlined">add</span></button>
+                            </div>
+                        </div>
+                        <div class="flex justify-start">
+                            <button class="text-sm font-bold text-on-surface-variant flex items-center gap-1 hover:text-primary transition-colors interactable" data-action="cart-customize" data-index="${index}">
+                                <span class="material-symbols-outlined text-sm">edit</span> Personalizar
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            cartTotalElement.textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+        }
+
+        window.updateCartItem = function(index, delta) {
+            cart[index].qty += delta;
+            if (cart[index].qty <= 0) {
+                cart.splice(index, 1);
+            }
+            updateCartUI();
+        };
+
+        // Event delegation for dynamically added cart buttons
+        cartItemsContainer.addEventListener('click', (e) => {
+            const btn = e.target.closest('button[data-action]');
+            if (!btn) return;
+            const action = btn.getAttribute('data-action');
+            const index = parseInt(btn.getAttribute('data-index'));
+            if (action === 'cart-add') {
+                updateCartItem(index, 1);
+            } else if (action === 'cart-remove') {
+                updateCartItem(index, -1);
+            } else if (action === 'cart-customize') {
+                openCustomizeModalFromCart(index);
+            }
+        });
+
+        function addToCart(name, basePrice, customSelections = null) {
+            const category = PRODUCT_CATEGORIES[name] || 'hamburger';
+            
+            if(!customSelections) {
+                customSelections = {};
+                if(CUSTOMIZATIONS[category]) {
+                    CUSTOMIZATIONS[category].forEach(opt => {
+                        customSelections[opt.id] = opt.default;
+                    });
+                }
+            }
+
+            // A simple check if there is an exact match to stack quantities
+            const existing = cart.find(i => i.name === name && JSON.stringify(i.customizations) === JSON.stringify(customSelections));
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ name, basePrice, qty: 1, category, customizations: customSelections });
+            }
+            updateCartUI();
+        }
+
+        document.getElementById('open-cart-btn').addEventListener('click', () => {
+            cartModal.classList.remove('hidden');
+            cartModal.classList.add('flex');
+            setTimeout(() => {
+                cartModal.classList.remove('opacity-0');
+                cartModalContent.classList.remove('translate-x-full');
+            }, 10);
+        });
+
+        const closeCartModal = () => {
+            cartModal.classList.add('opacity-0');
+            cartModalContent.classList.add('translate-x-full');
+            setTimeout(() => {
+                cartModal.classList.add('hidden');
+                cartModal.classList.remove('flex');
+            }, 300);
+        };
+
+        document.getElementById('close-cart').addEventListener('click', closeCartModal);
+
+        document.getElementById('checkout-btn').addEventListener('click', () => {
+            if (cart.length === 0) return;
+            
+            const btn = document.getElementById('checkout-btn');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = 'Processando... <span class="material-symbols-outlined animate-spin">sync</span>';
+            
+            setTimeout(() => {
+                let total = 0;
+                cart.forEach(item => {
+                    let itemExtra = 0;
+                    if(item.customizations) {
+                        Object.entries(item.customizations).forEach(([optId, qty]) => {
+                            const optDef = CUSTOMIZATIONS[item.category].find(o => o.id === optId);
+                            if(optDef && qty > optDef.default) {
+                                itemExtra += (qty - optDef.default) * optDef.price;
+                            }
+                        });
+                    }
+                    total += (item.basePrice + itemExtra) * item.qty;
+                });
+                alert(`Pedido finalizado com sucesso!\nTotal: R$ ${total.toFixed(2).replace('.', ',')}\nAgradecemos a preferência.`);
+                cart = [];
+                updateCartUI();
+                closeCartModal();
+                btn.innerHTML = originalContent;
+            }, 1000);
+        });
+
+        // Add to Order Animation Logic
+        function playFloatingAnimation(btnElement) {
+            const rect = btnElement.getBoundingClientRect();
+            const plusOne = document.createElement('div');
+            plusOne.textContent = '+1';
+            plusOne.className = 'floating-plus-one';
+            plusOne.style.left = (rect.left + rect.width / 2 - 20) + 'px';
+            plusOne.style.top = (rect.top) + 'px';
+            document.body.appendChild(plusOne);
+
+            setTimeout(() => plusOne.remove(), 1000);
+        }
+
+        function playAddAnimation(btnElement) {
+            btnElement.classList.add('animate-swallow');
+            setTimeout(() => btnElement.classList.remove('animate-swallow'), 400);
+            
+            playFloatingAnimation(btnElement);
+
+            // Trigger cart logic
+            const name = btnElement.getAttribute('data-name');
+            const price = parseFloat(btnElement.getAttribute('data-price'));
+            if(name && !isNaN(price)) {
+                addToCart(name, price);
+            }
+        }
+
+        document.getElementById('add-to-order-btn').addEventListener('click', function() {
+            playAddAnimation(this);
+        });
+
+        document.querySelectorAll('.add-item-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                playAddAnimation(this);
+            });
+        });
+
+        document.querySelectorAll('.customize-btn-card').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const name = this.getAttribute('data-name');
+                const price = parseFloat(this.getAttribute('data-price'));
+                openCustomizeModal(name, price);
+            });
+        });
+
+        // VisionFlow Event Listener
+        let currentHoverElement = null;
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'VISIONFLOW_CLICK') {
+                const el = document.elementFromPoint(event.data.x, event.data.y);
+                if (el) {
+                    el.click();
+                }
+            } else if (event.data.type === 'VISIONFLOW_HOVER') {
+                const el = document.elementFromPoint(event.data.x, event.data.y);
+                if (currentHoverElement !== el) {
+                    if (currentHoverElement) {
+                        currentHoverElement.dispatchEvent(new MouseEvent('mouseout', { bubbles: true }));
+                        currentHoverElement.classList.remove('hovered');
+                    }
+                    if (el && event.data.x >= 0 && event.data.y >= 0) {
+                        el.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+                        el.classList.add('hovered');
+                    }
+                    currentHoverElement = el;
+                }
+            } else if (event.data.type === 'VISIONFLOW_DRAG') {
+                if (!modal.classList.contains('hidden')) {
+                    const scrollableModal = document.getElementById('modal-scrollable');
+                    if (scrollableModal) scrollableModal.scrollBy(0, -event.data.dy);
+                } else if (!cartModal.classList.contains('hidden')) {
+                    const scrollableCart = document.getElementById('cart-items');
+                    if (scrollableCart) scrollableCart.scrollBy(0, -event.data.dy);
+                } else {
+                    const scrollableMain = document.getElementById('scrollable-main');
+                    if(scrollableMain) scrollableMain.scrollBy(0, -event.data.dy);
+                }
+            } else if (event.data.type === 'VISIONFLOW_SCROLL') {
+                if (!modal.classList.contains('hidden')) {
+                    const scrollableModal = document.getElementById('modal-scrollable');
+                    if (scrollableModal) scrollableModal.scrollBy(0, event.data.dy);
+                } else if (!cartModal.classList.contains('hidden')) {
+                    const scrollableCart = document.getElementById('cart-items');
+                    if (scrollableCart) scrollableCart.scrollBy(0, event.data.dy);
+                } else {
+                    const scrollableMain = document.getElementById('scrollable-main');
+                    if(scrollableMain) scrollableMain.scrollBy(0, event.data.dy);
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

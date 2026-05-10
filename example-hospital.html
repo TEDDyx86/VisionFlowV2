@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+
+<html class="light" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Hospital Central - Kiosk</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#5c403c",
+                        "surface": "#f8f9fb",
+                        "inverse-on-surface": "#f0f1f3",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed-variant": "#3c475a",
+                        "on-secondary-fixed": "#111c2d",
+                        "surface-dim": "#d9dadc",
+                        "primary-container": "#dc2626",
+                        "on-secondary-container": "#586377",
+                        "on-primary": "#ffffff",
+                        "tertiary": "#51596f",
+                        "tertiary-container": "#6a7188",
+                        "error-container": "#ffdad6",
+                        "primary-fixed": "#ffdad6",
+                        "secondary": "#545f73",
+                        "surface-variant": "#e1e2e4",
+                        "on-primary-container": "#fff6f5",
+                        "tertiary-fixed-dim": "#bec6e0",
+                        "inverse-surface": "#2e3132",
+                        "outline": "#916f6b",
+                        "on-secondary": "#ffffff",
+                        "secondary-container": "#d5e0f8",
+                        "primary-fixed-dim": "#ffb4ab",
+                        "surface-container-high": "#e7e8ea",
+                        "on-error": "#ffffff",
+                        "secondary-fixed": "#d8e3fb",
+                        "tertiary-fixed": "#dae2fd",
+                        "on-primary-fixed": "#410002",
+                        "surface-tint": "#bf0715",
+                        "background": "#f8f9fb",
+                        "on-background": "#191c1e",
+                        "surface-container-low": "#f3f4f6",
+                        "on-tertiary-container": "#f8f7ff",
+                        "on-primary-fixed-variant": "#93000b",
+                        "on-tertiary-fixed": "#131b2e",
+                        "outline-variant": "#e6bdb8",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#3f465c",
+                        "surface-container": "#edeef0",
+                        "surface-container-highest": "#e1e2e4",
+                        "surface-bright": "#f8f9fb",
+                        "primary": "#b70011",
+                        "inverse-primary": "#ffb4ab",
+                        "error": "#ba1a1a",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#191c1e",
+                        "secondary-fixed-dim": "#bcc7de"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-md": "24px",
+                        "stack-lg": "40px",
+                        "stack-sm": "12px",
+                        "touch-target-min": "80px",
+                        "gutter": "24px",
+                        "margin-page": "48px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Atkinson Hyperlegible Next"],
+                        "label-lg": ["Atkinson Hyperlegible Next"],
+                        "emergency-label": ["Atkinson Hyperlegible Next"],
+                        "headline-md": ["Atkinson Hyperlegible Next"],
+                        "headline-xl": ["Atkinson Hyperlegible Next"],
+                        "body-lg": ["Atkinson Hyperlegible Next"],
+                        "label-xl": ["Atkinson Hyperlegible Next"],
+                        "body-md": ["Atkinson Hyperlegible Next"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "label-lg": ["18px", { "lineHeight": "20px", "fontWeight": "600" }],
+                        "emergency-label": ["24px", { "lineHeight": "24px", "letterSpacing": "0.05em", "fontWeight": "800" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "headline-xl": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "body-lg": ["20px", { "lineHeight": "30px", "fontWeight": "400" }],
+                        "label-xl": ["22px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "body-md": ["18px", { "lineHeight": "28px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-lg text-body-lg antialiased selection:bg-primary-container selection:text-on-primary-container relative">
+<!-- TopAppBar -->
+<header class="fixed top-0 z-50 bg-white/80 dark:bg-inverse-surface/80 backdrop-blur-xl docked full-width flex justify-between items-center w-full px-margin-page h-[120px] shadow-md transition-all duration-300 border-none">
+<div class="flex items-center gap-stack-sm">
+<span class="material-symbols-outlined text-[40px] text-primary" data-icon="local_hospital">local_hospital</span>
+<span class="font-headline-lg text-headline-lg font-bold text-primary dark:text-inverse-primary tracking-tight">Hospital Central</span>
+</div>
+<button class="bg-[#DC2626] text-on-primary flex items-center justify-center gap-stack-sm px-[40px] h-touch-target-min rounded-xl shadow-lg hover:shadow-xl hover:scale-[0.98] transition-all duration-200 border border-[#b70011]">
+<span class="material-symbols-outlined text-[32px]" data-icon="emergency" data-weight="fill" style="font-variation-settings: 'FILL' 1;">emergency</span>
+<span class="font-emergency-label text-emergency-label uppercase">EMERGÊNCIA: 192</span>
+</button>
+</header>
+<!-- Main Canvas -->
+<main class="flex-grow pt-[160px] pb-[160px] px-margin-page flex flex-col">
+<div class="max-w-[1400px] mx-auto w-full flex-grow flex flex-col justify-center">
+<div class="mb-stack-lg text-center">
+<h1 class="font-headline-xl text-headline-xl text-on-surface mb-stack-sm">Como podemos ajudar?</h1>
+<p class="font-body-lg text-body-lg text-secondary">Selecione uma das opções abaixo para iniciar seu atendimento.</p>
+</div>
+<!-- Services Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Card 1 -->
+<button class="group bg-surface-container-lowest border border-surface-variant rounded-2xl p-stack-lg flex flex-col items-center justify-center text-center h-[280px] shadow-[0_4px_20px_rgba(84,95,115,0.05)] hover:shadow-[0_12px_40px_rgba(84,95,115,0.12)] hover:-translate-y-2 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary-container">
+<div class="w-[80px] h-[80px] rounded-full bg-secondary-container flex items-center justify-center mb-stack-md group-hover:bg-primary-container transition-colors duration-300">
+<span class="material-symbols-outlined text-[40px] text-on-secondary-container group-hover:text-on-primary-container transition-colors duration-300" data-icon="how_to_reg">how_to_reg</span>
+</div>
+<span class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors duration-300">Check-in de Consultas</span>
+</button>
+<!-- Card 2 -->
+<button class="group bg-surface-container-lowest border border-surface-variant rounded-2xl p-stack-lg flex flex-col items-center justify-center text-center h-[280px] shadow-[0_4px_20px_rgba(84,95,115,0.05)] hover:shadow-[0_12px_40px_rgba(84,95,115,0.12)] hover:-translate-y-2 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary-container">
+<div class="w-[80px] h-[80px] rounded-full bg-secondary-container flex items-center justify-center mb-stack-md group-hover:bg-primary-container transition-colors duration-300">
+<span class="material-symbols-outlined text-[40px] text-on-secondary-container group-hover:text-on-primary-container transition-colors duration-300" data-icon="science">science</span>
+</div>
+<span class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors duration-300">Resultados de Exames</span>
+</button>
+<!-- Card 3 -->
+<button class="group bg-surface-container-lowest border border-surface-variant rounded-2xl p-stack-lg flex flex-col items-center justify-center text-center h-[280px] shadow-[0_4px_20px_rgba(84,95,115,0.05)] hover:shadow-[0_12px_40px_rgba(84,95,115,0.12)] hover:-translate-y-2 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary-container">
+<div class="w-[80px] h-[80px] rounded-full bg-secondary-container flex items-center justify-center mb-stack-md group-hover:bg-primary-container transition-colors duration-300">
+<span class="material-symbols-outlined text-[40px] text-on-secondary-container group-hover:text-on-primary-container transition-colors duration-300" data-icon="calendar_month">calendar_month</span>
+</div>
+<span class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors duration-300">Agendamento</span>
+</button>
+<!-- Card 4 -->
+<button class="group bg-surface-container-lowest border border-surface-variant rounded-2xl p-stack-lg flex flex-col items-center justify-center text-center h-[280px] shadow-[0_4px_20px_rgba(84,95,115,0.05)] hover:shadow-[0_12px_40px_rgba(84,95,115,0.12)] hover:-translate-y-2 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary-container">
+<div class="w-[80px] h-[80px] rounded-full bg-secondary-container flex items-center justify-center mb-stack-md group-hover:bg-primary-container transition-colors duration-300">
+<span class="material-symbols-outlined text-[40px] text-on-secondary-container group-hover:text-on-primary-container transition-colors duration-300" data-icon="info">info</span>
+</div>
+<span class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors duration-300">Informações de Visitantes</span>
+</button>
+<!-- Card 5 -->
+<button class="group bg-surface-container-lowest border border-surface-variant rounded-2xl p-stack-lg flex flex-col items-center justify-center text-center h-[280px] shadow-[0_4px_20px_rgba(84,95,115,0.05)] hover:shadow-[0_12px_40px_rgba(84,95,115,0.12)] hover:-translate-y-2 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary-container">
+<div class="w-[80px] h-[80px] rounded-full bg-secondary-container flex items-center justify-center mb-stack-md group-hover:bg-primary-container transition-colors duration-300">
+<span class="material-symbols-outlined text-[40px] text-on-secondary-container group-hover:text-on-primary-container transition-colors duration-300" data-icon="map">map</span>
+</div>
+<span class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors duration-300">Mapa do Hospital</span>
+</button>
+<!-- Card 6: Emergency - High Contrast -->
+<button class="group bg-[#DC2626] rounded-2xl p-stack-lg flex flex-col items-center justify-center text-center h-[280px] shadow-[0_8px_30px_rgba(220,38,38,0.3)] hover:shadow-[0_12px_40px_rgba(220,38,38,0.4)] hover:-translate-y-2 hover:bg-[#b70011] transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-offset-4 focus:ring-[#DC2626] focus:ring-offset-background border border-transparent">
+<div class="w-[80px] h-[80px] rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mb-stack-md">
+<span class="material-symbols-outlined text-[40px] text-white" data-icon="vital_signs" data-weight="fill" style="font-variation-settings: 'FILL' 1;">vital_signs</span>
+</div>
+<span class="font-headline-md text-headline-md text-white">Atendimento de Emergência</span>
+</button>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-margin-page h-[100px] bg-white/80 dark:bg-inverse-surface/80 backdrop-blur-xl docked full-width rounded-t-xl shadow-[0_-4px_20px_rgba(0,0,0,0.05)] border-none">
+<!-- Tab 1: Active -->
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-8 py-4 scale-90 duration-150 transition-all focus:outline-none min-w-[120px]">
+<span class="material-symbols-outlined text-[32px] mb-1" data-icon="home" data-weight="fill" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-xl text-label-xl">Início</span>
+</button>
+<!-- Tab 2: Inactive -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-8 py-4 hover:bg-surface-variant/50 hover:text-primary transition-colors duration-200 rounded-xl focus:outline-none min-w-[120px]">
+<span class="material-symbols-outlined text-[32px] mb-1" data-icon="map">map</span>
+<span class="font-label-xl text-label-xl">Mapa</span>
+</button>
+<!-- Tab 3: Inactive -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-8 py-4 hover:bg-surface-variant/50 hover:text-primary transition-colors duration-200 rounded-xl focus:outline-none min-w-[120px]">
+<span class="material-symbols-outlined text-[32px] mb-1" data-icon="medical_services">medical_services</span>
+<span class="font-label-xl text-label-xl">Serviços</span>
+</button>
+<!-- Tab 4: Inactive -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-8 py-4 hover:bg-surface-variant/50 hover:text-primary transition-colors duration-200 rounded-xl focus:outline-none min-w-[120px]">
+<span class="material-symbols-outlined text-[32px] mb-1" data-icon="help">help</span>
+<span class="font-label-xl text-label-xl">Ajuda</span>
+</button>
+</nav>
+
+<!-- Modals Container -->
+<div id="modals" class="fixed inset-0 z-[100] hidden bg-black/60 backdrop-blur-md flex items-center justify-center px-margin-page">
+    
+    <!-- CPF Numpad Modal -->
+    <div id="modal-numpad" class="hidden bg-surface-container-lowest rounded-3xl p-stack-lg w-full max-w-[800px] shadow-2xl flex flex-col items-center">
+        <h2 class="font-headline-xl text-headline-xl mb-4 text-primary text-center">Digite seu CPF</h2>
+        <div class="bg-surface-variant w-full h-[80px] rounded-2xl mb-stack-lg flex items-center justify-center font-headline-xl text-4xl tracking-[0.2em] text-on-surface">
+            <span id="cpf-display">___.___.___-__</span>
+        </div>
+        
+        <!-- Numpad Grid -->
+        <div class="grid grid-cols-3 gap-6 w-full max-w-[500px] mx-auto">
+            <button class="numpad-btn bg-surface border border-surface-variant rounded-2xl h-[100px] text-4xl font-bold hover:bg-primary-container hover:text-on-primary-container hover:scale-105 transition-all shadow-md">1</button>
+            <button class="numpad-btn bg-surface border border-surface-variant rounded-2xl h-[100px] text-4xl font-bold hover:bg-primary-container hover:text-on-primary-container hover:scale-105 transition-all shadow-md">2</button>
+            <button class="numpad-btn bg-surface border border-surface-variant rounded-2xl h-[100px] text-4xl font-bold hover:bg-primary-container hover:text-on-primary-container hover:scale-105 transition-all shadow-md">3</button>
+            <button class="numpad-btn bg-surface border border-surface-variant rounded-2xl h-[100px] text-4xl font-bold hover:bg-primary-container hover:text-on-primary-container hover:scale-105 transition-all shadow-md">4</button>
+            <button class="numpad-btn bg-surface border border-surface-variant rounded-2xl h-[100px] text-4xl font-bold hover:bg-primary-container hover:text-on-primary-container hover:scale-105 transition-all shadow-md">5</button>
+            <button class="numpad-btn bg-surface border border-surface-variant rounded-2xl h-[100px] text-4xl font-bold hover:bg-primary-container hover:text-on-primary-container hover:scale-105 transition-all shadow-md">6</button>
+            <button class="numpad-btn bg-surface border border-surface-variant rounded-2xl h-[100px] text-4xl font-bold hover:bg-primary-container hover:text-on-primary-container hover:scale-105 transition-all shadow-md">7</button>
+            <button class="numpad-btn bg-surface border border-surface-variant rounded-2xl h-[100px] text-4xl font-bold hover:bg-primary-container hover:text-on-primary-container hover:scale-105 transition-all shadow-md">8</button>
+            <button class="numpad-btn bg-surface border border-surface-variant rounded-2xl h-[100px] text-4xl font-bold hover:bg-primary-container hover:text-on-primary-container hover:scale-105 transition-all shadow-md">9</button>
+            <button class="numpad-btn numpad-del bg-error-container text-on-error-container border border-error-container rounded-2xl h-[100px] text-2xl font-bold hover:bg-error hover:text-on-error hover:scale-105 transition-all shadow-md flex items-center justify-center">
+                <span class="material-symbols-outlined text-[40px]">backspace</span>
+            </button>
+            <button class="numpad-btn bg-surface border border-surface-variant rounded-2xl h-[100px] text-4xl font-bold hover:bg-primary-container hover:text-on-primary-container hover:scale-105 transition-all shadow-md">0</button>
+            <button class="numpad-btn numpad-ok bg-primary text-on-primary rounded-2xl h-[100px] text-2xl font-bold hover:bg-[#93000a] hover:scale-105 transition-all shadow-md flex items-center justify-center">
+                <span class="material-symbols-outlined text-[40px]">check_circle</span>
+            </button>
+        </div>
+        <button class="close-modal mt-8 text-secondary underline text-xl hover:text-primary p-4">Cancelar</button>
+    </div>
+
+    <!-- QR Code Modal -->
+    <div id="modal-qr" class="hidden bg-surface-container-lowest rounded-3xl p-stack-lg w-full max-w-[600px] shadow-2xl flex flex-col items-center text-center">
+        <h2 class="font-headline-xl text-headline-xl mb-4 text-primary">Acesse pelo Celular</h2>
+        <p class="text-xl text-secondary mb-8">Escaneie o código QR abaixo com a câmera do seu celular para continuar o agendamento.</p>
+        <div class="bg-white p-6 rounded-2xl shadow-inner border border-surface-variant mb-8 relative group cursor-pointer overflow-hidden">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://example.com/agendamento" alt="QR Code" class="w-[250px] h-[250px] object-contain mix-blend-multiply opacity-90 group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent pointer-events-none"></div>
+        </div>
+        <button class="close-modal bg-surface-variant text-on-surface-variant px-12 py-4 rounded-xl text-2xl font-bold hover:bg-primary hover:text-on-primary transition-colors">Voltar</button>
+    </div>
+
+    <!-- 3D Map Modal -->
+    <div id="modal-map" class="hidden bg-surface-container-lowest rounded-3xl p-stack-lg w-full max-w-[1200px] h-[800px] shadow-2xl flex flex-col items-center">
+        <div class="w-full flex justify-between items-center mb-6">
+            <h2 class="font-headline-xl text-headline-xl text-primary">Mapa Interativo 3D</h2>
+            <button class="close-modal bg-surface-variant text-on-surface-variant w-[60px] h-[60px] rounded-full flex items-center justify-center hover:bg-error hover:text-on-error transition-colors">
+                <span class="material-symbols-outlined text-[32px]">close</span>
+            </button>
+        </div>
+        
+        <div class="flex-grow w-full bg-surface-variant rounded-2xl overflow-hidden relative perspective-1000 flex items-center justify-center group cursor-move" id="map-container">
+            <!-- Simulated 3D Plane -->
+            <div class="relative w-[800px] h-[600px] bg-white rounded-3xl shadow-[0_50px_100px_rgba(0,0,0,0.2)] transition-transform duration-1000 transform-style-3d rotate-x-60 rotate-z-[-20deg] group-hover:rotate-x-45 group-hover:rotate-z-0 flex items-center justify-center overflow-hidden border-8 border-surface-container-high" style="transform: rotateX(60deg) rotateZ(-20deg);">
+                <!-- Blueprint pattern -->
+                <div class="absolute inset-0" style="background-image: linear-gradient(#e5e7eb 1px, transparent 1px), linear-gradient(90deg, #e5e7eb 1px, transparent 1px); background-size: 40px 40px;"></div>
+                
+                <!-- 3D Buildings -->
+                <div class="absolute top-[20%] left-[20%] w-[150px] h-[200px] bg-blue-100 border-2 border-blue-300 shadow-[20px_20px_0_#93c5fd] flex items-center justify-center font-bold text-blue-800 text-2xl">Pronto Socorro</div>
+                
+                <div class="absolute top-[10%] right-[20%] w-[250px] h-[150px] bg-green-100 border-2 border-green-300 shadow-[30px_30px_0_#86efac] flex items-center justify-center font-bold text-green-800 text-2xl">Internação</div>
+                
+                <div class="absolute bottom-[20%] left-[40%] w-[200px] h-[200px] bg-purple-100 border-2 border-purple-300 shadow-[40px_40px_0_#d8b4fe] flex items-center justify-center font-bold text-purple-800 text-2xl">Consultórios</div>
+
+                <!-- Path indicator -->
+                <svg class="absolute inset-0 w-full h-full pointer-events-none" style="filter: drop-shadow(0 10px 0 rgba(220,38,38,0.3));">
+                    <path d="M 100 500 L 250 500 L 250 300 L 450 300 L 450 400" fill="none" stroke="#dc2626" stroke-width="8" stroke-dasharray="16" class="animate-[dash_1s_linear_infinite]" />
+                    <circle cx="100" cy="500" r="12" fill="#dc2626" />
+                    <circle cx="450" cy="400" r="12" fill="#dc2626" />
+                </svg>
+            </div>
+
+            <!-- Overlay text -->
+            <div class="absolute bottom-8 bg-white/90 backdrop-blur px-8 py-4 rounded-full shadow-lg font-bold text-xl text-primary flex items-center gap-2">
+                <span class="material-symbols-outlined">swipe</span>
+                Arraste para rotacionar (Simulado)
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Fullscreen Emergency Overlay -->
+<div id="emergency-overlay" class="fixed inset-0 z-[1000] hidden bg-[#DC2626] flex-col items-center justify-center text-white">
+    <span class="material-symbols-outlined text-[120px] mb-8 animate-pulse" data-icon="emergency" data-weight="fill" style="font-variation-settings: 'FILL' 1;">emergency</span>
+    <h1 class="font-headline-xl text-[80px] font-bold text-center mb-4 uppercase tracking-widest">Emergência<br>Acionada</h1>
+    <p class="text-3xl opacity-90 mb-12">Por favor, aguarde. Uma equipe está a caminho.</p>
+    
+    <!-- Dwell to cancel ring -->
+    <div class="relative w-[150px] h-[150px] flex items-center justify-center group cursor-pointer" id="cancel-emergency-btn">
+        <svg class="absolute inset-0 w-full h-full -rotate-90">
+            <circle cx="75" cy="75" r="70" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="10"/>
+            <circle id="cancel-progress" cx="75" cy="75" r="70" fill="none" stroke="white" stroke-width="10" stroke-dasharray="440" stroke-dashoffset="440" class="transition-all duration-100 ease-linear"/>
+        </svg>
+        <span class="material-symbols-outlined text-[50px]">close</span>
+    </div>
+    <p class="mt-4 text-xl font-bold uppercase tracking-wider">Mantenha a mão para cancelar</p>
+</div>
+
+<!-- VisionFlow Iframe Integration -->
+<script>
+    let currentHoverElement = null;
+    
+    // Modals
+    const modalsContainer = document.getElementById('modals');
+    const modalNumpad = document.getElementById('modal-numpad');
+    const modalQr = document.getElementById('modal-qr');
+    const modalMap = document.getElementById('modal-map');
+    
+    const cpfDisplay = document.getElementById('cpf-display');
+    let currentCpf = '';
+    
+    function updateCpfDisplay() {
+        let display = currentCpf.padEnd(11, '_');
+        // Format as XXX.XXX.XXX-XX
+        display = display.replace(/^(\w{3})(\w{3})?(\w{3})?(\w{2})?$/, function(match, p1, p2, p3, p4) {
+            let res = p1;
+            if (p2) res += '.' + p2;
+            if (p3) res += '.' + p3;
+            if (p4) res += '-' + p4;
+            return res;
+        });
+        cpfDisplay.textContent = display;
+    }
+
+    function showModal(modalId) {
+        modalsContainer.classList.remove('hidden');
+        document.querySelectorAll('#modals > div').forEach(m => m.classList.add('hidden'));
+        document.getElementById(modalId).classList.remove('hidden');
+        if (modalId === 'modal-numpad') {
+            currentCpf = '';
+            updateCpfDisplay();
+        }
+    }
+
+    function hideModals() {
+        modalsContainer.classList.add('hidden');
+    }
+
+    // Attach events to cards
+    const cards = document.querySelectorAll('main button');
+    if(cards.length >= 6) {
+        cards[0].addEventListener('click', () => showModal('modal-numpad')); // Check-in
+        cards[1].addEventListener('click', () => showModal('modal-numpad')); // Resultados
+        cards[2].addEventListener('click', () => showModal('modal-qr')); // Agendamento
+        cards[3].addEventListener('click', () => showModal('modal-qr')); // Visitantes
+        cards[4].addEventListener('click', () => showModal('modal-map')); // Mapa
+    }
+
+    // Numpad events
+    document.querySelectorAll('.numpad-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (btn.classList.contains('numpad-del')) {
+                currentCpf = currentCpf.slice(0, -1);
+            } else if (btn.classList.contains('numpad-ok')) {
+                if (currentCpf.length === 11) {
+                    hideModals();
+                    // Simula sucesso (poderia usar um alert customizado)
+                    setTimeout(() => {
+                        cards[0].querySelector('span.material-symbols-outlined').textContent = "check_circle";
+                        cards[0].classList.add('ring-4', 'ring-green-500');
+                    }, 300);
+                }
+            } else {
+                if (currentCpf.length < 11) {
+                    currentCpf += btn.textContent.trim();
+                }
+            }
+            updateCpfDisplay();
+            
+            // Interaction feedback
+            btn.classList.add('bg-primary-container', 'text-on-primary-container');
+            setTimeout(() => {
+                btn.classList.remove('bg-primary-container', 'text-on-primary-container');
+            }, 150);
+        });
+    });
+
+    // Close modals
+    document.querySelectorAll('.close-modal').forEach(btn => {
+        btn.addEventListener('click', hideModals);
+    });
+
+    // --- DWELL EMERGENCY LOGIC ---
+    const emergencyOverlay = document.getElementById('emergency-overlay');
+    const emergencyBtns = document.querySelectorAll('.group.bg-\\[\\#DC2626\\], header button');
+    
+    // Adiciona classe para identificar botões de emergência
+    emergencyBtns.forEach(btn => {
+        btn.classList.add('dwell-emergency');
+        btn.addEventListener('click', () => {
+            // Se clicado (pinça), aciona também
+            triggerEmergency();
+        });
+    });
+
+    let emergencyDwellTimer = null;
+    let emergencyStartTime = 0;
+    const DWELL_TIME = 3000; // 3 seconds
+    let isEmergencyActive = false;
+
+    // Elemento visual de progresso (poderia ser injetado dinamicamente no botão, mas usaremos um efeito simples no próprio card)
+    function updateDwellVisuals(el, progress) {
+        if (!el) return;
+        // Escurece o fundo proporcionalmente ao tempo
+        const scale = 1 - (progress * 0.05); // Encolhe até 95%
+        el.style.transform = `scale(${scale})`;
+        el.style.boxShadow = `0 0 ${20 + progress * 50}px rgba(220,38,38,${0.3 + progress * 0.7})`;
+        
+        if (progress >= 1) {
+            el.style.transform = '';
+            el.style.boxShadow = '';
+        }
+    }
+
+    function triggerEmergency() {
+        if (isEmergencyActive) return;
+        isEmergencyActive = true;
+        emergencyOverlay.classList.remove('hidden');
+        emergencyOverlay.classList.add('flex');
+    }
+
+    function cancelEmergency() {
+        isEmergencyActive = false;
+        emergencyOverlay.classList.add('hidden');
+        emergencyOverlay.classList.remove('flex');
+        cancelProgress.style.strokeDashoffset = 440;
+    }
+
+    // Lógica para cancelar emergência (outro dwell)
+    const cancelEmergencyBtn = document.getElementById('cancel-emergency-btn');
+    const cancelProgress = document.getElementById('cancel-progress');
+    let cancelTimer = null;
+    let cancelStartTime = 0;
+
+    window.addEventListener('message', (event) => {
+        if (event.data.type === 'VISIONFLOW_CLICK') {
+            const el = document.elementFromPoint(event.data.x, event.data.y);
+            if (el) {
+                el.click();
+            }
+        } else if (event.data.type === 'VISIONFLOW_HOVER') {
+            const el = document.elementFromPoint(event.data.x, event.data.y);
+            
+            // --- Hover State Management ---
+            if (currentHoverElement !== el) {
+                if (currentHoverElement) {
+                    currentHoverElement.dispatchEvent(new MouseEvent('mouseout', { bubbles: true }));
+                    currentHoverElement.classList.remove('hovered');
+                    
+                    // Clear Dwell Emergency
+                    if (emergencyDwellTimer) {
+                        clearInterval(emergencyDwellTimer);
+                        emergencyDwellTimer = null;
+                        updateDwellVisuals(currentHoverElement, 0);
+                    }
+                    
+                    // Clear Dwell Cancel
+                    if (cancelTimer) {
+                        clearInterval(cancelTimer);
+                        cancelTimer = null;
+                        cancelProgress.style.strokeDashoffset = 440;
+                    }
+                }
+                
+                if (el && event.data.x >= 0 && event.data.y >= 0) {
+                    el.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+                    // Only apply hover visual to interactive elements
+                    if (el.tagName === 'BUTTON' || el.closest('button') || el.classList.contains('numpad-btn') || el.closest('.cursor-pointer')) {
+                        el.classList.add('hovered');
+                    }
+
+                    // --- Start Dwell Check ---
+                    const emergencyTarget = el.closest('.dwell-emergency');
+                    if (emergencyTarget && !isEmergencyActive) {
+                        emergencyStartTime = Date.now();
+                        emergencyDwellTimer = setInterval(() => {
+                            const elapsed = Date.now() - emergencyStartTime;
+                            const progress = Math.min(elapsed / DWELL_TIME, 1);
+                            
+                            updateDwellVisuals(emergencyTarget, progress);
+                            
+                            if (progress >= 1) {
+                                clearInterval(emergencyDwellTimer);
+                                emergencyDwellTimer = null;
+                                triggerEmergency();
+                            }
+                        }, 50); // Update 20fps
+                    }
+
+                    const cancelTarget = el.closest('#cancel-emergency-btn');
+                    if (cancelTarget && isEmergencyActive) {
+                        cancelStartTime = Date.now();
+                        cancelTimer = setInterval(() => {
+                            const elapsed = Date.now() - cancelStartTime;
+                            const progress = Math.min(elapsed / 2000, 1); // 2s cancel
+                            
+                            const offset = 440 - (440 * progress);
+                            cancelProgress.style.strokeDashoffset = offset;
+                            
+                            if (progress >= 1) {
+                                clearInterval(cancelTimer);
+                                cancelTimer = null;
+                                cancelEmergency();
+                            }
+                        }, 50);
+                    }
+                }
+                currentHoverElement = el;
+            }
+        } else if (event.data.type === 'VISIONFLOW_SCROLL') {
+            window.scrollBy(0, event.data.dy);
+        } else if (event.data.type === 'VISIONFLOW_DRAG') {
+            // Support drag for 3D map rotation
+            if (!modalsContainer.classList.contains('hidden') && !modalMap.classList.contains('hidden')) {
+                const mapInner = document.querySelector('#map-container > div');
+                if (mapInner) {
+                    // Extract current rotation
+                    const style = mapInner.style.transform;
+                    let rotX = 60;
+                    let rotZ = -20;
+                    
+                    const matchX = style.match(/rotateX\(([-0-9.]+)deg\)/);
+                    const matchZ = style.match(/rotateZ\(([-0-9.]+)deg\)/);
+                    if (matchX) rotX = parseFloat(matchX[1]);
+                    if (matchZ) rotZ = parseFloat(matchZ[1]);
+
+                    // Apply drag deltas
+                    rotX = Math.max(20, Math.min(80, rotX - event.data.dy * 0.1));
+                    rotZ = rotZ - event.data.dx * 0.1;
+                    
+                    mapInner.style.transform = `rotateX(${rotX}deg) rotateZ(${rotZ}deg)`;
+                }
+            }
+        }
+    });
+</script>
+<style>
+    .hovered { filter: brightness(1.1) contrast(1.1); transform: scale(1.02); transition: all 0.2s; cursor: pointer; z-index: 9999; }
+    .perspective-1000 { perspective: 1000px; }
+    .transform-style-3d { transform-style: preserve-3d; }
+    @keyframes dash {
+        to { stroke-dashoffset: -32; }
+    }
+</style>
+
+</body></html>

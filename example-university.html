@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>University Campus Kiosk</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary": "#050b12",
+                      "secondary": "#115cb9",
+                      "primary-fixed": "#d6e3ff",
+                      "on-surface": "#1a1c1c",
+                      "surface-tint": "#465f88",
+                      "error": "#ba1a1a",
+                      "on-tertiary-container": "#838993",
+                      "on-primary-fixed-variant": "#2d476f",
+                      "on-background": "#1a1c1c",
+                      "secondary-container": "#659dfe",
+                      "on-secondary-fixed-variant": "#004491",
+                      "surface-container-highest": "#e2e2e2",
+                      "on-secondary": "#ffffff",
+                      "on-primary-fixed": "#001b3d",
+                      "on-secondary-container": "#003370",
+                      "surface-variant": "#e2e2e2",
+                      "tertiary-fixed": "#dde3ee",
+                      "surface-container": "#eeeeee",
+                      "on-primary": "#ffffff",
+                      "surface-container-low": "#f3f3f4",
+                      "on-tertiary-fixed-variant": "#414750",
+                      "primary-fixed-dim": "#aec7f6",
+                      "primary": "#000a1e",
+                      "surface-dim": "#dadada",
+                      "inverse-primary": "#aec7f6",
+                      "tertiary-container": "#1b222a",
+                      "tertiary-fixed-dim": "#c1c7d1",
+                      "on-surface-variant": "#44474e",
+                      "inverse-on-surface": "#f0f1f1",
+                      "on-tertiary-fixed": "#161c24",
+                      "outline": "#74777f",
+                      "surface-container-lowest": "#ffffff",
+                      "on-secondary-fixed": "#001a40",
+                      "on-error-container": "#93000a",
+                      "on-primary-container": "#708ab5",
+                      "background": "#f9f9f9",
+                      "error-container": "#ffdad6",
+                      "secondary-fixed-dim": "#acc7ff",
+                      "surface-bright": "#f9f9f9",
+                      "on-tertiary": "#ffffff",
+                      "surface-container-high": "#e8e8e8",
+                      "inverse-surface": "#2f3131",
+                      "outline-variant": "#c4c6cf",
+                      "on-error": "#ffffff",
+                      "secondary-fixed": "#d7e2ff",
+                      "primary-container": "#002147",
+                      "surface": "#f9f9f9"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px",
+                      "2xl": "1rem"
+              },
+              "spacing": {
+                      "unit": "8px",
+                      "stack-sm": "8px",
+                      "container-padding": "32px",
+                      "gutter": "24px",
+                      "stack-md": "16px",
+                      "stack-lg": "32px"
+              },
+              "fontFamily": {
+                      "body-md": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-md": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-xl-mobile": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-xl": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "button-text": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "label-lg": [
+                              "Plus Jakarta Sans"
+                      ]
+              },
+              "fontSize": {
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-xl-mobile": [
+                              "36px",
+                              {
+                                      "lineHeight": "44px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-xl": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "button-text": [
+                              "16px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-lg": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        body {
+            background-color: #eef4ff; /* Pale blue academic background */
+            background-image: radial-gradient(circle at top right, #ffffff 0%, transparent 40%), radial-gradient(circle at bottom left, #ffffff 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+        
+        /* Glassmorphism utility classes */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 24px rgba(17, 92, 185, 0.06);
+            transition: all 0.2s ease-in-out;
+        }
+        
+        .glass-card:hover, .glass-card:active {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 12px 32px rgba(17, 92, 185, 0.1);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        
+        .icon-container {
+            background-color: #eef4ff;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md text-on-surface antialiased min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-surface/85 backdrop-blur-md dark:bg-tertiary/85 text-primary dark:text-primary-fixed docked full-width top-0 border-b border-white/20 dark:border-white/10 shadow-md flex justify-between items-center w-full px-container-padding h-24 sticky z-50">
+<div class="flex items-center gap-4">
+<!-- Brand Logo Placeholder -->
+<div class="font-headline-lg text-headline-lg font-bold text-secondary dark:text-secondary-fixed tracking-tight">
+                Heritage University
+            </div>
+</div>
+<!-- Date/Time Area -->
+<div class="flex items-center gap-6 font-headline-md text-headline-md text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">calendar_today</span>
+<span>Oct 24, 2023</span>
+</div>
+<div class="w-px h-8 bg-outline-variant/50"></div>
+<div class="flex items-center gap-2 font-bold text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">schedule</span>
+<span>10:45 AM</span>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-grow p-container-padding md:p-12 lg:p-16 pb-36 max-w-[1400px] mx-auto w-full">
+    <!-- Welcome Message & CTA -->
+    <div class="mb-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+        <div>
+            <h1 class="font-headline-xl text-headline-xl text-primary mb-2">Bem-vindo ao Campus</h1>
+            <p class="font-body-lg text-body-lg text-on-surface-variant">Sua agenda e serviços do dia em um só lugar.</p>
+        </div>
+        <button id="btn-atendimento" class="bg-primary-container text-on-primary-container font-bold text-xl px-10 py-5 rounded-2xl shadow-lg hover:bg-secondary hover:text-white transition-all duration-300 flex items-center gap-4 group">
+            <span class="material-symbols-outlined text-[32px] group-hover:rotate-12 transition-transform">forum</span>
+            Falar com Atendimento
+        </button>
+    </div>
+
+    <!-- Daily Cards Section (Horizontal Drag Carousel) -->
+    <div class="mb-16">
+        <div class="flex items-center gap-4 mb-6">
+            <h2 class="font-headline-md text-headline-md text-primary">Seus Compromissos Hoje</h2>
+            <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-bold flex items-center gap-2">
+                <span class="material-symbols-outlined text-[16px]">swipe</span>
+                Arraste para explorar
+            </span>
+        </div>
+
+        <div class="relative w-full overflow-hidden rounded-3xl" id="daily-carousel">
+            <!-- Fade masks -->
+            <div class="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none"></div>
+            <div class="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none"></div>
+
+            <!-- Track -->
+            <div class="flex gap-6 px-16 py-8 transition-transform duration-300 ease-out cursor-grab active:cursor-grabbing" id="daily-track" style="transform: translateX(0px);">
+                
+                <!-- Card 1 -->
+                <div class="flex-shrink-0 w-[400px] bg-gradient-to-br from-blue-50 to-white rounded-3xl p-8 border border-blue-100 shadow-[0_10px_30px_rgba(17,92,185,0.1)] hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(17,92,185,0.15)] transition-all duration-300 group">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-16 h-16 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-[36px]">science</span>
+                        </div>
+                        <span class="font-bold text-blue-600 bg-blue-100/50 px-4 py-2 rounded-full">10:30</span>
+                    </div>
+                    <h3 class="font-headline-md text-2xl font-bold text-slate-800 mb-2">Aula de Física</h3>
+                    <p class="text-slate-500 text-lg mb-6 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[20px]">location_on</span>
+                        Sala 202 - Bloco C
+                    </p>
+                    <button class="w-full py-4 rounded-xl font-bold text-blue-600 bg-blue-50 border-2 border-blue-100 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                        Ver Material
+                    </button>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="flex-shrink-0 w-[400px] bg-gradient-to-br from-orange-50 to-white rounded-3xl p-8 border border-orange-100 shadow-[0_10px_30px_rgba(249,115,22,0.1)] hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(249,115,22,0.15)] transition-all duration-300 group">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-16 h-16 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-[36px]">restaurant</span>
+                        </div>
+                        <span class="font-bold text-orange-600 bg-orange-100/50 px-4 py-2 rounded-full">12:00</span>
+                    </div>
+                    <h3 class="font-headline-md text-2xl font-bold text-slate-800 mb-2">Almoço RU</h3>
+                    <p class="text-slate-500 text-lg mb-6 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[20px]">restaurant_menu</span>
+                        Prato Especial: Feijoada
+                    </p>
+                    <button class="w-full py-4 rounded-xl font-bold text-orange-600 bg-orange-50 border-2 border-orange-100 group-hover:bg-orange-600 group-hover:text-white transition-colors">
+                        Comprar Ficha
+                    </button>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="flex-shrink-0 w-[400px] bg-gradient-to-br from-purple-50 to-white rounded-3xl p-8 border border-purple-100 shadow-[0_10px_30px_rgba(168,85,247,0.1)] hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(168,85,247,0.15)] transition-all duration-300 group">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-16 h-16 rounded-2xl bg-purple-100 text-purple-600 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-[36px]">campaign</span>
+                        </div>
+                        <span class="font-bold text-purple-600 bg-purple-100/50 px-4 py-2 rounded-full">14:00</span>
+                    </div>
+                    <h3 class="font-headline-md text-2xl font-bold text-slate-800 mb-2">Palestra: IA na Engenharia</h3>
+                    <p class="text-slate-500 text-lg mb-6 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[20px]">location_on</span>
+                        Auditório Principal
+                    </p>
+                    <button class="w-full py-4 rounded-xl font-bold text-purple-600 bg-purple-50 border-2 border-purple-100 group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                        Confirmar Presença
+                    </button>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="flex-shrink-0 w-[400px] bg-gradient-to-br from-emerald-50 to-white rounded-3xl p-8 border border-emerald-100 shadow-[0_10px_30px_rgba(16,185,129,0.1)] hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(16,185,129,0.15)] transition-all duration-300 group">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-16 h-16 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-[36px]">local_library</span>
+                        </div>
+                        <span class="font-bold text-emerald-600 bg-emerald-100/50 px-4 py-2 rounded-full">Até 18:00</span>
+                    </div>
+                    <h3 class="font-headline-md text-2xl font-bold text-slate-800 mb-2">Devolução Biblioteca</h3>
+                    <p class="text-slate-500 text-lg mb-6 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[20px]">book</span>
+                        Cálculo Vol. 1 (Stewart)
+                    </p>
+                    <button class="w-full py-4 rounded-xl font-bold text-emerald-600 bg-emerald-50 border-2 border-emerald-100 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                        Renovar Empréstimo
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<!-- BottomNavBar -->
+<nav class="bg-white/80 backdrop-blur-xl dark:bg-tertiary/90 text-secondary dark:text-secondary-fixed-dim font-label-lg text-label-lg docked full-width bottom-0 rounded-t-xl border-t border-white/30 dark:border-white/10 shadow-[0_-8px_24px_rgba(17,92,185,0.06)] fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-28 px-gutter pb-4 md:hidden">
+    <a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-6 py-2 active:scale-90 transition-all duration-200 hover:bg-surface-container-high dark:hover:bg-tertiary-container" href="#">
+        <span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">home</span>
+        <span class="font-label-lg text-label-lg">Home</span>
+    </a>
+    <a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container px-6 py-2 active:scale-90 transition-all duration-200 hover:bg-surface-container-high dark:hover:bg-tertiary-container" href="#">
+        <span class="material-symbols-outlined mb-1">map</span>
+        <span class="font-label-lg text-label-lg">Campus Map</span>
+    </a>
+    <a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container px-6 py-2 active:scale-90 transition-all duration-200 hover:bg-surface-container-high dark:hover:bg-tertiary-container" href="#">
+        <span class="material-symbols-outlined mb-1">contact_phone</span>
+        <span class="font-label-lg text-label-lg">Directory</span>
+    </a>
+    <a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container px-6 py-2 active:scale-90 transition-all duration-200 hover:bg-surface-container-high dark:hover:bg-tertiary-container" href="#">
+        <span class="material-symbols-outlined mb-1">emergency</span>
+        <span class="font-label-lg text-label-lg text-error">Emergency</span>
+    </a>
+</nav>
+
+<!-- WhatsApp Bot QR Modal -->
+<div id="modal-bot" class="fixed inset-0 z-[200] hidden bg-slate-900/80 backdrop-blur-lg flex items-center justify-center px-margin-page opacity-0 transition-opacity duration-300">
+    <div class="bg-white rounded-[40px] p-12 w-full max-w-[800px] shadow-2xl flex flex-col md:flex-row items-center gap-12 transform scale-95 transition-transform duration-300" id="modal-bot-content">
+        
+        <div class="flex-shrink-0 relative group">
+            <div class="absolute inset-0 bg-green-500 rounded-3xl blur-2xl opacity-20 group-hover:opacity-40 transition-opacity"></div>
+            <div class="bg-white p-6 rounded-3xl shadow-xl border-2 border-green-100 relative z-10">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://wa.me/1234567890?text=Ola%20Atendimento" alt="WhatsApp QR" class="w-[300px] h-[300px] mix-blend-multiply">
+            </div>
+            <div class="absolute -bottom-6 -right-6 w-20 h-20 bg-green-500 rounded-full flex items-center justify-center shadow-lg border-4 border-white z-20">
+                <span class="material-symbols-outlined text-[40px] text-white">chat</span>
+            </div>
+        </div>
+
+        <div class="flex flex-col text-center md:text-left">
+            <h2 class="text-4xl font-bold text-slate-800 mb-4">Atendimento Inteligente</h2>
+            <p class="text-xl text-slate-600 mb-8 leading-relaxed">
+                Aponte a câmera do seu celular para o QR Code ao lado para iniciar uma conversa no WhatsApp com nosso assistente virtual.
+            </p>
+            <div class="space-y-4 mb-8">
+                <div class="flex items-center gap-3 text-slate-700 font-medium">
+                    <span class="material-symbols-outlined text-green-500">check_circle</span>
+                    Resolução rápida de dúvidas
+                </div>
+                <div class="flex items-center gap-3 text-slate-700 font-medium">
+                    <span class="material-symbols-outlined text-green-500">check_circle</span>
+                    Emissão de documentos
+                </div>
+                <div class="flex items-center gap-3 text-slate-700 font-medium">
+                    <span class="material-symbols-outlined text-green-500">check_circle</span>
+                    Suporte acadêmico 24/7
+                </div>
+            </div>
+            <button id="close-bot-modal" class="bg-slate-100 text-slate-700 hover:bg-slate-200 px-8 py-4 rounded-xl font-bold text-xl transition-colors">
+                Voltar
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<!-- VisionFlow Iframe Integration -->
+<script>
+    let currentHoverElement = null;
+
+    // --- Modal Logic ---
+    const modalBot = document.getElementById('modal-bot');
+    const modalContent = document.getElementById('modal-bot-content');
+    
+    document.getElementById('btn-atendimento').addEventListener('click', () => {
+        modalBot.classList.remove('hidden');
+        // Trigger reflow
+        void modalBot.offsetWidth;
+        modalBot.classList.remove('opacity-0');
+        modalContent.classList.remove('scale-95');
+    });
+
+    document.getElementById('close-bot-modal').addEventListener('click', () => {
+        modalBot.classList.add('opacity-0');
+        modalContent.classList.add('scale-95');
+        setTimeout(() => {
+            modalBot.classList.add('hidden');
+        }, 300);
+    });
+
+    // --- Carousel Drag Logic ---
+    const track = document.getElementById('daily-track');
+    let currentTranslate = 0;
+    const itemWidth = 424; // 400 + 24 gap
+    
+    // Bounds for 4 items
+    const maxScroll = 0;
+    const minScroll = -(itemWidth * 3); // 4 items minus 1 visible approximately (simplistic bound for 1400px container)
+
+    function applyConstraints() {
+        if (currentTranslate > maxScroll) currentTranslate = maxScroll;
+        if (currentTranslate < minScroll) currentTranslate = minScroll;
+        track.style.transform = `translateX(${currentTranslate}px)`;
+    }
+
+    window.addEventListener('message', (event) => {
+        if (event.data.type === 'VISIONFLOW_CLICK') {
+            const el = document.elementFromPoint(event.data.x, event.data.y);
+            if (el) {
+                el.click();
+            }
+        } else if (event.data.type === 'VISIONFLOW_HOVER') {
+            const el = document.elementFromPoint(event.data.x, event.data.y);
+            if (currentHoverElement !== el) {
+                if (currentHoverElement) {
+                    currentHoverElement.dispatchEvent(new MouseEvent('mouseout', { bubbles: true }));
+                    currentHoverElement.classList.remove('hovered');
+                }
+                if (el && event.data.x >= 0 && event.data.y >= 0) {
+                    el.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+                    // Only apply hover visual to interactive elements
+                    if (el.tagName === 'BUTTON' || el.closest('button') || el.closest('.cursor-pointer')) {
+                        el.classList.add('hovered');
+                    }
+                }
+                currentHoverElement = el;
+            }
+        } else if (event.data.type === 'VISIONFLOW_SCROLL') {
+            window.scrollBy(0, event.data.dy);
+        } else if (event.data.type === 'VISIONFLOW_DRAG') {
+            // Check if we are dragging over the carousel
+            if (currentHoverElement && track.contains(currentHoverElement)) {
+                // Horizontal drag multiplier
+                currentTranslate += event.data.dx * 1.5; 
+                applyConstraints();
+            } else {
+                // Otherwise normal vertical scroll
+                window.scrollBy(0, event.data.dy);
+            }
+        }
+    });
+</script>
+<style>
+    .hovered { filter: brightness(1.05) contrast(1.05); transform: scale(1.02); transition: transform 0.2s, filter 0.2s; cursor: pointer; z-index: 9999; }
+</style>
+
+</body></html>
