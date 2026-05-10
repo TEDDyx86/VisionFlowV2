@@ -1,4 +1,4 @@
-import { updateCursor, triggerClick, triggerScroll, endScroll } from './controllers.js';
+import { updateCursor, triggerClick, triggerScroll, endScroll, triggerDrag } from './controllers.js';
 import { getCalibrationParams } from './calibration.js';
 import { logEvent } from './eventLog.js';
 
@@ -9,6 +9,9 @@ let pinchDebounce = 300; // ms
 // Smoothing exponencial
 let smoothedX = 0;
 let smoothedY = 0;
+
+let lastCursorX = 0;
+let lastCursorY = 0;
 
 export function processGestures(landmarks) {
     const params = getCalibrationParams();
@@ -66,6 +69,18 @@ export function processGestures(landmarks) {
             logEvent('Gesto de clique reconhecido');
         }
     }
+
+    // Arrastar (Drag)
+    if (isPinching && wasPinching) {
+        const dragDx = cursorX - lastCursorX;
+        const dragDy = cursorY - lastCursorY;
+        if (Math.abs(dragDx) > 1 || Math.abs(dragDy) > 1) { // Reduzir ruído
+            triggerDrag(cursorX, cursorY, dragDx, dragDy);
+        }
+    }
+
+    lastCursorX = cursorX;
+    lastCursorY = cursorY;
 
     // Atualiza a View
     updateCursor(cursorX, cursorY, isPinching);

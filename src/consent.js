@@ -3,19 +3,25 @@ export function initConsent({ onAccept, onDeny, onRevoke }) {
     const btnDeny = document.getElementById('btn-deny-camera');
     const btnRevoke = document.getElementById('btn-revoke');
 
-    btnAccept.addEventListener('click', () => {
-        document.getElementById('consent-modal').classList.remove('active');
-        document.getElementById('consent-modal').classList.add('hidden');
-        onAccept();
-    });
+    if (btnAccept) {
+        btnAccept.addEventListener('click', () => {
+            document.getElementById('consent-modal').classList.remove('active');
+            document.getElementById('consent-modal').classList.add('hidden');
+            onAccept();
+        });
+    }
 
-    btnDeny.addEventListener('click', () => {
-        document.getElementById('consent-modal').classList.remove('active');
-        document.getElementById('consent-modal').classList.add('hidden');
-        onDeny();
-    });
+    if (btnDeny) {
+        btnDeny.addEventListener('click', () => {
+            document.getElementById('consent-modal').classList.remove('active');
+            document.getElementById('consent-modal').classList.add('hidden');
+            onDeny();
+        });
+    }
 
-    btnRevoke.addEventListener('click', () => {
-        onRevoke();
-    });
+    if (btnRevoke) {
+        btnRevoke.addEventListener('click', () => {
+            onRevoke();
+        });
+    }
 }

@@ -51,4 +51,41 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('onboarding-step2').classList.add('hidden');
         }
     });
+
+    // Lógica da UI para os Templates
+    const homeView = document.getElementById('home-view');
+    const iframeView = document.getElementById('iframe-view');
+    const templateFrame = document.getElementById('template-frame');
+    const cameraPreview = document.getElementById('camera-preview-container'); // Container da câmera
+    const mainHeader = document.getElementById('main-header'); // Header principal
+    
+    document.querySelectorAll('.interactable[data-template]').forEach(card => {
+        card.addEventListener('click', (e) => {
+            const template = e.currentTarget.getAttribute('data-template');
+            if (template) {
+                logEvent(`Abrindo template: ${template}`);
+                templateFrame.src = template;
+                homeView.classList.add('hidden');
+                iframeView.classList.remove('hidden');
+                if (cameraPreview) cameraPreview.classList.add('hidden'); // Oculta a câmera
+                if (mainHeader) mainHeader.classList.add('hidden'); // Oculta o header principal para evitar sobreposição
+            }
+        });
+    });
+
+    document.getElementById('btn-back-home').addEventListener('click', () => {
+        logEvent('Voltando ao menu principal');
+        templateFrame.src = '';
+        iframeView.classList.add('hidden');
+        homeView.classList.remove('hidden');
+        if (cameraPreview) cameraPreview.classList.remove('hidden'); // Mostra a câmera
+        if (mainHeader) mainHeader.classList.remove('hidden'); // Mostra o header principal
+    });
+
+    // Escuta mensagens postMessage dos iframes (ex: tutorial.html)
+    window.addEventListener('message', (event) => {
+        if (event.data && event.data.type === 'VISIONFLOW_CLOSE_MODULE') {
+            document.getElementById('btn-back-home').click();
+        }
+    });
 });

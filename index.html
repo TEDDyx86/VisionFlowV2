@@ -1,14 +1,13 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VisionFlow | Navegação sem Toque</title>
+    <title>VisionFlow | Totem Touchless</title>
     
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
     
     <!-- MediaPipe Hands via CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
@@ -17,101 +16,219 @@
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="styles.css">
-</head>
-<body>
     
+    <script>
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                background: "#0b1326",
+                surface: "rgba(255, 255, 255, 0.03)",
+                primary: "#2fd9f4",
+              },
+              fontFamily: {
+                sans: ["Space Grotesk", "sans-serif"],
+              }
+            }
+          }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0b1326;
+            color: #dae2fd;
+            overflow-x: hidden;
+            overflow-y: hidden; /* Totem shouldn't scroll the main body */
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glow-hover:hover {
+            box-shadow: 0 0 30px rgba(47, 217, 244, 0.2);
+            border-color: rgba(47, 217, 244, 0.5);
+            transform: translateY(-5px);
+        }
+        
+        /* Efeitos do Cursor */
+        .cursor.pinching .cursor-ring {
+            transform: translate(-50%, -50%) scale(0.5);
+            border-color: #3b82f6; /* Blue 500 para feedback visual */
+            border-width: 4px;
+        }
+        .cursor.pinching .cursor-dot {
+            transform: translate(-50%, -50%) scale(1.5);
+            background-color: #3b82f6;
+        }
+
+        /* Efeito de Dwell (Carregamento circular) */
+        .cursor-dwell-svg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-90deg);
+            width: 60px;
+            height: 60px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .cursor.dwelling .cursor-dwell-svg {
+            opacity: 1;
+        }
+        .cursor-dwell-circle {
+            fill: none;
+            stroke: #2fd9f4;
+            stroke-width: 4;
+            stroke-dasharray: 176; /* 2 * PI * r (r=28) */
+            stroke-dashoffset: 176;
+            transition: stroke-dashoffset 0.1s linear;
+        }
+        
+        /* Efeitos Hover nos itens */
+        .interactable.hovered {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px rgba(47, 217, 244, 0.4);
+            border-color: rgba(47, 217, 244, 0.8);
+        }
+    </style>
+</head>
+<body class="bg-background text-white font-sans min-h-screen relative flex flex-col">
     <!-- Overlay de Consentimento e Onboarding -->
-    <div id="overlay" class="overlay active">
+    <div id="overlay" class="overlay active fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm transition-opacity duration-500">
         <!-- Consentimento -->
-        <div id="consent-modal" class="modal glass-panel active">
-            <h2>VisionFlow</h2>
-            <p>Navegue no sistema sem tocar na tela. Utilizaremos sua webcam para rastrear os movimentos da sua mão localmente. Nenhuma imagem é enviada para servidores externos.</p>
-            <div class="actions">
-                <button id="btn-accept-camera" class="btn primary">Permitir Câmera</button>
-                <button id="btn-deny-camera" class="btn secondary">Continuar com Teclado</button>
+        <div id="consent-modal" class="modal active glass-panel p-10 rounded-2xl max-w-lg text-center transform transition-all duration-500">
+            <span class="material-symbols-outlined text-6xl text-primary mb-4">visibility</span>
+            <h2 class="text-3xl font-bold mb-4">VisionFlow Totem</h2>
+            <p class="text-gray-300 mb-8 text-lg">Navegue no sistema sem tocar na tela. Utilizaremos sua webcam para rastrear os movimentos da sua mão. Nenhuma imagem é gravada.</p>
+            <div class="flex flex-col gap-4">
+                <button id="btn-accept-camera" class="w-full py-4 bg-primary text-background font-bold text-lg rounded-xl hover:bg-white transition-colors shadow-[0_0_15px_rgba(47,217,244,0.4)]">Permitir Câmera e Iniciar</button>
+                <button id="btn-deny-camera" class="w-full py-3 bg-transparent border border-gray-500 text-gray-300 rounded-xl hover:bg-white/10 transition-colors">Continuar com Teclado</button>
             </div>
         </div>
 
         <!-- Onboarding Etapa 1 -->
-        <div id="onboarding-step1" class="modal glass-panel hidden">
-            <div class="icon">🖐️</div>
-            <h2>Posicione sua mão</h2>
-            <p>Mantenha sua mão visível para a câmera. O cursor na tela acompanhará o seu movimento.</p>
-            <button id="btn-next-step1" class="btn primary">Continuar</button>
+        <div id="onboarding-step1" class="modal hidden glass-panel p-10 rounded-2xl max-w-lg text-center transform transition-all duration-500">
+            <div class="text-6xl mb-4">🖐️</div>
+            <h2 class="text-3xl font-bold mb-4">Posicione sua mão</h2>
+            <p class="text-gray-300 mb-8 text-lg">Mantenha sua mão visível para a câmera. O cursor na tela acompanhará o seu movimento.</p>
+            <button id="btn-next-step1" class="w-full py-4 bg-primary text-background font-bold text-lg rounded-xl hover:bg-white transition-colors shadow-[0_0_15px_rgba(47,217,244,0.4)]">Continuar</button>
         </div>
 
         <!-- Onboarding Etapa 2 -->
-        <div id="onboarding-step2" class="modal glass-panel hidden">
-            <div class="icon">🤏</div>
-            <h2>Gesto de Clique</h2>
-            <p>Para clicar, faça o gesto de "pinça" (junte o polegar e o dedo indicador).</p>
-            <button id="btn-next-step2" class="btn primary" onclick="alert('Clique por pinça funcionando!')">Testar Clique</button>
-            <button id="btn-finish-onboarding" class="btn text">Pular Teste</button>
+        <div id="onboarding-step2" class="modal hidden glass-panel p-10 rounded-2xl max-w-lg text-center transform transition-all duration-500">
+            <div class="text-6xl mb-4">🤏</div>
+            <h2 class="text-3xl font-bold mb-4">Gesto de Clique</h2>
+            <p class="text-gray-300 mb-8 text-lg">Para clicar, faça o gesto de "pinça" (junte o polegar e o dedo indicador).</p>
+            <button id="btn-next-step2" class="w-full py-4 bg-primary text-background font-bold text-lg rounded-xl hover:bg-white transition-colors shadow-[0_0_15px_rgba(47,217,244,0.4)] mb-4" onclick="alert('Clique por pinça funcionando!')">Testar Clique</button>
+            <button id="btn-finish-onboarding" class="w-full py-3 bg-transparent text-gray-400 hover:text-white transition-colors">Pular Teste e Iniciar</button>
         </div>
     </div>
 
     <!-- UI Principal -->
-    <div id="main-content" class="dashboard">
-        <!-- Header -->
-        <header class="glass-header">
-            <div class="logo">VisionFlow<span class="dot"></span></div>
-            <div class="status-bar">
-                <span id="status-cam" class="status-badge offline">Câmera Off</span>
-                <span id="status-hand" class="status-badge offline">Mão não detectada</span>
-                <span id="status-gesture" class="status-badge">Pronto</span>
-            </div>
-            <button id="btn-revoke" class="btn-icon" title="Revogar Câmera">🛑</button>
-        </header>
-
-        <!-- Preview da Câmera (Oculto ou pequeno) -->
-        <div class="cam-container glass-panel">
-            <video id="input-video" class="input_video" autoplay playsinline muted></video>
-            <canvas id="output-canvas" class="output_canvas" width="320" height="240"></canvas>
-            <div class="cam-overlay">Live Feed</div>
+    <div id="main-content" class="flex-1 flex flex-col relative w-full h-full">
+        <!-- Preview da Câmera (Oculto, só processa) -->
+        <div id="camera-preview-container" class="fixed bottom-4 right-4 z-40 w-48 rounded-xl overflow-hidden glass-panel opacity-50 hover:opacity-100 transition-opacity">
+            <video id="input-video" class="w-full h-auto" autoplay playsinline muted></video>
+            <canvas id="output-canvas" class="hidden"></canvas>
+            <div class="absolute bottom-1 left-2 text-[10px] uppercase tracking-widest text-primary font-bold drop-shadow-md">Live Tracking</div>
         </div>
 
-        <!-- Painel de Calibração -->
-        <aside class="side-panel glass-panel">
-            <h3>Calibração</h3>
-            <div class="preset-controls">
-                <button class="preset-btn active" data-preset="smooth">Suave</button>
-                <button class="preset-btn" data-preset="standard">Padrão</button>
-                <button class="preset-btn" data-preset="fast">Rápido</button>
+        <!-- Header Status Discreto -->
+        <header id="main-header" class="absolute top-0 left-0 w-full p-6 flex justify-between items-start z-30 pointer-events-none transition-opacity duration-300">
+            <div class="flex items-center gap-4 bg-background/60 backdrop-blur-md p-2 pr-6 rounded-2xl border border-white/10 shadow-lg">
+                <div class="bg-white p-1.5 rounded-xl shadow-[0_0_15px_rgba(47,217,244,0.5)]">
+                    <img src="assets/logo.png" alt="VisionFlow Logo" class="h-10 w-10 object-contain">
+                </div>
+                <span class="text-2xl font-bold tracking-tight drop-shadow-md">VisionFlow</span>
             </div>
-            <div class="event-log">
-                <h4>Eventos Recentes</h4>
-                <ul id="log-list">
-                    <li>Sistema iniciado</li>
-                </ul>
+            <div class="flex flex-col md:flex-row gap-3 items-end md:items-center bg-background/60 backdrop-blur-md p-2 rounded-2xl border border-white/10 shadow-lg">
+                <span id="status-cam" class="px-4 py-1.5 text-xs rounded-full bg-red-500/20 text-red-400 border border-red-500/30 font-bold whitespace-nowrap">Câmera Off</span>
+                <span id="status-hand" class="px-4 py-1.5 text-xs rounded-full bg-red-500/20 text-red-400 border border-red-500/30 font-bold whitespace-nowrap">Mão não detectada</span>
             </div>
-        </aside>
+        </header>
 
         <!-- Área de Interação -->
-        <main class="interaction-area">
-            <h1>Área de Teste</h1>
-            <p>Mova sua mão para guiar o cursor. Faça o gesto de pinça para interagir.</p>
-            
-            <div class="test-grid">
-                <div class="test-card interactable">Card 1</div>
-                <div class="test-card interactable">Card 2</div>
-                <div class="test-card interactable">Card 3</div>
-                <div class="test-card interactable">Card 4</div>
-                <div class="test-card interactable">Card 5</div>
-                <div class="test-card interactable">Card 6</div>
-                <div class="test-card interactable">Card 7</div>
-                <div class="test-card interactable">Card 8</div>
+        <main class="flex-1 flex flex-col items-center justify-center p-8 z-20 w-full h-full mt-10">
+            <div id="home-view" class="w-full max-w-7xl flex flex-col items-center justify-center h-full">
+                <div class="text-center mb-16">
+                    <h1 class="text-5xl md:text-7xl font-bold mb-4 tracking-tighter">Selecione o Ambiente</h1>
+                    <p class="text-xl text-gray-400 max-w-2xl mx-auto">Mova sua mão para guiar o cursor. Faça o gesto de pinça para acessar os módulos interativos do totem.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
+                    <!-- Cards -->
+                    <div class="interactable flex flex-col items-center text-center p-10 rounded-3xl glass-panel glow-hover cursor-pointer transition-all duration-300" data-template="example-restaurant.html">
+                        <span class="material-symbols-outlined text-6xl text-green-400 mb-6">fastfood</span>
+                        <h3 class="text-3xl font-bold mb-2 text-white">Fast Food</h3>
+                        <p class="text-gray-400">Autoatendimento Premium</p>
+                    </div>
+                    
+                    <div class="interactable flex flex-col items-center text-center p-10 rounded-3xl glass-panel glow-hover cursor-pointer transition-all duration-300" data-template="example-market.html">
+                        <span class="material-symbols-outlined text-6xl text-yellow-400 mb-6">shopping_cart</span>
+                        <h3 class="text-3xl font-bold mb-2 text-white">Mercado</h3>
+                        <p class="text-gray-400">Self-checkout Rápido</p>
+                    </div>
+                    
+                    <div class="interactable flex flex-col items-center text-center p-10 rounded-3xl glass-panel glow-hover cursor-pointer transition-all duration-300" data-template="example-hospital.html">
+                        <span class="material-symbols-outlined text-6xl text-red-400 mb-6">local_hospital</span>
+                        <h3 class="text-3xl font-bold mb-2 text-white">Hospital</h3>
+                        <p class="text-gray-400">Triagem e Agendamento</p>
+                    </div>
+                    
+                    <div class="interactable flex flex-col items-center text-center p-10 rounded-3xl glass-panel glow-hover cursor-pointer transition-all duration-300" data-template="example-university.html">
+                        <span class="material-symbols-outlined text-6xl text-blue-400 mb-6">school</span>
+                        <h3 class="text-3xl font-bold mb-2 text-white">Universidade</h3>
+                        <p class="text-gray-400">Diretório e Mapa</p>
+                    </div>
+                    
+                    <div class="interactable flex flex-col items-center text-center p-10 rounded-3xl glass-panel glow-hover cursor-pointer transition-all duration-300 md:col-span-2 lg:col-span-2" data-template="example-3d.html" style="background: linear-gradient(135deg, rgba(47,217,244,0.1) 0%, rgba(255,255,255,0.03) 100%);">
+                        <span class="material-symbols-outlined text-6xl text-primary mb-6">3d_rotation</span>
+                        <h3 class="text-3xl font-bold mb-2 text-white">Configurator 3D</h3>
+                        <p class="text-gray-400">Visualização Interativa de Produtos</p>
+                    </div>
+                </div>
+
+                <!-- Footer with Tutorial Button -->
+                <div class="mt-16 text-center">
+                    <button id="btn-tutorial" class="interactable inline-flex items-center gap-3 px-8 py-4 rounded-full glass-panel border border-primary/30 text-primary hover:bg-primary/10 transition-colors cursor-pointer" data-template="tutorial.html">
+                        <span class="material-symbols-outlined">help</span>
+                        <span class="font-bold tracking-wide uppercase">Como usar o Totem</span>
+                    </button>
+                </div>
             </div>
-            
-            <!-- Conteúdo extra para permitir scroll -->
-            <div class="scroll-spacer"></div>
-            <h2 class="interactable">Fim da Página</h2>
         </main>
+
+        <!-- Iframe View -->
+        <div id="iframe-view" class="hidden absolute inset-0 z-[60] bg-background flex flex-col w-full h-full">
+            <!-- Top Bar Dedicated to Navigation (no overlap) -->
+            <div class="flex items-center justify-between px-6 py-4 bg-[#0b1326] border-b border-primary/20 z-50 shadow-[0_4px_30px_rgba(0,0,0,0.5)] shrink-0">
+                <button id="btn-back-home" class="interactable flex items-center gap-3 px-6 py-3 bg-white/5 border border-white/20 text-white rounded-full hover:bg-primary/20 hover:border-primary hover:text-primary transition-all shadow-lg cursor-pointer whitespace-nowrap">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    <span class="font-bold tracking-wide">Voltar ao Menu Inicial</span>
+                </button>
+                
+                <div class="flex items-center gap-4 pr-4 pointer-events-none">
+                    <div class="bg-white p-1 rounded-lg shadow-[0_0_10px_rgba(47,217,244,0.5)]">
+                        <img src="assets/logo.png" alt="VisionFlow Logo" class="h-8 w-8 object-contain">
+                    </div>
+                    <span class="text-xl font-bold text-white tracking-widest uppercase drop-shadow-md">VisionFlow</span>
+                </div>
+            </div>
+            <!-- The iframe takes the remaining height -->
+            <iframe id="template-frame" src="" class="flex-1 w-full border-none bg-background"></iframe>
+        </div>
     </div>
 
     <!-- Cursor Customizado -->
-    <div id="custom-cursor" class="cursor hidden">
-        <div class="cursor-ring"></div>
-        <div class="cursor-dot"></div>
+    <div id="custom-cursor" class="cursor hidden pointer-events-none fixed z-[9999]">
+        <svg class="cursor-dwell-svg" viewBox="0 0 60 60">
+            <circle class="cursor-dwell-circle" cx="30" cy="30" r="28"></circle>
+        </svg>
+        <div class="cursor-ring w-12 h-12 border-2 border-primary rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-transform duration-100"></div>
+        <div class="cursor-dot w-2 h-2 bg-primary rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
     </div>
 
     <!-- Scripts Modulares -->

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html class="light" lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Market Fresh - Supermarket &amp; Grocery</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;family=Work+Sans:wght@500;600&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-container": "#fd761a",
+                        "on-secondary-fixed-variant": "#783200",
+                        "tertiary-fixed-dim": "#eec200",
+                        "error": "#ba1a1a",
+                        "secondary": "#9d4300",
+                        "surface-container-low": "#eff4ff",
+                        "surface-container": "#e5eeff",
+                        "primary-container": "#22c55e",
+                        "surface-variant": "#d3e4fe",
+                        "surface": "#f8f9ff",
+                        "on-primary-fixed-variant": "#005321",
+                        "tertiary-container": "#cfa800",
+                        "on-tertiary": "#ffffff",
+                        "surface-tint": "#006e2f",
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#5c2400",
+                        "surface-container-high": "#dce9ff",
+                        "outline": "#6d7b6c",
+                        "on-error": "#ffffff",
+                        "tertiary": "#735c00",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed-dim": "#ffb690",
+                        "on-primary-fixed": "#002109",
+                        "outline-variant": "#bccbb9",
+                        "secondary-fixed": "#ffdbca",
+                        "inverse-surface": "#213145",
+                        "on-tertiary-fixed": "#231b00",
+                        "surface-container-highest": "#d3e4fe",
+                        "tertiary-fixed": "#ffe083",
+                        "primary": "#006e2f",
+                        "background": "#f8f9ff",
+                        "on-background": "#0b1c30",
+                        "surface-bright": "#f8f9ff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#574500",
+                        "inverse-primary": "#4ae176",
+                        "on-secondary-fixed": "#341100",
+                        "on-tertiary-container": "#4f3e00",
+                        "on-surface": "#0b1c30",
+                        "surface-dim": "#cbdbf5",
+                        "on-primary-container": "#004b1e",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface-variant": "#3d4a3d",
+                        "primary-fixed": "#6bff8f",
+                        "primary-fixed-dim": "#4ae176"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "md": "16px",
+                        "sm": "8px",
+                        "margin-desktop": "40px",
+                        "xs": "4px",
+                        "container-max": "1280px",
+                        "base": "4px",
+                        "gutter": "20px",
+                        "xl": "32px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Work Sans"],
+                        "label-md": ["Work Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "headline-sm": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }]
+                    },
+                    boxShadow: {
+                        'level-1': '0px 4px 20px rgba(0,0,0,0.04)',
+                        'level-2': '0px 10px 30px rgba(0,0,0,0.08)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        @keyframes vibrate {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(-4px) rotate(-2deg); }
+            40% { transform: translateX(4px) rotate(2deg); }
+            60% { transform: translateX(-4px) rotate(-2deg); }
+            80% { transform: translateX(4px) rotate(2deg); }
+            100% { transform: translateX(0); }
+        }
+        .animate-vibrate {
+            animation: vibrate 0.3s ease-in-out;
+        }
+
+        .hovered { filter: brightness(1.1) contrast(1.1); transform: scale(1.02); transition: all 0.2s; cursor: pointer; z-index: 999; box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.3); }
+        button.hovered, a.hovered { outline: none; }
+        
+        html { scroll-behavior: smooth; }
+        
+        /* Grid definitions */
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
+    <!-- TopNavBar Component -->
+    <nav class="w-full z-50 bg-surface shadow-sm sticky top-0">
+        <div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+            <!-- Brand -->
+            <a class="font-headline-md text-headline-md font-bold text-primary flex items-center gap-2" href="#">
+                <span class="material-symbols-outlined text-4xl">storefront</span>
+                Market Fresh
+            </a>
+            <!-- Desktop Navigation -->
+            <ul class="hidden md:flex gap-lg">
+                <li><a class="text-on-surface-variant font-label-md hover:text-secondary transition-colors duration-200" href="#cat-hortifruti">Hortifruti</a></li>
+                <li><a class="text-on-surface-variant font-label-md hover:text-secondary transition-colors duration-200" href="#cat-laticinios">Laticínios</a></li>
+                <li><a class="text-on-surface-variant font-label-md hover:text-secondary transition-colors duration-200" href="#cat-padaria">Padaria</a></li>
+                <li><a class="text-on-surface-variant font-label-md hover:text-secondary transition-colors duration-200" href="#cat-carnes">Carnes</a></li>
+                <li><a class="text-on-surface-variant font-label-md hover:text-secondary transition-colors duration-200" href="#cat-limpeza">Limpeza</a></li>
+            </ul>
+            <!-- Trailing Icons -->
+            <div class="flex gap-md items-center">
+                <button id="cart-btn" aria-label="shopping_cart" class="bg-primary-container text-on-primary-container px-4 py-2 rounded-full font-label-md flex items-center gap-2 hover:bg-primary hover:text-on-primary transition-colors duration-200 shadow-md transform hover:scale-105">
+                    <span class="material-symbols-outlined">shopping_cart</span>
+                    <span id="cart-counter">0 itens</span>
+                    <span id="cart-total" class="ml-2 border-l border-on-primary-container/30 pl-2 font-bold">R$ 0,00</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow w-full block">
+        <!-- Hero Section -->
+        <section class="relative w-full h-[40vh] min-h-[300px] flex items-center justify-center overflow-hidden bg-surface-container-high px-margin-mobile md:px-margin-desktop">
+            <div class="absolute inset-0 z-0">
+                <div class="w-full h-full bg-primary/10"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-surface/90 via-surface/60 to-transparent"></div>
+            </div>
+            <div class="relative z-10 max-w-container-max mx-auto w-full flex flex-col items-start max-w-2xl">
+                <span class="inline-block px-sm py-xs mb-md bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm rounded-full shadow-sm">Catálogo Completo</span>
+                <h1 class="font-display-lg text-display-lg text-on-background mb-md">
+                    Frescor de Feira,<br/> Direto para Você
+                </h1>
+                <p class="font-body-lg text-body-lg text-on-surface-variant mb-xl max-w-lg">
+                    Os melhores produtos selecionados com carinho para a sua família.
+                </p>
+            </div>
+        </section>
+
+        <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-xl space-y-16" id="catalog-container">
+            <!-- Categories will be injected here by JS -->
+        </div>
+        
+        <!-- Footer Component -->
+        <footer class="w-full py-xl px-margin-mobile md:px-margin-desktop border-t border-outline-variant bg-surface-container-low mt-auto">
+            <div class="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-lg">
+                <div class="text-center md:text-left">
+                    <h4 class="font-headline-sm text-headline-sm font-bold text-primary mb-sm">Market Fresh</h4>
+                    <p class="font-body-md text-body-md text-on-surface-variant">© 2024 Market Fresh. Supporting your healthy lifestyle daily.</p>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="fixed inset-0 z-[100] bg-black/50 hidden items-center justify-center backdrop-blur-sm p-4">
+        <div class="bg-surface w-full max-w-2xl rounded-2xl shadow-level-2 flex flex-col max-h-[90vh]">
+            <!-- Header -->
+            <div class="p-6 border-b border-outline-variant flex justify-between items-center bg-surface-container-lowest rounded-t-2xl">
+                <h2 class="font-headline-lg text-headline-lg text-on-background flex items-center gap-3">
+                    <span class="material-symbols-outlined text-4xl text-primary">shopping_basket</span>
+                    Seu Carrinho
+                </h2>
+                <button id="close-cart-btn" class="p-2 rounded-full hover:bg-surface-container transition-colors text-on-surface-variant">
+                    <span class="material-symbols-outlined text-3xl">close</span>
+                </button>
+            </div>
+            
+            <!-- Items List -->
+            <div id="cart-scroll-container" class="flex-grow overflow-y-auto p-6 bg-surface-container-lowest">
+                <div id="cart-items-list" class="space-y-4">
+                    <!-- Cart items injected here -->
+                </div>
+                <div id="empty-cart-msg" class="text-center py-12 text-on-surface-variant">
+                    <span class="material-symbols-outlined text-6xl mb-4 opacity-50">shopping_cart_off</span>
+                    <p class="font-headline-sm">Seu carrinho está vazio</p>
+                    <p class="font-body-md mt-2">Adicione produtos do catálogo para continuar.</p>
+                </div>
+            </div>
+            
+            <!-- Footer & Checkout -->
+            <div class="p-6 border-t border-outline-variant bg-surface-container-low rounded-b-2xl">
+                <div class="flex justify-between items-end mb-6">
+                    <span class="font-body-lg text-on-surface-variant">Total da Compra</span>
+                    <span id="cart-total-modal" class="font-display-lg text-primary font-bold">R$ 0,00</span>
+                </div>
+                <button id="checkout-btn" class="w-full py-5 rounded-xl bg-primary text-on-primary font-headline-sm font-bold flex items-center justify-center gap-3 hover:bg-surface-tint shadow-lg transition-all transform hover:-translate-y-1 opacity-50 cursor-not-allowed">
+                    <span class="material-symbols-outlined text-3xl">payments</span>
+                    Finalizar Compra
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactions & VisionFlow Integration -->
+    <script>
+        const catalogData = [
+            {
+                id: 'cat-hortifruti',
+                title: 'Hortifruti',
+                icon: 'nutrition',
+                products: [
+                    { id: 'p1', name: 'Maçã Gala', desc: '1kg', price: 8.50, oldPrice: 10.00 },
+                    { id: 'p2', name: 'Banana Prata', desc: 'Cacho', price: 5.90, oldPrice: null },
+                    { id: 'p3', name: 'Alface Crespa', desc: 'Unidade', price: 3.50, oldPrice: null },
+                    { id: 'p4', name: 'Tomate Carmem', desc: '1kg', price: 9.90, oldPrice: 12.50 }
+                ]
+            },
+            {
+                id: 'cat-laticinios',
+                title: 'Laticínios',
+                icon: 'egg_alt',
+                products: [
+                    { id: 'p5', name: 'Leite Integral', desc: '1 Litro', price: 6.50, oldPrice: null },
+                    { id: 'p6', name: 'Queijo Mussarela', desc: 'Fatiado 200g', price: 12.90, oldPrice: 15.00 },
+                    { id: 'p7', name: 'Iogurte Natural', desc: 'Copo 170g', price: 3.20, oldPrice: null },
+                    { id: 'p8', name: 'Manteiga Extra', desc: 'Pote 200g', price: 14.50, oldPrice: null }
+                ]
+            },
+            {
+                id: 'cat-padaria',
+                title: 'Padaria',
+                icon: 'bakery_dining',
+                products: [
+                    { id: 'p9', name: 'Pão Francês', desc: '1kg', price: 18.90, oldPrice: null },
+                    { id: 'p10', name: 'Pão de Forma', desc: 'Pacote 400g', price: 7.50, oldPrice: 8.90 },
+                    { id: 'p11', name: 'Bolo de Fubá', desc: 'Unidade', price: 15.00, oldPrice: null },
+                    { id: 'p12', name: 'Croissant', desc: 'Unidade', price: 5.50, oldPrice: null }
+                ]
+            },
+            {
+                id: 'cat-carnes',
+                title: 'Carnes',
+                icon: 'set_meal',
+                products: [
+                    { id: 'p13', name: 'Alcatra Bovina', desc: '1kg', price: 45.90, oldPrice: 52.00 },
+                    { id: 'p14', name: 'Peito de Frango', desc: 'Bandeja 1kg', price: 19.90, oldPrice: null },
+                    { id: 'p15', name: 'Linguiça Toscana', desc: '1kg', price: 22.50, oldPrice: 25.00 },
+                    { id: 'p16', name: 'Carne Moída', desc: 'Bandeja 500g', price: 18.90, oldPrice: null }
+                ]
+            },
+            {
+                id: 'cat-limpeza',
+                title: 'Limpeza',
+                icon: 'cleaning_services',
+                products: [
+                    { id: 'p17', name: 'Sabão em Pó', desc: 'Caixa 1kg', price: 14.90, oldPrice: null },
+                    { id: 'p18', name: 'Amaciante', desc: '2 Litros', price: 11.50, oldPrice: 13.90 },
+                    { id: 'p19', name: 'Detergente', desc: '500ml', price: 2.50, oldPrice: null },
+                    { id: 'p20', name: 'Água Sanitária', desc: '1 Litro', price: 4.50, oldPrice: 5.20 }
+                ]
+            }
+        ];
+
+        // Format currency
+        const formatMoney = (val) => val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+        // Render Catalog
+        const catalogContainer = document.getElementById('catalog-container');
+        
+        catalogData.forEach(cat => {
+            const catSection = document.createElement('section');
+            catSection.id = cat.id;
+            catSection.className = 'scroll-mt-32'; // offset for sticky header
+            
+            let productsHtml = cat.products.map(p => `
+                <div class="bg-surface rounded-2xl shadow-level-1 hover:shadow-level-2 transition-all duration-300 overflow-hidden group flex flex-col border border-outline-variant/30">
+                    <div class="h-48 bg-surface-container-low flex items-center justify-center p-md relative">
+                        <!-- Placeholder for image -->
+                        <div class="w-24 h-24 bg-surface-variant rounded-full flex items-center justify-center text-outline">
+                            <span class="material-symbols-outlined text-4xl">image</span>
+                        </div>
+                        ${p.oldPrice ? `<span class="absolute top-4 left-4 bg-error text-on-error px-3 py-1 rounded-full font-bold text-sm shadow-md">Oferta</span>` : ''}
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <div class="flex-grow">
+                            <h3 class="font-headline-sm text-headline-sm text-on-background mb-1">${p.name}</h3>
+                            <p class="font-body-md text-body-md text-on-surface-variant mb-6">${p.desc}</p>
+                        </div>
+                        <div class="flex flex-col gap-4 mt-auto">
+                            <div class="flex items-baseline gap-2">
+                                <span class="font-headline-md text-headline-md text-primary font-bold">${formatMoney(p.price)}</span>
+                                ${p.oldPrice ? `<span class="text-sm line-through text-outline">${formatMoney(p.oldPrice)}</span>` : ''}
+                            </div>
+                            <button onclick="addToCart('${p.id}', '${p.name}', ${p.price})" class="w-full py-4 rounded-xl bg-primary-container text-on-primary-container font-label-md font-bold hover:bg-primary hover:text-on-primary flex items-center justify-center gap-2 transition-all shadow-md transform hover:scale-105 active:scale-95">
+                                <span class="material-symbols-outlined">add_shopping_cart</span> Adicionar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            catSection.innerHTML = `
+                <div class="mb-8">
+                    <h2 class="font-headline-lg text-headline-lg text-on-background flex items-center gap-3 border-b-2 border-primary/20 pb-4 inline-flex">
+                        <span class="material-symbols-outlined text-primary text-4xl">${cat.icon}</span>
+                        ${cat.title}
+                    </h2>
+                </div>
+                <div class="catalog-grid">
+                    ${productsHtml}
+                </div>
+            `;
+            catalogContainer.appendChild(catSection);
+        });
+
+        // Cart State
+        let cart = {};
+
+        function addToCart(id, name, price) {
+            if (cart[id]) {
+                cart[id].qty++;
+            } else {
+                cart[id] = { name, price, qty: 1 };
+            }
+            updateCartUI();
+            
+            // Pop animation on cart button
+            const btn = document.getElementById('cart-btn');
+            btn.classList.add('scale-110', 'bg-tertiary-container', 'text-on-tertiary-container');
+            btn.classList.remove('bg-primary-container', 'text-on-primary-container');
+            setTimeout(() => {
+                btn.classList.remove('scale-110', 'bg-tertiary-container', 'text-on-tertiary-container');
+                btn.classList.add('bg-primary-container', 'text-on-primary-container');
+            }, 300);
+        }
+
+        // Export to window so inline onclick works inside the template literal
+        window.addToCart = addToCart;
+        
+        function updateItemQty(id, delta) {
+            if (cart[id]) {
+                cart[id].qty += delta;
+                if (cart[id].qty <= 0) {
+                    delete cart[id];
+                }
+                updateCartUI();
+            }
+        }
+        window.updateItemQty = updateItemQty;
+
+        function updateCartUI() {
+            const itemsList = document.getElementById('cart-items-list');
+            const emptyMsg = document.getElementById('empty-cart-msg');
+            const checkoutBtn = document.getElementById('checkout-btn');
+            
+            let totalQty = 0;
+            let totalPrice = 0;
+            let html = '';
+
+            const keys = Object.keys(cart);
+            if (keys.length === 0) {
+                emptyMsg.style.display = 'block';
+                itemsList.style.display = 'none';
+                checkoutBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                checkoutBtn.classList.remove('hover:-translate-y-1', 'hover:bg-surface-tint');
+            } else {
+                emptyMsg.style.display = 'none';
+                itemsList.style.display = 'block';
+                checkoutBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                checkoutBtn.classList.add('hover:-translate-y-1', 'hover:bg-surface-tint');
+
+                keys.forEach(id => {
+                    const item = cart[id];
+                    totalQty += item.qty;
+                    const itemTotal = item.qty * item.price;
+                    totalPrice += itemTotal;
+
+                    html += `
+                        <div class="flex items-center justify-between bg-surface p-4 rounded-xl shadow-sm border border-outline-variant/30">
+                            <div class="flex flex-col">
+                                <span class="font-headline-sm text-on-background">${item.name}</span>
+                                <span class="font-body-md text-primary font-bold">${formatMoney(item.price)} <span class="text-on-surface-variant font-normal text-sm">/ un</span></span>
+                            </div>
+                            <div class="flex items-center gap-4 bg-surface-container rounded-lg p-1">
+                                <button onclick="updateItemQty('${id}', -1)" class="w-10 h-10 rounded-md bg-surface flex items-center justify-center text-on-surface shadow hover:bg-error hover:text-on-error transition-colors">
+                                    <span class="material-symbols-outlined">${item.qty === 1 ? 'delete' : 'remove'}</span>
+                                </button>
+                                <span class="font-headline-md w-8 text-center">${item.qty}</span>
+                                <button onclick="updateItemQty('${id}', 1)" class="w-10 h-10 rounded-md bg-surface flex items-center justify-center text-on-surface shadow hover:bg-primary hover:text-on-primary transition-colors">
+                                    <span class="material-symbols-outlined">add</span>
+                                </button>
+                            </div>
+                            <div class="font-headline-sm text-on-background w-24 text-right">
+                                ${formatMoney(itemTotal)}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                itemsList.innerHTML = html;
+            }
+
+            document.getElementById('cart-counter').textContent = `${totalQty} itens`;
+            document.getElementById('cart-total').textContent = formatMoney(totalPrice);
+            document.getElementById('cart-total-modal').textContent = formatMoney(totalPrice);
+        }
+
+        // Cart Modal Logic
+        const cartModal = document.getElementById('cart-modal');
+        document.getElementById('cart-btn').addEventListener('click', () => {
+            cartModal.classList.remove('hidden');
+            cartModal.classList.add('flex');
+        });
+
+        document.getElementById('close-cart-btn').addEventListener('click', () => {
+            cartModal.classList.add('hidden');
+            cartModal.classList.remove('flex');
+        });
+
+        document.getElementById('checkout-btn').addEventListener('click', () => {
+            if (Object.keys(cart).length > 0) {
+                alert('Compra finalizada com sucesso! (Simulação)');
+                cart = {};
+                updateCartUI();
+                cartModal.classList.add('hidden');
+                cartModal.classList.remove('flex');
+            }
+        });
+
+        // VisionFlow Iframe Integration
+        let currentHoverElement = null;
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'VISIONFLOW_CLICK') {
+                const el = document.elementFromPoint(event.data.x, event.data.y);
+                if (el) {
+                    el.click();
+                }
+            } else if (event.data.type === 'VISIONFLOW_HOVER') {
+                const el = document.elementFromPoint(event.data.x, event.data.y);
+                if (currentHoverElement !== el) {
+                    if (currentHoverElement) {
+                        currentHoverElement.dispatchEvent(new MouseEvent('mouseout', { bubbles: true }));
+                        currentHoverElement.classList.remove('hovered');
+                    }
+                    if (el && event.data.x >= 0 && event.data.y >= 0) {
+                        el.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+                        el.classList.add('hovered');
+                    }
+                    currentHoverElement = el;
+                }
+            } else if (event.data.type === 'VISIONFLOW_DRAG') {
+                const dy = event.data.dy;
+                const modalScroll = document.getElementById('cart-scroll-container');
+                
+                // Se o modal do carrinho estiver aberto, scrolla ele, senão a janela (body)
+                if (!cartModal.classList.contains('hidden') && modalScroll) {
+                    modalScroll.scrollBy({ top: -dy * 2, behavior: 'auto' });
+                } else {
+                    window.scrollBy(0, -dy * 2);
+                }
+            } else if (event.data.type === 'VISIONFLOW_SCROLL') {
+                const dy = event.data.dy;
+                const modalScroll = document.getElementById('cart-scroll-container');
+                
+                if (!cartModal.classList.contains('hidden') && modalScroll) {
+                    modalScroll.scrollBy({ top: dy * 2, behavior: 'auto' });
+                } else {
+                    window.scrollBy(0, dy * 2);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
