@@ -7,1136 +7,1151 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary": "#DC2626", /* Hospital Red */
+                      "secondary": "#465f88",
+                      "tertiary": "#050b12",
+                      "surface": "#f9f9f9",
+                      "on-surface": "#1a1c1c",
+                      "surface-variant": "#e2e2e2",
+                      "on-surface-variant": "#44474e",
+                      "outline": "#74777f",
+                      "outline-variant": "#c4c6cf",
+                      "primary-container": "#ffdad6",
+                      "on-primary-container": "#410002",
+                      "secondary-container": "#d7e2ff",
+                      "on-secondary-container": "#001a40",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container-low": "#f3f3f4",
+                      "surface-container": "#eeeeee",
+                      "surface-container-high": "#e8e8e8",
+                      "surface-container-highest": "#e2e2e2",
+                      "error": "#ba1a1a",
+                      "on-error": "#ffffff"
+              },
+              "spacing": {
+                      "unit": "8px",
+                      "stack-sm": "8px",
+                      "stack-md": "16px",
+                      "stack-lg": "32px",
+                      "gutter": "24px",
+                      "margin-page": "40px"
+              },
+              "fontFamily": {
+                      "sans": ["Atkinson Hyperlegible Next", "sans-serif"],
+                      "headline-xl": ["Atkinson Hyperlegible Next", "sans-serif"],
+                      "headline-md": ["Atkinson Hyperlegible Next", "sans-serif"],
+                      "body-lg": ["Atkinson Hyperlegible Next", "sans-serif"]
+              }
+            }
+          }
+        }
+</script>
 <style>
         :root {
-            --wing-north: #3b82f6; /* Blue */
-            --wing-south: #ef4444; /* Red */
-            --wing-east: #8b5cf6;  /* Violet */
-            --wing-west: #06b6d4;  /* Cyan */
+            --wing-north: #3b82f6;
+            --wing-south: #ef4444;
+            --wing-east: #8b5cf6;
+            --wing-west: #06b6d4;
+        }
+
+        body {
+            font-family: 'Atkinson Hyperlegible Next', sans-serif;
         }
 
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-size: 24px;
         }
         
         /* Layout & Gestures */
         .hovered { filter: brightness(1.1) contrast(1.1); transform: scale(1.02); transition: all 0.2s; cursor: pointer; z-index: 9999; }
-        .bg-radial-gradient { background: radial-gradient(circle at center, white 0%, transparent 70%); }
         
-        /* 3D Map Utilities */
-        .perspective-1000 { perspective: 2000px; }
-        .transform-style-3d { transform-style: preserve-3d; }
-        .translate-z-4 { transform: translateZ(40px); }
-        .translate-z-8 { transform: translateZ(80px); }
-        .translate-z-12 { transform: translateZ(120px); }
-
-        @keyframes dash {
-            to { stroke-dashoffset: -32; }
-        }
-
-        @keyframes pulse-marker {
-            0% { transform: translateZ(50px) scale(1); opacity: 1; }
-            50% { transform: translateZ(70px) scale(1.2); opacity: 0.7; }
-            100% { transform: translateZ(50px) scale(1); opacity: 1; }
-        }
-
-        @keyframes pulse-custom {
-            0% { transform: scale(1); filter: brightness(1); }
-            50% { transform: scale(1.1); filter: brightness(1.2); }
-            100% { transform: scale(1); filter: brightness(1); }
-        }
-
-        @keyframes slide-up {
-            from { transform: translate(-50%, 100%); opacity: 0; }
-            to { transform: translate(-50%, 0); opacity: 1; }
-        }
-
         .shadow-glow {
-            filter: drop-shadow(0 0 8px var(--wing-south));
+            filter: drop-shadow(0 0 12px rgba(220, 38, 38, 0.4));
         }
 
-
-        /* 3D Room Walls - Enhanced with Glassmorphism and Lighting */
-        .room-3d {
-            position: absolute;
-            transform-style: preserve-3d;
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            background-image: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 100%);
+        /* Appointment Calendar Styles */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 12px;
+        }
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 700;
+        }
+        .calendar-day:hover:not(.disabled) {
+            background: rgba(220, 38, 38, 0.1);
+            color: #DC2626;
+        }
+        .calendar-day.selected {
+            background: #DC2626 !important;
+            color: white !important;
+            box-shadow: 0 10px 25px -5px rgba(220, 38, 38, 0.4);
+        }
+        .calendar-day.disabled {
+            opacity: 0.2;
+            cursor: not-allowed;
+        }
+        
+        .service-chip {
+            padding: 20px;
+            border-radius: 24px;
+            border: 2px solid #e5e7eb;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: white;
+        }
+        .service-chip:hover {
+            border-color: #DC2626;
+            transform: translateY(-4px);
+        }
+        .service-chip.selected {
+            border-color: #DC2626;
+            background: rgba(220, 38, 38, 0.05);
+            box-shadow: 0 15px 30px -10px rgba(220, 38, 38, 0.1);
         }
 
-        .room-3d:hover {
-            transform: translateZ(60px) scale(1.05);
-            background: rgba(255, 255, 255, 0.85);
-            box-shadow: 0 60px 120px rgba(0,0,0,0.25);
-            z-index: 100;
-        }
-
-        .glass-roof {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 100%);
-            pointer-events: none;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-        }
-
-        /* Front Wall / Floor shadow with Lighting and Baseboard */
-        .room-3d::before {
-            content: '';
-            position: absolute;
-            bottom: -20px;
-            left: 0;
-            width: 100%;
-            height: 20px;
-            background: inherit;
-            filter: brightness(0.85);
-            transform: rotateX(-90deg);
-            transform-origin: bottom;
-            background-image: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, transparent 80%);
-            border-bottom: 4px solid rgba(0,0,0,0.2); /* Baseboard Detail */
-        }
-
-        /* Side Wall with Depth and Edge Lighting */
-        .room-3d::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: -20px;
-            width: 20px;
-            height: 100%;
-            background: inherit;
-            filter: brightness(0.75);
-            transform: rotateY(90deg);
-            transform-origin: left;
-            background-image: linear-gradient(to left, rgba(0,0,0,0.15) 0%, transparent 90%);
-            border-left: 2px solid rgba(255,255,255,0.3); /* Edge Lighting */
-            border-bottom: 4px solid rgba(0,0,0,0.25); /* Baseboard Detail */
-        }
-
-        /* Global Lighting & Vignette */
+        /* --- 2D Blueprint Map Styles --- */
         #map-container {
-            background: radial-gradient(circle at center, #ffffff 0%, #f3f4f6 100%) !important;
-            overflow: hidden;
+            background: #f8f9fb;
+            background-image: radial-gradient(#d1d5db 1px, transparent 1px);
+            background-size: 40px 40px;
         }
-
-        #map-container::after {
-            content: '';
+        .map-2d-room {
             position: absolute;
-            inset: 0;
-            background: radial-gradient(circle, transparent 65%, rgba(0,0,0,0.05) 90%, rgba(0,0,0,0.1) 100%);
-            pointer-events: none;
-            z-index: 50;
-            border-radius: 1rem;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
-
-        /* Marker Pulse Enhancement */
-        .animate-ping {
-            animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
-            background: var(--wing-north);
-            opacity: 0.4;
+        .map-2d-room:hover {
+            border-color: #DC2626;
+            transform: scale(1.02) translateY(-4px);
+            z-index: 20;
         }
-
-        @keyframes ping {
-            75%, 100% {
-                transform: scale(2.5);
-                opacity: 0;
-            }
+        .map-2d-room.active {
+            border-color: #DC2626;
+            background: rgba(220, 38, 38, 0.05);
+            box-shadow: 0 0 20px rgba(220, 38, 38, 0.2);
         }
-
-        /* Glass Effect for ICU */
-        .glass-room {
-            background: rgba(255, 255, 255, 0.1) !important;
-            backdrop-filter: blur(8px);
-            border: 2px solid rgba(255, 255, 255, 0.5) !important;
+        .room-label {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 6px;
+            color: #4b5563;
         }
-
-        .glass-room::before, .glass-room::after {
-            background: rgba(255, 255, 255, 0.2) !important;
-            backdrop-filter: blur(4px);
+        .corridor-h, .corridor-v { 
+            background: #f1f5f9; 
+            position: absolute; 
+            background-image: 
+                linear-gradient(to right, #e2e8f0 1px, transparent 1px),
+                linear-gradient(to bottom, #e2e8f0 1px, transparent 1px);
+            background-size: 20px 20px;
         }
-
-        /* Door Indicator */
+        .corridor-h { height: 60px; border-top: 2px solid #cbd5e1; border-bottom: 2px solid #cbd5e1; }
+        .corridor-v { width: 60px; border-left: 2px solid #cbd5e1; border-right: 2px solid #cbd5e1; }
+        
         .door {
             position: absolute;
-            background: rgba(0,0,0,0.2);
-            width: 30px;
+            width: 32px;
             height: 4px;
-            bottom: -2px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        /* Corridor Column */
-        .column-3d {
-            position: absolute;
-            width: 15px;
-            height: 15px;
-            background: #e2e8f0;
-            transform: translateZ(60px);
-            transform-style: preserve-3d;
-        }
-        .column-3d::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 15px;
-            height: 60px;
             background: #cbd5e1;
-            transform: rotateX(-90deg);
-            transform-origin: bottom;
+            border-radius: 2px;
         }
-        .column-3d::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 15px;
-            height: 60px;
-            background: #94a3b8;
-            transform: rotateY(90deg);
-            transform-origin: right;
-        }
-    </style>
 
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "on-surface-variant": "#5c403c",
-                        "surface": "#f8f9fb",
-                        "inverse-on-surface": "#f0f1f3",
-                        "on-error-container": "#93000a",
-                        "on-secondary-fixed-variant": "#3c475a",
-                        "on-secondary-fixed": "#111c2d",
-                        "surface-dim": "#d9dadc",
-                        "primary-container": "#dc2626",
-                        "on-secondary-container": "#586377",
-                        "on-primary": "#ffffff",
-                        "tertiary": "#51596f",
-                        "tertiary-container": "#6a7188",
-                        "error-container": "#ffdad6",
-                        "primary-fixed": "#ffdad6",
-                        "secondary": "#545f73",
-                        "surface-variant": "#e1e2e4",
-                        "on-primary-container": "#fff6f5",
-                        "tertiary-fixed-dim": "#bec6e0",
-                        "inverse-surface": "#2e3132",
-                        "outline": "#916f6b",
-                        "on-secondary": "#ffffff",
-                        "secondary-container": "#d5e0f8",
-                        "primary-fixed-dim": "#ffb4ab",
-                        "surface-container-high": "#e7e8ea",
-                        "on-error": "#ffffff",
-                        "secondary-fixed": "#d8e3fb",
-                        "tertiary-fixed": "#dae2fd",
-                        "on-primary-fixed": "#410002",
-                        "surface-tint": "#bf0715",
-                        "background": "#f8f9fb",
-                        "on-background": "#191c1e",
-                        "surface-container-low": "#f3f4f6",
-                        "on-tertiary-container": "#f8f7ff",
-                        "on-primary-fixed-variant": "#93000b",
-                        "on-tertiary-fixed": "#131b2e",
-                        "outline-variant": "#e6bdb8",
-                        "on-tertiary": "#ffffff",
-                        "on-tertiary-fixed-variant": "#3f465c",
-                        "surface-container": "#edeef0",
-                        "surface-container-highest": "#e1e2e4",
-                        "surface-bright": "#f8f9fb",
-                        "primary": "#b70011",
-                        "inverse-primary": "#ffb4ab",
-                        "error": "#ba1a1a",
-                        "surface-container-lowest": "#ffffff",
-                        "on-surface": "#191c1e",
-                        "secondary-fixed-dim": "#bcc7de"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "full": "9999px"
-                    },
-                    "spacing": {
-                        "stack-md": "24px",
-                        "stack-lg": "40px",
-                        "stack-sm": "12px",
-                        "touch-target-min": "80px",
-                        "gutter": "24px",
-                        "margin-page": "48px"
-                    },
-                    "fontFamily": {
-                        "headline-lg": ["Atkinson Hyperlegible Next"],
-                        "label-lg": ["Atkinson Hyperlegible Next"],
-                        "emergency-label": ["Atkinson Hyperlegible Next"],
-                        "headline-md": ["Atkinson Hyperlegible Next"],
-                        "headline-xl": ["Atkinson Hyperlegible Next"],
-                        "body-lg": ["Atkinson Hyperlegible Next"],
-                        "label-xl": ["Atkinson Hyperlegible Next"],
-                        "body-md": ["Atkinson Hyperlegible Next"]
-                    },
-                    "fontSize": {
-                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
-                        "label-lg": ["18px", { "lineHeight": "20px", "fontWeight": "600" }],
-                        "emergency-label": ["24px", { "lineHeight": "24px", "letterSpacing": "0.05em", "fontWeight": "800" }],
-                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
-                        "headline-xl": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
-                        "body-lg": ["20px", { "lineHeight": "30px", "fontWeight": "400" }],
-                        "label-xl": ["22px", { "lineHeight": "24px", "fontWeight": "600" }],
-                        "body-md": ["18px", { "lineHeight": "28px", "fontWeight": "400" }]
-                    }
-                }
-            }
+        @keyframes dash {
+            to { stroke-dashoffset: -100; }
         }
-    </script>
+
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+</style>
 </head>
-<body class="bg-background text-on-background min-h-screen flex flex-col font-body-lg text-body-lg antialiased selection:bg-primary-container selection:text-on-primary-container relative">
-<!-- TopAppBar -->
-<header class="fixed top-0 z-50 bg-white/80 dark:bg-inverse-surface/80 backdrop-blur-xl docked full-width flex justify-between items-center w-full px-margin-page h-[120px] shadow-md transition-all duration-300 border-none">
-<div class="flex items-center gap-stack-sm">
-<span class="material-symbols-outlined text-[40px] text-primary" data-icon="local_hospital">local_hospital</span>
-<span class="font-headline-lg text-headline-lg font-bold text-primary dark:text-inverse-primary tracking-tight">Hospital Central</span>
+<body class="bg-surface font-sans min-h-screen flex flex-col text-on-surface overflow-x-hidden">
+
+<!-- Emergency Overlay -->
+<div id="emergency-overlay" class="fixed inset-0 z-[200] hidden bg-primary flex-col items-center justify-center text-white text-center p-stack-lg animate-pulse">
+    <span class="material-symbols-outlined text-[120px] mb-8" style="font-variation-settings: 'FILL' 1;">emergency_share</span>
+    <h1 class="text-6xl font-black mb-4 uppercase tracking-tighter">Protocolo de Emergência Ativado</h1>
+    <p class="text-2xl opacity-90 max-w-2xl mb-12">Nossa equipe médica foi notificada. Por favor, permaneça no local. Um atendente está a caminho.</p>
+    
+    <div class="relative w-[200px] h-[200px] flex items-center justify-center">
+        <svg class="absolute inset-0 w-full h-full -rotate-90">
+            <circle cx="100" cy="100" r="85" fill="transparent" stroke="rgba(255,255,255,0.2)" stroke-width="12" />
+            <circle id="cancel-progress" cx="100" cy="100" r="85" fill="transparent" stroke="white" stroke-width="12" stroke-dasharray="534" stroke-dashoffset="534" stroke-linecap="round" />
+        </svg>
+        <button id="cancel-emergency-btn" class="interactable relative z-10 w-32 h-32 bg-white text-primary rounded-full font-black uppercase text-sm flex flex-col items-center justify-center hover:scale-105 transition-transform shadow-2xl">
+            <span>Cancelar</span>
+            <span class="text-[10px] opacity-70">Segure</span>
+        </button>
+    </div>
 </div>
-<button class="bg-[#DC2626] text-on-primary flex items-center justify-center gap-stack-sm px-[40px] h-touch-target-min rounded-xl shadow-lg hover:shadow-xl hover:scale-[0.98] transition-all duration-200 border border-[#b70011]">
-<span class="material-symbols-outlined text-[32px]" data-icon="emergency" data-weight="fill" style="font-variation-settings: 'FILL' 1;">emergency</span>
-<span class="font-emergency-label text-emergency-label uppercase">EMERGÊNCIA: 192</span>
+
+<!-- Header -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-page h-[120px] bg-white/90 backdrop-blur-xl border-b border-surface-variant shadow-sm">
+<div class="flex items-center gap-stack-md">
+<div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center shadow-lg shadow-red-500/20">
+<span class="material-symbols-outlined text-white text-[40px]" style="font-variation-settings: 'FILL' 1;">local_hospital</span>
+</div>
+<div>
+<h1 class="text-3xl font-black text-on-surface tracking-tighter">Hospital Central</h1>
+<p class="text-xs font-bold text-secondary uppercase tracking-[0.2em]">Unidade de Pronto Atendimento</p>
+</div>
+</div>
+<div class="flex items-center gap-stack-lg">
+<div class="text-right hidden md:block mr-8">
+<p id="current-time" class="text-3xl font-black text-on-surface">14:45</p>
+<p id="current-date" class="text-xs font-bold text-secondary uppercase tracking-wider">Domingo, 10 de Maio</p>
+</div>
+<button class="bg-primary text-white flex items-center justify-center gap-stack-sm px-10 h-16 rounded-2xl shadow-xl hover:shadow-2xl hover:scale-[0.98] transition-all duration-200 border-2 border-red-700">
+<span class="material-symbols-outlined text-[32px]" style="font-variation-settings: 'FILL' 1;">emergency</span>
+<span class="font-black uppercase tracking-wider">EMERGÊNCIA: 192</span>
 </button>
+</div>
 </header>
+
 <!-- Main Canvas -->
 <main class="flex-grow pt-[160px] pb-[160px] px-margin-page flex flex-col">
 <div class="max-w-[1400px] mx-auto w-full flex-grow flex flex-col justify-center">
-<div class="mb-stack-lg text-center flex flex-col items-center">
-    <h1 class="font-headline-xl text-headline-xl text-on-surface mb-stack-sm">Como podemos ajudar?</h1>
-    <p class="font-body-lg text-body-lg text-secondary mb-stack-md">Selecione uma das opções abaixo para iniciar seu atendimento.</p>
+<div class="mb-16 text-center flex flex-col items-center">
+    <h1 class="text-5xl font-black text-on-surface mb-4 tracking-tighter">Como podemos ajudar?</h1>
+    <p class="text-xl font-medium text-secondary">Selecione uma das opções abaixo para iniciar seu atendimento.</p>
     
-    <!-- Botão de Triagem (Hero) -->
-    <button id="btn-triage" class="bg-[#DC2626] text-on-primary flex items-center justify-center gap-stack-sm px-[60px] h-[100px] rounded-2xl shadow-[0_8px_30px_rgba(220,38,38,0.3)] hover:shadow-[0_12px_40px_rgba(220,38,38,0.4)] hover:scale-[0.98] transition-all duration-200 border border-[#b70011] group mb-8">
-        <span class="material-symbols-outlined text-[40px] group-hover:rotate-12 transition-transform" data-icon="confirmation_number">confirmation_number</span>
-        <span class="font-headline-md text-headline-md uppercase tracking-tight">Retirar Senha de Triagem</span>
+    <button id="btn-triage" class="interactable mt-12 bg-primary text-white flex items-center justify-center gap-4 px-12 h-24 rounded-[32px] shadow-[0_20px_40px_rgba(220,38,38,0.25)] hover:shadow-[0_25px_50px_rgba(220,38,38,0.35)] hover:scale-[0.98] transition-all duration-300 border-b-4 border-red-800 group">
+        <span class="material-symbols-outlined text-[44px] group-hover:rotate-12 transition-transform" style="font-variation-settings: 'FILL' 1;">confirmation_number</span>
+        <span class="text-2xl font-black uppercase tracking-tight">Retirar Senha de Triagem</span>
     </button>
 </div>
+
 <!-- Services Grid -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 <!-- Card 1 -->
-<button class="group bg-surface-container-lowest border border-surface-variant rounded-2xl p-stack-lg flex flex-col items-center justify-center text-center h-[280px] shadow-[0_4px_20px_rgba(84,95,115,0.05)] hover:shadow-[0_12px_40px_rgba(84,95,115,0.12)] hover:-translate-y-2 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary-container">
-<div class="w-[80px] h-[80px] rounded-full bg-secondary-container flex items-center justify-center mb-stack-md group-hover:bg-primary-container transition-colors duration-300">
-<span class="material-symbols-outlined text-[40px] text-on-secondary-container group-hover:text-on-primary-container transition-colors duration-300" data-icon="how_to_reg">how_to_reg</span>
+<button id="card-checkin" class="interactable group bg-surface-container-lowest border border-surface-variant rounded-[32px] p-10 flex flex-col items-center justify-center text-center h-[300px] shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.1)] hover:-translate-y-3 transition-all duration-500">
+<div class="w-24 h-24 rounded-full bg-secondary-container flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+<span class="material-symbols-outlined text-[48px] text-on-secondary-container">how_to_reg</span>
 </div>
-<span class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors duration-300">Check-in de Consultas</span>
+<span class="text-2xl font-black text-on-surface group-hover:text-primary transition-colors">Check-in / Chegada</span>
 </button>
+
 <!-- Card 2 -->
-<button class="group bg-surface-container-lowest border border-surface-variant rounded-2xl p-stack-lg flex flex-col items-center justify-center text-center h-[280px] shadow-[0_4px_20px_rgba(84,95,115,0.05)] hover:shadow-[0_12px_40px_rgba(84,95,115,0.12)] hover:-translate-y-2 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary-container">
-<div class="w-[80px] h-[80px] rounded-full bg-secondary-container flex items-center justify-center mb-stack-md group-hover:bg-primary-container transition-colors duration-300">
-<span class="material-symbols-outlined text-[40px] text-on-secondary-container group-hover:text-on-primary-container transition-colors duration-300" data-icon="science">science</span>
+<button id="card-results" class="interactable group bg-surface-container-lowest border border-surface-variant rounded-[32px] p-10 flex flex-col items-center justify-center text-center h-[300px] shadow-[0_8px_30_rgba(0,0,0,0.04)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.1)] hover:-translate-y-3 transition-all duration-500">
+<div class="w-24 h-24 rounded-full bg-primary-container flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+<span class="material-symbols-outlined text-[48px] text-on-primary-container">biotech</span>
 </div>
-<span class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors duration-300">Resultados de Exames</span>
+<span class="text-2xl font-black text-on-surface group-hover:text-primary transition-colors">Resultados de Exames</span>
 </button>
+
 <!-- Card 3 -->
-<button class="group bg-surface-container-lowest border border-surface-variant rounded-2xl p-stack-lg flex flex-col items-center justify-center text-center h-[280px] shadow-[0_4px_20px_rgba(84,95,115,0.05)] hover:shadow-[0_12px_40px_rgba(84,95,115,0.12)] hover:-translate-y-2 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary-container">
-<div class="w-[80px] h-[80px] rounded-full bg-secondary-container flex items-center justify-center mb-stack-md group-hover:bg-primary-container transition-colors duration-300">
-<span class="material-symbols-outlined text-[40px] text-on-secondary-container group-hover:text-on-primary-container transition-colors duration-300" data-icon="calendar_month">calendar_month</span>
+<button id="card-appointment" class="interactable group bg-surface-container-lowest border border-surface-variant rounded-[32px] p-10 flex flex-col items-center justify-center text-center h-[300px] shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.1)] hover:-translate-y-3 transition-all duration-500">
+<div class="w-24 h-24 rounded-full bg-secondary-container flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+<span class="material-symbols-outlined text-[48px] text-on-secondary-container">calendar_month</span>
 </div>
-<span class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors duration-300">Agendamento</span>
+<span class="text-2xl font-black text-on-surface group-hover:text-primary transition-colors">Agendar Consulta</span>
 </button>
+
 <!-- Card 4 -->
-<button class="group bg-surface-container-lowest border border-surface-variant rounded-2xl p-stack-lg flex flex-col items-center justify-center text-center h-[280px] shadow-[0_4px_20px_rgba(84,95,115,0.05)] hover:shadow-[0_12px_40px_rgba(84,95,115,0.12)] hover:-translate-y-2 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary-container">
-<div class="w-[80px] h-[80px] rounded-full bg-secondary-container flex items-center justify-center mb-stack-md group-hover:bg-primary-container transition-colors duration-300">
-<span class="material-symbols-outlined text-[40px] text-on-secondary-container group-hover:text-on-primary-container transition-colors duration-300" data-icon="info">info</span>
+<button id="card-visitors" class="interactable group bg-surface-container-lowest border border-surface-variant rounded-[32px] p-10 flex flex-col items-center justify-center text-center h-[300px] shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.1)] hover:-translate-y-3 transition-all duration-500">
+<div class="w-24 h-24 rounded-full bg-secondary-container flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+<span class="material-symbols-outlined text-[48px] text-on-secondary-container">group</span>
 </div>
-<span class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors duration-300">Informações de Visitantes</span>
+<span class="text-2xl font-black text-on-surface group-hover:text-primary transition-colors">Informações de Visitantes</span>
 </button>
+
 <!-- Card 5 -->
-<button class="group bg-surface-container-lowest border border-surface-variant rounded-2xl p-stack-lg flex flex-col items-center justify-center text-center h-[280px] shadow-[0_4px_20px_rgba(84,95,115,0.05)] hover:shadow-[0_12px_40px_rgba(84,95,115,0.12)] hover:-translate-y-2 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary-container">
-<div class="w-[80px] h-[80px] rounded-full bg-secondary-container flex items-center justify-center mb-stack-md group-hover:bg-primary-container transition-colors duration-300">
-<span class="material-symbols-outlined text-[40px] text-on-secondary-container group-hover:text-on-primary-container transition-colors duration-300" data-icon="map">map</span>
+<button id="card-map" class="interactable group bg-surface-container-lowest border border-surface-variant rounded-[32px] p-10 flex flex-col items-center justify-center text-center h-[300px] shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.1)] hover:-translate-y-3 transition-all duration-500">
+<div class="w-24 h-24 rounded-full bg-secondary-container flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+<span class="material-symbols-outlined text-[48px] text-on-secondary-container">map</span>
 </div>
-<span class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors duration-300">Mapa do Hospital</span>
+<span class="text-2xl font-black text-on-surface group-hover:text-primary transition-colors">Mapa do Hospital</span>
 </button>
-<!-- Card 6: Emergency - High Contrast -->
-<button class="group bg-[#DC2626] rounded-2xl p-stack-lg flex flex-col items-center justify-center text-center h-[280px] shadow-[0_8px_30px_rgba(220,38,38,0.3)] hover:shadow-[0_12px_40px_rgba(220,38,38,0.4)] hover:-translate-y-2 hover:bg-[#b70011] transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-offset-4 focus:ring-[#DC2626] focus:ring-offset-background border border-transparent">
-<div class="w-[80px] h-[80px] rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mb-stack-md">
-<span class="material-symbols-outlined text-[40px] text-white" data-icon="vital_signs" data-weight="fill" style="font-variation-settings: 'FILL' 1;">vital_signs</span>
+
+<!-- Card 6: Emergency -->
+<button id="card-emergency" class="interactable group bg-primary rounded-[32px] p-10 flex flex-col items-center justify-center text-center h-[300px] shadow-[0_20px_40px_rgba(220,38,38,0.2)] hover:shadow-[0_25px_60px_rgba(220,38,38,0.3)] hover:-translate-y-3 transition-all duration-500 border-b-4 border-red-800">
+<div class="w-24 h-24 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+<span class="material-symbols-outlined text-[48px] text-white" style="font-variation-settings: 'FILL' 1;">vital_signs</span>
 </div>
-<span class="font-headline-md text-headline-md text-white">Atendimento de Emergência</span>
+<span class="text-2xl font-black text-white uppercase tracking-wider">EMERGÊNCIA</span>
 </button>
 </div>
 </div>
 </main>
+
 <!-- BottomNavBar -->
-<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-margin-page h-[100px] bg-white/80 dark:bg-inverse-surface/80 backdrop-blur-xl docked full-width rounded-t-xl shadow-[0_-4px_20px_rgba(0,0,0,0.05)] border-none">
-<!-- Tab 1: Active -->
-<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-8 py-4 scale-90 duration-150 transition-all focus:outline-none min-w-[120px]">
-<span class="material-symbols-outlined text-[32px] mb-1" data-icon="home" data-weight="fill" style="font-variation-settings: 'FILL' 1;">home</span>
-<span class="font-label-xl text-label-xl">Início</span>
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-margin-page h-[110px] bg-white/90 backdrop-blur-xl border-t border-surface-variant shadow-[0_-10px_30px_rgba(0,0,0,0.05)]">
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-2xl px-10 py-4 scale-95 transition-all">
+<span class="material-symbols-outlined text-[32px] mb-1" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="text-xs font-black uppercase tracking-widest">Início</span>
 </button>
-<!-- Tab 2: Inactive -->
-<button class="flex flex-col items-center justify-center text-on-surface-variant px-8 py-4 hover:bg-surface-variant/50 hover:text-primary transition-colors duration-200 rounded-xl focus:outline-none min-w-[120px]">
-<span class="material-symbols-outlined text-[32px] mb-1" data-icon="map">map</span>
-<span class="font-label-xl text-label-xl">Mapa</span>
+<button class="flex flex-col items-center justify-center text-secondary px-10 py-4 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[32px] mb-1">map</span>
+<span class="text-xs font-black uppercase tracking-widest">Mapa</span>
 </button>
-<!-- Tab 3: Inactive -->
-<button class="flex flex-col items-center justify-center text-on-surface-variant px-8 py-4 hover:bg-surface-variant/50 hover:text-primary transition-colors duration-200 rounded-xl focus:outline-none min-w-[120px]">
-<span class="material-symbols-outlined text-[32px] mb-1" data-icon="medical_services">medical_services</span>
-<span class="font-label-xl text-label-xl">Serviços</span>
+<button class="flex flex-col items-center justify-center text-secondary px-10 py-4 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[32px] mb-1">medical_services</span>
+<span class="text-xs font-black uppercase tracking-widest">Serviços</span>
 </button>
-<!-- Tab 4: Inactive -->
-<button class="flex flex-col items-center justify-center text-on-surface-variant px-8 py-4 hover:bg-surface-variant/50 hover:text-primary transition-colors duration-200 rounded-xl focus:outline-none min-w-[120px]">
-<span class="material-symbols-outlined text-[32px] mb-1" data-icon="help">help</span>
-<span class="font-label-xl text-label-xl">Ajuda</span>
+<button class="flex flex-col items-center justify-center text-secondary px-10 py-4 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[32px] mb-1">help</span>
+<span class="text-xs font-black uppercase tracking-widest">Ajuda</span>
 </button>
 </nav>
 
-<!-- Modals Container -->
+<!-- Modals -->
 <div id="modals" class="fixed inset-0 z-[100] hidden bg-black/60 backdrop-blur-md flex items-center justify-center px-margin-page">
     
     <!-- CPF Numpad Modal -->
-    <div id="modal-numpad" class="hidden bg-surface-container-lowest rounded-3xl p-stack-lg w-full max-w-[800px] shadow-2xl flex flex-col items-center">
-        <h2 class="font-headline-xl text-headline-xl mb-4 text-primary text-center">Digite seu CPF</h2>
-        <div class="bg-surface-variant w-full h-[80px] rounded-2xl mb-stack-lg flex items-center justify-center font-headline-xl text-4xl tracking-[0.2em] text-on-surface">
+    <div id="modal-numpad" class="hidden bg-white rounded-[40px] p-12 w-full max-w-[800px] shadow-2xl flex flex-col items-center border border-white">
+        <h2 class="text-4xl font-black mb-8 text-on-surface tracking-tighter">Digite seu CPF</h2>
+        <div class="bg-surface-container w-full h-[100px] rounded-[32px] mb-10 flex items-center justify-center text-5xl font-black tracking-[0.3em] text-on-surface border-2 border-surface-variant">
             <span id="cpf-display">___.___.___-__</span>
         </div>
-        
-        <!-- Numpad Grid -->
-        <div class="grid grid-cols-3 gap-6 w-full max-w-[500px] mx-auto">
-            <button class="numpad-btn bg-surface border border-surface-variant rounded-2xl h-[100px] text-4xl font-bold hover:bg-primary-container hover:text-on-primary-container hover:scale-105 transition-all shadow-md">1</button>
-            <button class="numpad-btn bg-surface border border-surface-variant rounded-2xl h-[100px] text-4xl font-bold hover:bg-primary-container hover:text-on-primary-container hover:scale-105 transition-all shadow-md">2</button>
-            <button class="numpad-btn bg-surface border border-surface-variant rounded-2xl h-[100px] text-4xl font-bold hover:bg-primary-container hover:text-on-primary-container hover:scale-105 transition-all shadow-md">3</button>
-            <button class="numpad-btn bg-surface border border-surface-variant rounded-2xl h-[100px] text-4xl font-bold hover:bg-primary-container hover:text-on-primary-container hover:scale-105 transition-all shadow-md">4</button>
-            <button class="numpad-btn bg-surface border border-surface-variant rounded-2xl h-[100px] text-4xl font-bold hover:bg-primary-container hover:text-on-primary-container hover:scale-105 transition-all shadow-md">5</button>
-            <button class="numpad-btn bg-surface border border-surface-variant rounded-2xl h-[100px] text-4xl font-bold hover:bg-primary-container hover:text-on-primary-container hover:scale-105 transition-all shadow-md">6</button>
-            <button class="numpad-btn bg-surface border border-surface-variant rounded-2xl h-[100px] text-4xl font-bold hover:bg-primary-container hover:text-on-primary-container hover:scale-105 transition-all shadow-md">7</button>
-            <button class="numpad-btn bg-surface border border-surface-variant rounded-2xl h-[100px] text-4xl font-bold hover:bg-primary-container hover:text-on-primary-container hover:scale-105 transition-all shadow-md">8</button>
-            <button class="numpad-btn bg-surface border border-surface-variant rounded-2xl h-[100px] text-4xl font-bold hover:bg-primary-container hover:text-on-primary-container hover:scale-105 transition-all shadow-md">9</button>
-            <button class="numpad-btn numpad-del bg-error-container text-on-error-container border border-error-container rounded-2xl h-[100px] text-2xl font-bold hover:bg-error hover:text-on-error hover:scale-105 transition-all shadow-md flex items-center justify-center">
+        <div class="grid grid-cols-3 gap-6 w-full max-w-[500px]">
+            <!-- JS dynamic loop would be here, but using explicit for clarity -->
+            <button class="numpad-btn interactable bg-surface-container-low h-24 rounded-2xl text-4xl font-black hover:bg-secondary-container transition-all">1</button>
+            <button class="numpad-btn interactable bg-surface-container-low h-24 rounded-2xl text-4xl font-black hover:bg-secondary-container transition-all">2</button>
+            <button class="numpad-btn interactable bg-surface-container-low h-24 rounded-2xl text-4xl font-black hover:bg-secondary-container transition-all">3</button>
+            <button class="numpad-btn interactable bg-surface-container-low h-24 rounded-2xl text-4xl font-black hover:bg-secondary-container transition-all">4</button>
+            <button class="numpad-btn interactable bg-surface-container-low h-24 rounded-2xl text-4xl font-black hover:bg-secondary-container transition-all">5</button>
+            <button class="numpad-btn interactable bg-surface-container-low h-24 rounded-2xl text-4xl font-black hover:bg-secondary-container transition-all">6</button>
+            <button class="numpad-btn interactable bg-surface-container-low h-24 rounded-2xl text-4xl font-black hover:bg-secondary-container transition-all">7</button>
+            <button class="numpad-btn interactable bg-surface-container-low h-24 rounded-2xl text-4xl font-black hover:bg-secondary-container transition-all">8</button>
+            <button class="numpad-btn interactable bg-surface-container-low h-24 rounded-2xl text-4xl font-black hover:bg-secondary-container transition-all">9</button>
+            <button class="numpad-btn interactable numpad-del bg-red-50 text-red-600 h-24 rounded-2xl flex items-center justify-center hover:bg-red-100 transition-all">
                 <span class="material-symbols-outlined text-[40px]">backspace</span>
             </button>
-            <button class="numpad-btn bg-surface border border-surface-variant rounded-2xl h-[100px] text-4xl font-bold hover:bg-primary-container hover:text-on-primary-container hover:scale-105 transition-all shadow-md">0</button>
-            <button class="numpad-btn numpad-ok bg-primary text-on-primary rounded-2xl h-[100px] text-2xl font-bold hover:bg-[#93000a] hover:scale-105 transition-all shadow-md flex items-center justify-center">
+            <button class="numpad-btn interactable bg-surface-container-low h-24 rounded-2xl text-4xl font-black hover:bg-secondary-container transition-all">0</button>
+            <button class="numpad-btn interactable numpad-ok bg-primary text-white h-24 rounded-2xl flex items-center justify-center hover:bg-red-700 transition-all">
                 <span class="material-symbols-outlined text-[40px]">check_circle</span>
             </button>
         </div>
-        <button class="close-modal mt-8 text-secondary underline text-xl hover:text-primary p-4">Cancelar</button>
+        <button class="close-modal mt-10 text-secondary font-bold underline">Cancelar</button>
     </div>
 
-    <!-- QR Code Modal -->
-    <div id="modal-qr" class="hidden bg-surface-container-lowest rounded-3xl p-stack-lg w-full max-w-[600px] shadow-2xl flex flex-col items-center text-center">
-        <h2 class="font-headline-xl text-headline-xl mb-4 text-primary">Acesse pelo Celular</h2>
-        <p class="text-xl text-secondary mb-8">Escaneie o código QR abaixo com a câmera do seu celular para continuar o agendamento.</p>
-        <div class="bg-white p-6 rounded-2xl shadow-inner border border-surface-variant mb-8 relative group cursor-pointer overflow-hidden">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://example.com/agendamento" alt="QR Code" class="w-[250px] h-[250px] object-contain mix-blend-multiply opacity-90 group-hover:scale-105 transition-transform duration-500">
-            <div class="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent pointer-events-none"></div>
-        </div>
-        <button class="close-modal bg-surface-variant text-on-surface-variant px-12 py-4 rounded-xl text-2xl font-bold hover:bg-primary hover:text-on-primary transition-colors">Voltar</button>
-    </div>
-
-    <!-- 3D Map Modal -->
-    <div id="modal-map" class="hidden bg-surface-container-lowest rounded-3xl p-stack-lg w-full max-w-[1200px] h-[850px] shadow-2xl flex flex-col items-center">
-        <div class="w-full flex justify-between items-center mb-6">
-            <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center">
-                    <span class="material-symbols-outlined text-white">map</span>
-                </div>
-                <div>
-                    <h2 class="font-headline-xl text-headline-xl text-primary leading-none">Mapa do Hospital</h2>
-                    <p class="text-secondary text-lg">Localize alas e consultórios</p>
-                </div>
-            </div>
-            <button class="close-modal bg-surface-variant text-on-surface-variant w-[60px] h-[60px] rounded-full flex items-center justify-center hover:bg-error hover:text-on-error transition-colors">
-                <span class="material-symbols-outlined text-[32px]">close</span>
-            </button>
-        </div>
-        
-        <div class="flex-grow w-full bg-surface-container/30 rounded-2xl overflow-hidden relative perspective-1000 flex items-center justify-center group cursor-move" id="map-container">
-            
-            <!-- Legend (Bottom Left) -->
-            <div class="map-overlay-panel map-legend hidden md:block">
-                <h3 class="font-bold text-sm text-on-surface mb-2 uppercase tracking-wider">Setores do Hospital</h3>
-                <div class="legend-item">
-                    <div class="color-dot" style="background: var(--wing-north);"></div>
-                    <span><b>Norte:</b> Diagnóstico e Pediatria</span>
-                </div>
-                <div class="legend-item">
-                    <div class="color-dot" style="background: var(--wing-south);"></div>
-                    <span><b>Sul:</b> Urgência e Reabilitação</span>
-                </div>
-                <div class="legend-item">
-                    <div class="color-dot" style="background: var(--wing-east);"></div>
-                    <span><b>Leste:</b> Internação e Especialidades</span>
-                </div>
-                <div class="legend-item">
-                    <div class="color-dot" style="background: var(--wing-west);"></div>
-                    <span><b>Oeste:</b> Ambulatório</span>
-                </div>
-            </div>
-
-            <!-- Controls (Bottom Right) -->
-            <div class="map-controls">
-                <button id="zoom-in" class="control-btn shadow-lg flex items-center justify-center">
-                    <span class="material-symbols-outlined">add</span>
-                </button>
-                <button id="zoom-out" class="control-btn shadow-lg flex items-center justify-center">
-                    <span class="material-symbols-outlined">remove</span>
-                </button>
-                <button id="reset-view" class="control-btn shadow-lg flex items-center justify-center">
-                    <span class="material-symbols-outlined">restart_alt</span>
-                </button>
-            </div>
-
-            <!-- Simulated 3D Plane -->
-            <div class="relative w-[1200px] h-[900px] transform-style-3d transition-transform duration-700 ease-out" id="map-3d-plane" style="transform: rotateX(55deg) rotateZ(-15deg);">
-
-                
-                <!-- Floor Grid -->
-                <div class="absolute inset-0 bg-white/40 rounded-[40px] shadow-[0_40px_100px_rgba(0,0,0,0.15)] border-4 border-white/60">
-                    <div class="absolute inset-0" style="background-image: linear-gradient(#e1e2e4 1px, transparent 1px), linear-gradient(90deg, #e1e2e4 1px, transparent 1px); background-size: 80px 80px; opacity: 0.2;"></div>
-                </div>
-
-
-                <!-- --- CORRIDORS & COLUMNS --- -->
-                <div class="absolute top-[310px] left-[50px] right-[50px] h-[80px] bg-surface-variant/10 rounded-full blur-[2px]"></div>
-                <div class="absolute top-[560px] left-[50px] right-[50px] h-[80px] bg-surface-variant/10 rounded-full blur-[2px]"></div>
-                <div class="absolute left-[400px] top-[50px] bottom-[50px] w-[80px] bg-surface-variant/10 rounded-full blur-[2px]"></div>
-                <div class="absolute right-[400px] top-[50px] bottom-[50px] w-[80px] bg-surface-variant/10 rounded-full blur-[2px]"></div>
-
-                <!-- Columns -->
-                <div class="column-3d top-[340px] left-[430px]"></div>
-                <div class="column-3d top-[340px] right-[430px]"></div>
-                <div class="column-3d top-[590px] left-[430px]"></div>
-                <div class="column-3d top-[590px] right-[430px]"></div>
-
-
-                <!-- --- NÚCLEO CENTRAL --- -->
-                <div class="room-3d top-[390px] left-[500px] w-[200px] h-[170px] flex flex-col items-center justify-center z-10" style="border-top: 4px solid var(--wing-west);">
-                    <div class="glass-roof"></div>
-                    <span class="material-symbols-outlined text-primary text-[40px] mb-1">concierge</span>
-                    <span class="font-bold text-lg text-primary">Recepção</span>
-                    <div class="door"></div>
-                    <!-- You Are Here Marker -->
-                    <div class="absolute -top-12 -right-12 w-24 h-24 bg-primary/20 rounded-full flex items-center justify-center animate-ping"></div>
-                    <div class="absolute -top-12 -right-12 w-24 h-24 bg-primary rounded-full flex items-center justify-center shadow-2xl">
-                        <span class="material-symbols-outlined text-white text-[40px]">person_pin_circle</span>
-                    </div>
-                </div>
-
-
-                <!-- Farmácia -->
-                <div class="room-3d top-[425px] left-[720px] w-[150px] h-[100px] flex flex-col items-center justify-center" style="border-top: 4px solid var(--wing-west);">
-                    <div class="glass-roof"></div>
-                    <span class="material-symbols-outlined text-emerald-600 text-[32px] mb-1">local_pharmacy</span>
-                    <span class="font-bold text-sm text-emerald-800">Farmácia</span>
-                    <div class="door"></div>
-                </div>
-
-
-                <!-- Laboratório -->
-                <div class="room-3d top-[80px] left-[490px] w-[220px] h-[180px] flex flex-col items-center justify-center" style="border-top: 4px solid var(--wing-north);">
-                    <div class="glass-roof"></div>
-                    <span class="material-symbols-outlined text-blue-600 text-[40px] mb-1">science</span>
-                    <span class="font-bold text-lg text-blue-800">Laboratório</span>
-                    <div class="door"></div>
-                </div>
-
-
-                <!-- Centro de Imagem -->
-                <div class="room-3d top-[80px] left-[80px] w-[250px] h-[180px] flex flex-col items-center justify-center" style="border-top: 4px solid var(--wing-north);">
-                    <div class="glass-roof"></div>
-                    <span class="material-symbols-outlined text-indigo-600 text-[40px] mb-1">settings_overscan</span>
-                    <span class="font-bold text-lg text-indigo-800">Imagem / RX</span>
-                    <div class="door"></div>
-                </div>
-
-
-                <!-- Pediatria -->
-                <div class="room-3d top-[80px] right-[80px] w-[250px] h-[180px] flex flex-col items-center justify-center" style="border-top: 4px solid var(--wing-north);">
-                    <div class="glass-roof"></div>
-                    <span class="material-symbols-outlined text-sky-600 text-[40px] mb-1">child_care</span>
-                    <span class="font-bold text-lg text-sky-800">Pediatria</span>
-                    <div class="door"></div>
-                </div>
-
-
-                <!-- --- ALA LESTE (Internação & Especialidades) --- -->
-                <!-- UTI (Glass Effect) -->
-                <div class="room-3d top-[350px] right-[80px] w-[280px] h-[200px] flex flex-col items-center justify-center" style="border-top: 4px solid var(--wing-east); background: rgba(139, 92, 246, 0.15);">
-                    <div class="glass-roof"></div>
-                    <span class="material-symbols-outlined text-white text-[48px] mb-1 drop-shadow-md">vital_signs</span>
-                    <span class="font-black text-xl text-white drop-shadow-md">U.T.I.</span>
-                    <span class="text-white/80 text-[10px] font-bold tracking-widest uppercase">Acesso Restrito</span>
-                </div>
-
-
-                <!-- Cardiologia & Endocrino -->
-                <div class="room-3d top-[650px] right-[100px] w-[220px] h-[220px] flex flex-col items-center justify-around" style="border-top: 4px solid var(--wing-east);">
-                    <div class="glass-roof"></div>
-                    <div class="flex flex-col items-center">
-                        <span class="material-symbols-outlined text-rose-600 text-[32px]">favorite</span>
-                        <span class="font-bold text-md text-rose-800">Cardiologia</span>
-                    </div>
-                    <div class="w-4/5 h-[1px] bg-rose-200"></div>
-                    <div class="flex flex-col items-center">
-                        <span class="material-symbols-outlined text-orange-600 text-[32px]">medication</span>
-                        <span class="font-bold text-md text-orange-800">Endocrino</span>
-                    </div>
-                    <div class="door"></div>
-                </div>
-
-
-                <!-- --- ALA OESTE (Ambulatório) --- -->
-                <!-- Oftalmo & Dermato -->
-                <div class="room-3d top-[350px] left-[80px] w-[220px] h-[220px] flex flex-col items-center justify-around" style="border-top: 4px solid var(--wing-west);">
-                    <div class="glass-roof"></div>
-                    <div class="flex flex-col items-center">
-                        <span class="material-symbols-outlined text-cyan-600 text-[32px]">visibility</span>
-                        <span class="font-bold text-md text-cyan-800">Oftalmo</span>
-                    </div>
-                    <div class="w-4/5 h-[1px] bg-cyan-200"></div>
-                    <div class="flex flex-col items-center">
-                        <span class="material-symbols-outlined text-emerald-600 text-[32px]">face</span>
-                        <span class="font-bold text-md text-emerald-800">Dermato</span>
-                    </div>
-                    <div class="door"></div>
-                </div>
-
-
-                <!-- Ginecologia -->
-                <div class="room-3d top-[650px] left-[80px] w-[220px] h-[180px] flex flex-col items-center justify-center" style="border-top: 4px solid var(--wing-west);">
-                    <div class="glass-roof"></div>
-                    <span class="material-symbols-outlined text-pink-600 text-[40px] mb-1">female</span>
-                    <span class="font-bold text-lg text-pink-800">Ginecologia</span>
-                    <div class="door"></div>
-                </div>
-
-
-                <!-- --- ALA SUL (Urgência) --- -->
-                <!-- Emergência -->
-                <div class="room-3d top-[650px] left-[425px] w-[350px] h-[200px] flex flex-col items-center justify-center" style="border-top: 4px solid var(--wing-south); background: rgba(239, 68, 68, 0.1);">
-                    <div class="glass-roof"></div>
-                    <div class="absolute inset-0 bg-red-500/5 animate-pulse rounded-xl"></div>
-                    <span class="material-symbols-outlined text-red-600 text-[56px] mb-1">emergency</span>
-                    <span class="font-black text-2xl text-red-800 uppercase tracking-tight">Emergência</span>
-                    <span class="text-red-600/60 text-sm font-bold">PRONTO SOCORRO</span>
-                    <div class="door w-[60px] h-[6px] bg-red-500/40"></div>
-                </div>
-
-
-                <!-- Ortopedia & Fisioterapia -->
-                <div class="room-3d top-[650px] right-[400px] w-[220px] h-[180px] flex flex-col items-center justify-around" style="border-top: 4px solid var(--wing-south);">
-                    <div class="glass-roof"></div>
-                    <div class="flex flex-col items-center">
-                        <span class="material-symbols-outlined text-orange-600 text-[32px]">bone</span>
-                        <span class="font-bold text-md text-orange-800">Ortopedia</span>
-                    </div>
-                    <div class="w-4/5 h-[1px] bg-orange-200"></div>
-                    <div class="flex flex-col items-center">
-                        <span class="material-symbols-outlined text-amber-600 text-[32px]">fitness_center</span>
-                        <span class="font-bold text-md text-amber-800">Fisioterapia</span>
-                    </div>
-                    <div class="door"></div>
-                </div>
-
-
-                <!-- --- APOIO & INFRA --- -->
-                <!-- Administração -->
-                <div class="room-3d top-[80px] left-[350px] w-[120px] h-[100px] flex flex-col items-center justify-center" style="border-top: 4px solid var(--wing-north);">
-                    <div class="glass-roof"></div>
-                    <span class="material-symbols-outlined text-blue-700 text-[24px]">business</span>
-                    <span class="font-bold text-[10px] text-blue-900">Administração</span>
-                    <div class="door"></div>
-                </div>
-
-                <!-- Auditório -->
-                <div class="room-3d top-[480px] left-[100px] w-[180px] h-[120px] flex flex-col items-center justify-center" style="border-top: 4px solid var(--wing-west);">
-                    <div class="glass-roof"></div>
-                    <span class="material-symbols-outlined text-cyan-700 text-[32px]">groups</span>
-                    <span class="font-bold text-xs text-cyan-900">Auditório</span>
-                    <div class="door"></div>
-                </div>
-
-                <!-- Internação (Ala Leste) -->
-                <div class="room-3d top-[100px] right-[400px] w-[200px] h-[150px] flex flex-col items-center justify-center" style="border-top: 4px solid var(--wing-east);">
-                    <div class="glass-roof"></div>
-                    <span class="material-symbols-outlined text-violet-700 text-[40px] mb-1">bed</span>
-                    <span class="font-bold text-lg text-violet-800">Internação</span>
-                    <div class="door"></div>
-                </div>
-
-                <!-- Área Externa: Ambulâncias -->
-                <div class="room-3d top-[860px] left-[475px] w-[250px] h-[100px] flex flex-col items-center justify-center opacity-80" style="border-top: 4px solid var(--wing-south); transform: translateZ(5px);">
-                    <div class="glass-roof"></div>
-                    <span class="material-symbols-outlined text-red-600 text-[32px] mb-1">local_shipping</span>
-                    <span class="font-bold text-sm text-red-800">Estacionamento Ambulâncias</span>
-                </div>
-
-                <!-- Cafeteria & WC (Norte) -->
-                <div class="absolute top-[20px] left-[480px] flex gap-4 transform-style-3d">
-                    <div class="room-3d w-[150px] h-[80px] flex items-center justify-center gap-2">
-                        <div class="glass-roof"></div>
-                        <span class="material-symbols-outlined text-yellow-700">coffee</span>
-                        <span class="font-bold text-xs text-yellow-900">Cafeteria</span>
-                    </div>
-                    <div class="room-3d w-[100px] h-[80px] flex items-center justify-center gap-2">
-                        <div class="glass-roof"></div>
-                        <span class="material-symbols-outlined text-slate-600">wc</span>
-                        <span class="font-bold text-xs text-slate-800">W.C.</span>
-                    </div>
-                </div>
-
-                <!-- Elevadores & Escadas -->
-                <div class="room-3d top-[350px] right-[480px] w-[80px] h-[100px] flex flex-col items-center justify-center">
-                    <div class="glass-roof"></div>
-                    <span class="material-symbols-outlined text-slate-700 text-[32px] animate-pulse">elevator</span>
-                    <div class="w-full h-[2px] bg-slate-300 my-2"></div>
-                    <span class="material-symbols-outlined text-slate-700 text-[24px]">stairs</span>
-                </div>
-
-
-                <!-- Floating Path Line (Neon Effect) -->
-                <svg class="absolute inset-0 w-full h-full pointer-events-none transform-style-3d" style="transform: translateZ(30px);">
-                    <path d="M 600 475 L 600 750" fill="none" stroke="var(--wing-south)" stroke-width="6" stroke-linecap="round" class="animate-pulse shadow-glow" />
-                    <circle cx="600" cy="475" r="8" fill="var(--wing-south)" class="shadow-glow" />
-                    <circle cx="600" cy="750" r="8" fill="var(--wing-south)" class="shadow-glow" />
-                </svg>
-
-
-            </div>
-
-            <!-- Legends and Controls -->
-            <div class="absolute bottom-6 left-6 right-6 flex justify-between items-end pointer-events-none">
-                <!-- Sector Legend -->
-                <div class="bg-white/80 backdrop-blur-xl p-5 rounded-3xl shadow-2xl border border-white/50 flex flex-col gap-3 pointer-events-auto transition-all hover:bg-white/95">
-                    <h4 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">Setores</h4>
-                    <div class="grid grid-cols-2 gap-x-6 gap-y-2">
-                        <div class="flex items-center gap-2">
-                            <div class="w-3 h-3 rounded-full" style="background: var(--wing-north);"></div>
-                            <span class="text-xs font-bold text-slate-700">Ala Norte (Clínica)</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <div class="w-3 h-3 rounded-full" style="background: var(--wing-east);"></div>
-                            <span class="text-xs font-bold text-slate-700">Ala Leste (UTI)</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <div class="w-3 h-3 rounded-full" style="background: var(--wing-west);"></div>
-                            <span class="text-xs font-bold text-slate-700">Ala Oeste (Ambulatório)</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <div class="w-3 h-3 rounded-full" style="background: var(--wing-south);"></div>
-                            <span class="text-xs font-bold text-slate-700">Ala Sul (Urgência)</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <div class="w-3 h-3 rounded-full bg-primary animate-pulse"></div>
-                            <span class="text-xs font-bold text-primary">Você está aqui</span>
+    <!-- Appointment Modal -->
+    <div id="modal-appointment" class="hidden bg-white rounded-[40px] p-12 w-full max-w-[1000px] shadow-2xl flex flex-col border border-white">
+        <div id="appointment-step-1">
+            <h2 class="text-4xl font-black mb-10 text-on-surface tracking-tighter text-center">Selecione uma Data</h2>
+            <div class="flex gap-10">
+                <div class="flex-grow bg-surface-container-low p-10 rounded-[32px] border border-surface-variant">
+                    <div class="flex justify-between items-center mb-8">
+                        <span class="text-2xl font-black text-on-surface">Maio 2026</span>
+                        <div class="flex gap-4">
+                            <button class="material-symbols-outlined text-secondary p-2 bg-white rounded-full shadow-sm">chevron_left</button>
+                            <button class="material-symbols-outlined text-secondary p-2 bg-white rounded-full shadow-sm">chevron_right</button>
                         </div>
                     </div>
-                </div>
-                
-                <!-- Navigation Controls -->
-                <div class="flex flex-col gap-3 pointer-events-auto">
-                    <div class="flex flex-col bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-white/50 overflow-hidden">
-                        <button id="zoom-in" class="w-12 h-12 flex items-center justify-center hover:bg-primary hover:text-white transition-all active:scale-90 border-b border-slate-100">
-                            <span class="material-symbols-outlined">add</span>
-                        </button>
-                        <button id="zoom-out" class="w-12 h-12 flex items-center justify-center hover:bg-primary hover:text-white transition-all active:scale-90">
-                            <span class="material-symbols-outlined">remove</span>
-                        </button>
+                    <div class="grid grid-cols-7 gap-4 text-center text-xs font-black text-secondary mb-6 uppercase tracking-widest">
+                        <span>Dom</span><span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>Sab</span>
                     </div>
-                    
-                    <button id="reset-view" class="h-12 px-4 bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-white/50 flex items-center gap-2 hover:bg-primary hover:text-white transition-all active:scale-95 group">
-                        <span class="material-symbols-outlined group-hover:rotate-180 transition-transform duration-500">restart_alt</span>
-                        <span class="text-xs font-black uppercase tracking-tight">Resetar</span>
+                    <div class="calendar-grid" id="appointment-calendar">
+                        <!-- Dates would be dynamic, but following the user's manual grid for now -->
+                        <div class="calendar-day disabled">26</div><div class="calendar-day disabled">27</div><div class="calendar-day disabled">28</div><div class="calendar-day disabled">29</div><div class="calendar-day disabled">30</div>
+                        <div class="calendar-day">1</div><div class="calendar-day">2</div><div class="calendar-day">3</div><div class="calendar-day">4</div><div class="calendar-day">5</div><div class="calendar-day">6</div><div class="calendar-day">7</div><div class="calendar-day">8</div><div class="calendar-day">9</div>
+                        <div class="calendar-day selected">10</div><div class="calendar-day">11</div><div class="calendar-day">12</div><div class="calendar-day">13</div><div class="calendar-day">14</div><div class="calendar-day">15</div><div class="calendar-day">16</div><div class="calendar-day">17</div><div class="calendar-day">18</div><div class="calendar-day">19</div><div class="calendar-day">20</div>
+                    </div>
+                </div>
+                <div class="w-[350px] flex flex-col justify-between p-10 bg-primary/5 rounded-[40px] border-2 border-primary/10 relative overflow-hidden">
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-8 shadow-xl shadow-red-500/20">
+                            <span class="material-symbols-outlined text-white text-[32px]">calendar_today</span>
+                        </div>
+                        <h3 class="text-primary font-black uppercase text-xs tracking-[0.2em] mb-4">Data Selecionada</h3>
+                        <p id="selected-date-preview" class="text-4xl font-black text-on-surface mb-2 tracking-tighter">10 de Maio</p>
+                        <p class="text-secondary font-bold">Domingo, 2026</p>
+                    </div>
+                    <button onclick="nextAppointmentStep(2)" class="interactable w-full bg-primary text-white h-20 rounded-[24px] font-black text-xl hover:shadow-2xl transition-all flex items-center justify-center gap-3">
+                        Continuar <span class="material-symbols-outlined">arrow_forward</span>
                     </button>
                 </div>
             </div>
         </div>
+
+        <div id="appointment-step-2" class="hidden">
+            <div class="flex items-center justify-between mb-12">
+                <h2 class="text-4xl font-black text-on-surface tracking-tighter">Qual a Especialidade?</h2>
+                <div class="bg-surface-container px-6 py-3 rounded-full flex items-center gap-3 border border-surface-variant">
+                    <span class="material-symbols-outlined text-primary">event</span>
+                    <span id="selected-date-breadcrumb" class="font-black text-sm uppercase tracking-widest">10 Mai, 2026</span>
+                </div>
+            </div>
+            <div class="grid grid-cols-3 gap-6 mb-12">
+                <div class="interactable service-chip selected" onclick="selectService(this, 'Cardiologia')">
+                    <div class="flex items-center gap-4">
+                        <span class="material-symbols-outlined text-red-500 text-3xl">favorite</span>
+                        <span class="text-xl font-black">Cardiologia</span>
+                    </div>
+                </div>
+                <div class="interactable service-chip" onclick="selectService(this, 'Pediatria')">
+                    <div class="flex items-center gap-4">
+                        <span class="material-symbols-outlined text-blue-500 text-3xl">child_care</span>
+                        <span class="text-xl font-black">Pediatria</span>
+                    </div>
+                </div>
+                <div class="interactable service-chip" onclick="selectService(this, 'Oftalmologia')">
+                    <div class="flex items-center gap-4">
+                        <span class="material-symbols-outlined text-purple-500 text-3xl">visibility</span>
+                        <span class="text-xl font-black">Oftalmologia</span>
+                    </div>
+                </div>
+                <div class="interactable service-chip" onclick="selectService(this, 'Dermatologia')">
+                    <div class="flex items-center gap-4">
+                        <span class="material-symbols-outlined text-orange-500 text-3xl">face</span>
+                        <span class="text-xl font-black">Dermatologia</span>
+                    </div>
+                </div>
+                <div class="interactable service-chip" onclick="selectService(this, 'Psicologia')">
+                    <div class="flex items-center gap-4">
+                        <span class="material-symbols-outlined text-blue-300 text-3xl">psychiatry</span>
+                        <span class="text-xl font-black">Psicologia</span>
+                    </div>
+                </div>
+                <div class="interactable service-chip" onclick="selectService(this, 'Fisioterapia')">
+                    <div class="flex items-center gap-4">
+                        <span class="material-symbols-outlined text-emerald-500 text-3xl">fitness_center</span>
+                        <span class="text-xl font-black">Fisioterapia</span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex gap-6">
+                <button onclick="nextAppointmentStep(1)" class="interactable flex-1 border-4 border-surface-variant h-20 rounded-[24px] font-black uppercase text-secondary">Voltar</button>
+                <button onclick="confirmAppointment()" class="interactable flex-[2] bg-primary text-white h-20 rounded-[24px] font-black text-2xl shadow-xl">Confirmar</button>
+            </div>
+        </div>
+
+        <div id="appointment-step-3" class="hidden flex flex-col items-center py-16">
+            <div class="w-40 h-40 bg-emerald-500 rounded-full flex items-center justify-center mb-10 shadow-2xl shadow-emerald-500/20 success-animation">
+                <span class="material-symbols-outlined text-white text-[100px]">check_circle</span>
+            </div>
+            <h2 class="text-5xl font-black text-on-surface mb-6 tracking-tighter">Agendamento Concluído!</h2>
+            <div class="bg-surface-container-low p-10 rounded-[40px] border-2 border-surface-variant mb-12 max-w-lg w-full">
+                <div class="flex justify-between items-center mb-6 border-b border-surface-variant pb-6">
+                    <span class="text-secondary font-black uppercase text-xs tracking-widest">Data</span>
+                    <span id="final-date" class="text-2xl font-black">10 de Maio, 2026</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-secondary font-black uppercase text-xs tracking-widest">Especialidade</span>
+                    <span id="final-service" class="text-2xl font-black text-primary">Cardiologia</span>
+                </div>
+            </div>
+            <button class="interactable close-modal bg-on-surface text-white px-20 py-6 rounded-[24px] text-2xl font-black shadow-2xl">Finalizar</button>
+        </div>
+        <button id="appointment-back-btn" class="close-modal mt-8 text-secondary font-bold underline">Sair</button>
     </div>
-    
-    <!-- Services Specialty Modal -->
-    <div id="modal-services" class="hidden bg-surface-container-lowest rounded-3xl p-stack-lg w-full max-w-[1000px] shadow-2xl flex flex-col items-center">
-        <div class="w-full flex justify-between items-center mb-8">
-            <h2 class="font-headline-xl text-headline-xl text-primary">Nossos Serviços</h2>
-            <button class="close-modal bg-surface-variant text-on-surface-variant w-[60px] h-[60px] rounded-full flex items-center justify-center hover:bg-error hover:text-on-error transition-colors">
-                <span class="material-symbols-outlined text-[32px]">close</span>
+
+    <!-- Services Directory Modal -->
+    <div id="modal-services" class="hidden bg-white rounded-[40px] p-12 w-full max-w-[1100px] h-[850px] shadow-2xl flex flex-col border border-white">
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h2 class="text-4xl font-black text-on-surface tracking-tighter mb-2">Guia de Serviços</h2>
+                <p class="text-secondary font-medium">Localize especialidades e áreas de atendimento.</p>
+            </div>
+            <button class="interactable close-modal bg-surface-container text-on-surface w-14 h-14 rounded-full flex items-center justify-center border border-surface-variant shadow-sm hover:bg-surface-variant transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+
+        <div class="flex-grow overflow-y-auto pr-4 custom-scrollbar">
+            <!-- Ala Norte -->
+            <div class="mb-10">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
+                        <span class="material-symbols-outlined text-white text-xl">north</span>
+                    </div>
+                    <h3 class="text-2xl font-black text-on-surface tracking-tight">Ala Norte <span class="text-secondary font-medium text-sm ml-2">Consultórios e Especialidades</span></h3>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-surface-container-low p-6 rounded-[28px] border border-surface-variant hover:border-blue-500 transition-all group interactable" onclick="navigateToService('Pediatria')">
+                        <div class="flex items-start gap-5">
+                            <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all">
+                                <span class="material-symbols-outlined text-2xl">child_care</span>
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="font-black text-lg mb-1">Pediatria</h4>
+                                <p class="text-xs text-secondary leading-relaxed">Atendimento infantil especializado e vacinação.</p>
+                                <div class="mt-3 flex items-center gap-2 text-primary font-bold text-[10px] uppercase tracking-widest">Traçar Rota <span class="material-symbols-outlined text-sm">navigation</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-surface-container-low p-6 rounded-[28px] border border-surface-variant hover:border-blue-500 transition-all group interactable" onclick="navigateToService('Cardiologia')">
+                        <div class="flex items-start gap-5">
+                            <div class="w-14 h-14 bg-red-100 rounded-2xl flex items-center justify-center text-red-600 group-hover:bg-red-600 group-hover:text-white transition-all">
+                                <span class="material-symbols-outlined text-2xl">favorite</span>
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="font-black text-lg mb-1">Cardiologia</h4>
+                                <p class="text-xs text-secondary leading-relaxed">Exames cardíacos e consultas preventivas.</p>
+                                <div class="mt-3 flex items-center gap-2 text-primary font-bold text-[10px] uppercase tracking-widest">Traçar Rota <span class="material-symbols-outlined text-sm">navigation</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-surface-container-low p-6 rounded-[28px] border border-surface-variant hover:border-blue-500 transition-all group interactable" onclick="navigateToService('Dermatologia')">
+                        <div class="flex items-start gap-5">
+                            <div class="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-all">
+                                <span class="material-symbols-outlined text-2xl">face</span>
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="font-black text-lg mb-1">Dermatologia</h4>
+                                <p class="text-xs text-secondary leading-relaxed">Tratamentos de pele e procedimentos estéticos.</p>
+                                <div class="mt-3 flex items-center gap-2 text-primary font-bold text-[10px] uppercase tracking-widest">Traçar Rota <span class="material-symbols-outlined text-sm">navigation</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-surface-container-low p-6 rounded-[28px] border border-surface-variant hover:border-blue-500 transition-all group interactable" onclick="navigateToService('Oftalmologia')">
+                        <div class="flex items-start gap-5">
+                            <div class="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-all">
+                                <span class="material-symbols-outlined text-2xl">visibility</span>
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="font-black text-lg mb-1">Oftalmologia</h4>
+                                <p class="text-xs text-secondary leading-relaxed">Saúde ocular, exames e cirurgias refrativas.</p>
+                                <div class="mt-3 flex items-center gap-2 text-primary font-bold text-[10px] uppercase tracking-widest">Traçar Rota <span class="material-symbols-outlined text-sm">navigation</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ala Sul -->
+            <div class="mb-10">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center shadow-lg shadow-red-600/20">
+                        <span class="material-symbols-outlined text-white text-xl">south</span>
+                    </div>
+                    <h3 class="text-2xl font-black text-on-surface tracking-tight">Ala Sul <span class="text-secondary font-medium text-sm ml-2">Urgência e Internação</span></h3>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-surface-container-low p-6 rounded-[28px] border border-surface-variant hover:border-red-600 transition-all group interactable" onclick="navigateToService('Urgencia')">
+                        <div class="flex items-start gap-5">
+                            <div class="w-14 h-14 bg-red-50 rounded-2xl flex items-center justify-center text-red-700 group-hover:bg-red-700 group-hover:text-white transition-all">
+                                <span class="material-symbols-outlined text-2xl">emergency</span>
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="font-black text-lg mb-1">Urgência 24h</h4>
+                                <p class="text-xs text-secondary leading-relaxed">Atendimento imediato e triagem rápida.</p>
+                                <div class="mt-3 flex items-center gap-2 text-primary font-bold text-[10px] uppercase tracking-widest">Traçar Rota <span class="material-symbols-outlined text-sm">navigation</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-surface-container-low p-6 rounded-[28px] border border-surface-variant hover:border-red-600 transition-all group interactable" onclick="navigateToService('Internação')">
+                        <div class="flex items-start gap-5">
+                            <div class="w-14 h-14 bg-slate-100 rounded-2xl flex items-center justify-center text-slate-600 group-hover:bg-slate-600 group-hover:text-white transition-all">
+                                <span class="material-symbols-outlined text-2xl">bed</span>
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="font-black text-lg mb-1">Internação</h4>
+                                <p class="text-xs text-secondary leading-relaxed">Suítes e enfermarias para recuperação.</p>
+                                <div class="mt-3 flex items-center gap-2 text-primary font-bold text-[10px] uppercase tracking-widest">Traçar Rota <span class="material-symbols-outlined text-sm">navigation</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-surface-container-low p-6 rounded-[28px] border border-surface-variant hover:border-red-600 transition-all group interactable" onclick="navigateToService('Psicologia')">
+                        <div class="flex items-start gap-5">
+                            <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-400 group-hover:bg-blue-400 group-hover:text-white transition-all">
+                                <span class="material-symbols-outlined text-2xl">psychology</span>
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="font-black text-lg mb-1">Psicologia</h4>
+                                <p class="text-xs text-secondary leading-relaxed">Apoio psicoterapêutico especializado.</p>
+                                <div class="mt-3 flex items-center gap-2 text-primary font-bold text-[10px] uppercase tracking-widest">Traçar Rota <span class="material-symbols-outlined text-sm">navigation</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-surface-container-low p-6 rounded-[28px] border border-surface-variant hover:border-red-600 transition-all group interactable" onclick="navigateToService('Fisioterapia')">
+                        <div class="flex items-start gap-5">
+                            <div class="w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-500 group-hover:bg-emerald-500 group-hover:text-white transition-all">
+                                <span class="material-symbols-outlined text-2xl">fitness_center</span>
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="font-black text-lg mb-1">Fisioterapia</h4>
+                                <p class="text-xs text-secondary leading-relaxed">Centro de reabilitação física e motora.</p>
+                                <div class="mt-3 flex items-center gap-2 text-primary font-bold text-[10px] uppercase tracking-widest">Traçar Rota <span class="material-symbols-outlined text-sm">navigation</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Centro Tecnológico -->
+            <div>
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                        <span class="material-symbols-outlined text-white text-xl">biotech</span>
+                    </div>
+                    <h3 class="text-2xl font-black text-on-surface tracking-tight">Centro Tecnológico <span class="text-secondary font-medium text-sm ml-2">Diagnósticos e Farmácia</span></h3>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-surface-container-low p-6 rounded-[28px] border border-surface-variant hover:border-emerald-500 transition-all group interactable" onclick="navigateToService('Exames')">
+                        <div class="flex items-start gap-5">
+                            <div class="w-14 h-14 bg-emerald-100 rounded-2xl flex items-center justify-center text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-all">
+                                <span class="material-symbols-outlined text-2xl">biotech</span>
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="font-black text-lg mb-1">Centro de Exames</h4>
+                                <p class="text-xs text-secondary leading-relaxed">Ressonância, Tomografia e Laboratório.</p>
+                                <div class="mt-3 flex items-center gap-2 text-primary font-bold text-[10px] uppercase tracking-widest">Traçar Rota <span class="material-symbols-outlined text-sm">navigation</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-surface-container-low p-6 rounded-[28px] border border-surface-variant hover:border-emerald-500 transition-all group interactable" onclick="navigateToService('Farmacia')">
+                        <div class="flex items-start gap-5">
+                            <div class="w-14 h-14 bg-emerald-100 rounded-2xl flex items-center justify-center text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-all">
+                                <span class="material-symbols-outlined text-2xl">medication</span>
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="font-black text-lg mb-1">Farmácia</h4>
+                                <p class="text-xs text-secondary leading-relaxed">Entrega de medicamentos e insumos.</p>
+                                <div class="mt-3 flex items-center gap-2 text-primary font-bold text-[10px] uppercase tracking-widest">Traçar Rota <span class="material-symbols-outlined text-sm">navigation</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Visitor Modal -->
+    <div id="modal-visitors" class="hidden bg-white rounded-[40px] p-10 w-full max-w-[1100px] h-[800px] shadow-2xl flex flex-col border border-white overflow-hidden">
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h2 class="text-4xl font-black text-on-surface tracking-tighter mb-1">Guia do Visitante</h2>
+                <p class="text-secondary font-medium text-base">Informações essenciais para sua permanência.</p>
+            </div>
+            <button class="interactable close-modal bg-surface-container text-on-surface w-14 h-14 rounded-full flex items-center justify-center border border-surface-variant shadow-sm hover:bg-surface-variant transition-colors">
+                <span class="material-symbols-outlined">close</span>
             </button>
         </div>
         
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 w-full">
-            <!-- Oftalmo -->
-            <button class="flex flex-col items-center p-6 bg-surface-container-low rounded-2xl hover:bg-primary-container hover:text-on-primary-container transition-all group">
-                <span class="material-symbols-outlined text-[48px] mb-2 group-hover:scale-110 transition-transform">visibility</span>
-                <span class="font-bold text-lg text-center">Oftalmologia</span>
-            </button>
-            <!-- Endocrino -->
-            <button class="flex flex-col items-center p-6 bg-surface-container-low rounded-2xl hover:bg-primary-container hover:text-on-primary-container transition-all group">
-                <span class="material-symbols-outlined text-[48px] mb-2 group-hover:scale-110 transition-transform">medication</span>
-                <span class="font-bold text-lg text-center">Endocrinologia</span>
-            </button>
-            <!-- Cardio -->
-            <button class="flex flex-col items-center p-6 bg-surface-container-low rounded-2xl hover:bg-primary-container hover:text-on-primary-container transition-all group">
-                <span class="material-symbols-outlined text-[48px] mb-2 group-hover:scale-110 transition-transform">favorite</span>
-                <span class="font-bold text-lg text-center">Cardiologia</span>
-            </button>
-            <!-- Pediatria -->
-            <button class="flex flex-col items-center p-6 bg-surface-container-low rounded-2xl hover:bg-primary-container hover:text-on-primary-container transition-all group">
-                <span class="material-symbols-outlined text-[48px] mb-2 group-hover:scale-110 transition-transform">child_care</span>
-                <span class="font-bold text-lg text-center">Pediatria</span>
-            </button>
-            <!-- Ortopedia -->
-            <button class="flex flex-col items-center p-6 bg-surface-container-low rounded-2xl hover:bg-primary-container hover:text-on-primary-container transition-all group">
-                <span class="material-symbols-outlined text-[48px] mb-2 group-hover:scale-110 transition-transform">bone</span>
-                <span class="font-bold text-lg text-center">Ortopedia</span>
-            </button>
-            <!-- Ginecologia -->
-            <button class="flex flex-col items-center p-6 bg-surface-container-low rounded-2xl hover:bg-primary-container hover:text-on-primary-container transition-all group">
-                <span class="material-symbols-outlined text-[48px] mb-2 group-hover:scale-110 transition-transform">female</span>
-                <span class="font-bold text-lg text-center">Ginecologia</span>
-            </button>
-            <!-- Neurologia -->
-            <button class="flex flex-col items-center p-6 bg-surface-container-low rounded-2xl hover:bg-primary-container hover:text-on-primary-container transition-all group">
-                <span class="material-symbols-outlined text-[48px] mb-2 group-hover:scale-110 transition-transform">psychology</span>
-                <span class="font-bold text-lg text-center">Neurologia</span>
-            </button>
-            <!-- Dermatologia -->
-            <button class="flex flex-col items-center p-6 bg-surface-container-low rounded-2xl hover:bg-primary-container hover:text-on-primary-container transition-all group">
-                <span class="material-symbols-outlined text-[48px] mb-2 group-hover:scale-110 transition-transform">face</span>
-                <span class="font-bold text-lg text-center">Dermatologia</span>
-            </button>
+        <div class="grid grid-cols-2 grid-rows-2 gap-6 flex-grow overflow-hidden">
+            <!-- 1. Horários de Visitação (O básico essencial) -->
+            <div class="bg-surface-container-low p-6 rounded-[32px] border border-surface-variant flex flex-col h-full overflow-hidden">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined text-xl">schedule</span>
+                    </div>
+                    <h3 class="text-xl font-black text-on-surface tracking-tight">Horários de Visitação</h3>
+                </div>
+                <div class="space-y-2 flex-grow overflow-hidden">
+                    <div class="flex justify-between items-center p-3 bg-white rounded-2xl shadow-sm border border-surface-variant/50">
+                        <span class="font-bold text-sm">Enfermarias</span>
+                        <span class="bg-emerald-100 text-emerald-800 px-3 py-0.5 rounded-full text-[10px] font-black">10h às 20h</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-white rounded-2xl shadow-sm border border-surface-variant/50">
+                        <span class="font-bold text-sm">U.T.I. Adulto</span>
+                        <div class="flex flex-col items-end">
+                            <span class="bg-orange-100 text-orange-800 px-3 py-0.5 rounded-full text-[10px] font-black mb-1">11h às 12h</span>
+                            <span class="bg-orange-100 text-orange-800 px-3 py-0.5 rounded-full text-[10px] font-black">17h às 18h</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-white rounded-2xl shadow-sm border border-surface-variant/50">
+                        <span class="font-bold text-sm">Maternidade</span>
+                        <span class="bg-emerald-100 text-emerald-800 px-3 py-0.5 rounded-full text-[10px] font-black">09h às 21h</span>
+                    </div>
+                </div>
+                <p class="text-[9px] text-secondary mt-3 font-medium uppercase tracking-wider italic">* Sujeito a alteração conforme quadro clínico.</p>
+            </div>
+
+            <!-- 2. Emissão de Crachá / Check-in via QR Code (Avançado) -->
+            <div class="bg-primary/5 p-5 rounded-[32px] border-2 border-primary/10 flex flex-col h-full overflow-hidden">
+                <div class="flex items-center gap-4 mb-3">
+                    <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-red-500/20">
+                        <span class="material-symbols-outlined text-xl">qr_code_2</span>
+                    </div>
+                    <h3 class="text-xl font-black text-on-surface tracking-tight">Check-in via QR Code</h3>
+                </div>
+                <div class="bg-white p-4 rounded-3xl shadow-xl flex flex-col items-center flex-grow justify-center">
+                    <div class="w-[120px] h-[120px] bg-slate-50 rounded-2xl mb-3 overflow-hidden border border-slate-200 flex items-center justify-center">
+                        <img id="visitor-qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=VisionFlow-Hospital" alt="QR Code Check-in" class="w-[100px] h-[100px] object-contain opacity-80">
+                    </div>
+                    <p class="text-[12px] font-black text-on-surface mb-1 text-center leading-tight">Crachá Digital</p>
+                    <p class="text-[10px] text-secondary text-center max-w-[200px] leading-tight px-4 font-medium">Aproxime seu celular para agilizar sua entrada e evitar filas.</p>
+                </div>
+            </div>
+
+            <!-- 3. Protocolos de Higiene e Máscaras -->
+            <div class="bg-surface-container-low p-6 rounded-[32px] border border-surface-variant flex flex-col h-full overflow-hidden">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-10 h-10 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-600">
+                        <span class="material-symbols-outlined text-xl">sanitizer</span>
+                    </div>
+                    <h3 class="text-xl font-black text-on-surface tracking-tight">Higiene e Máscaras</h3>
+                </div>
+                <div class="grid grid-cols-2 gap-3 flex-grow overflow-hidden">
+                    <div class="p-3 bg-white rounded-2xl border border-surface-variant/50 flex flex-col items-center text-center justify-center">
+                        <span class="material-symbols-outlined text-blue-500 text-xl mb-1">medical_mask</span>
+                        <span class="text-[10px] font-black uppercase tracking-tight leading-tight">Máscara Obrigatória</span>
+                    </div>
+                    <div class="p-3 bg-white rounded-2xl border border-surface-variant/50 flex flex-col items-center text-center justify-center">
+                        <span class="material-symbols-outlined text-blue-500 text-xl mb-1">clean_hands</span>
+                        <span class="text-[10px] font-black uppercase tracking-tight leading-tight">Lave as Mãos</span>
+                    </div>
+                    <div class="p-3 bg-white rounded-2xl border border-surface-variant/50 flex flex-col items-center text-center justify-center">
+                        <span class="material-symbols-outlined text-blue-500 text-xl mb-1">group_off</span>
+                        <span class="text-[10px] font-black uppercase tracking-tight leading-tight">Máx 2 Pessoas</span>
+                    </div>
+                    <div class="p-3 bg-white rounded-2xl border border-surface-variant/50 flex flex-col items-center text-center justify-center">
+                        <span class="material-symbols-outlined text-blue-500 text-xl mb-1">volume_off</span>
+                        <span class="text-[10px] font-black uppercase tracking-tight leading-tight">SILÊNCIO HOSPITALAR</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Guia de Facilidades (Para quem vai passar muito tempo) -->
+            <div class="bg-surface-container-low p-6 rounded-[32px] border border-surface-variant flex flex-col h-full overflow-hidden">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-10 h-10 bg-emerald-500/10 rounded-xl flex items-center justify-center text-emerald-600">
+                        <span class="material-symbols-outlined text-xl">info</span>
+                    </div>
+                    <h3 class="text-xl font-black text-on-surface tracking-tight">Guia de Facilidades</h3>
+                </div>
+                <div class="space-y-2 flex-grow overflow-hidden">
+                    <div class="flex items-center gap-3 p-2 bg-white rounded-xl border border-surface-variant/50">
+                        <div class="w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center text-emerald-600">
+                            <span class="material-symbols-outlined text-lg">restaurant</span>
+                        </div>
+                        <div class="flex-grow">
+                            <p class="text-xs font-bold leading-none mb-1">Cafeteria</p>
+                            <p class="text-[9px] text-secondary">Térreo - Ala Leste (07h-22h)</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 p-2 bg-white rounded-xl border border-surface-variant/50">
+                        <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600">
+                            <span class="material-symbols-outlined text-lg">wifi</span>
+                        </div>
+                        <div class="flex-grow">
+                            <p class="text-xs font-bold leading-none mb-1">Wi-Fi Livre</p>
+                            <p class="text-[9px] text-secondary">Rede: Hospital_Visitante</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 p-2 bg-white rounded-xl border border-surface-variant/50">
+                        <div class="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center text-purple-600">
+                            <span class="material-symbols-outlined text-lg">wc</span>
+                        </div>
+                        <div class="flex-grow">
+                            <p class="text-xs font-bold leading-none mb-1">Banheiros e Toaletes</p>
+                            <p class="text-[9px] text-secondary">Disponíveis próximos a todas as salas e recepção</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3 pt-3 border-t border-surface-variant/30">
+                    <div class="flex items-center justify-between text-[10px]">
+                        <span class="text-secondary font-bold uppercase tracking-widest">Suporte:</span>
+                        <span class="font-black text-primary">Ramal 100</span>
+                    </div>
+                </div>
+            </div>
         </div>
-        <p class="mt-8 text-secondary italic text-center">Toque em uma especialidade para ver o local de atendimento ou realizar check-in.</p>
     </div>
-</div>
 
-
-<!-- Fullscreen Emergency Overlay (Redesigned Option B) -->
-<div id="emergency-overlay" class="fixed inset-0 z-[1000] hidden bg-[#DC2626] flex-col items-center justify-center text-white text-center p-margin-page overflow-hidden">
-    <!-- Background Effect -->
-    <div class="absolute inset-0 bg-radial-gradient opacity-20 pointer-events-none"></div>
-    
-    <div class="relative z-10 flex flex-col items-center max-w-[900px]">
-        <span class="material-symbols-outlined text-[180px] mb-8 animate-[pulse-custom_2s_infinite] drop-shadow-2xl" data-icon="emergency_share" data-weight="fill" style="font-variation-settings: 'FILL' 1;">emergency_share</span>
-        <h1 class="font-headline-xl text-[96px] leading-tight font-black uppercase tracking-tighter mb-6 drop-shadow-lg">Emergência<br>Acionada</h1>
-        <p class="text-4xl opacity-90 font-medium mb-16 tracking-wide">Uma equipe de resposta rápida foi notificada e está a caminho.</p>
-        
-        <!-- Dwell to cancel ring -->
-        <div class="relative w-[180px] h-[180px] flex items-center justify-center group cursor-pointer" id="cancel-emergency-btn">
-            <svg class="absolute inset-0 w-full h-full -rotate-90">
-                <circle cx="90" cy="90" r="85" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="12"/>
-                <circle id="cancel-progress" cx="90" cy="90" r="85" fill="none" stroke="white" stroke-width="12" stroke-dasharray="534" stroke-dashoffset="534" class="transition-all duration-100 ease-linear"/>
-            </svg>
-            <span class="material-symbols-outlined text-[60px] group-hover:scale-110 transition-transform">close</span>
+    <!-- Map Modal -->
+    <div id="modal-map" class="hidden bg-white rounded-[40px] p-10 w-full max-w-[1200px] h-[850px] shadow-2xl flex flex-col relative border border-white">
+        <button class="interactable close-modal absolute top-10 right-10 z-50 w-16 h-16 bg-white rounded-full shadow-2xl flex items-center justify-center border border-surface-variant hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-on-surface">close</span>
+        </button>
+        <div class="mb-10">
+            <h2 class="text-4xl font-black text-on-surface tracking-tighter mb-2">Navegação Digital</h2>
+            <p class="text-secondary font-medium">Siga a rota indicada no mapa abaixo para o seu destino.</p>
         </div>
-        <p class="mt-8 text-2xl font-bold uppercase tracking-[0.2em] opacity-80">Mantenha a mão para cancelar</p>
+        <div class="flex-grow relative rounded-[40px] border-4 border-surface-container overflow-hidden" id="map-container">
+            <div class="absolute inset-0 flex items-center justify-center scale-90">
+                <div class="relative w-[1000px] h-[700px] bg-white rounded-[40px] shadow-2xl border-[12px] border-white overflow-hidden" id="map-2d-plane">
+                    <div class="absolute inset-0 pointer-events-none">
+                        <!-- Paredes Horizontais Principais -->
+                        <div class="absolute top-[320px] left-0 right-0 h-[2px] bg-slate-300"></div>
+                        <div class="absolute top-[380px] left-0 right-0 h-[2px] bg-slate-300"></div>
+                        <!-- Paredes Verticais Principais -->
+                        <div class="absolute left-[470px] top-0 bottom-0 w-[2px] bg-slate-300"></div>
+                        <div class="absolute left-[530px] top-0 bottom-0 w-[2px] bg-slate-300"></div>
+                    </div>
+
+                    <!-- Rede de Corredores (Blueprint) -->
+                    <div class="corridor-v left-[470px] top-0 bottom-0 opacity-100"></div> <!-- Corredor Central V -->
+                    <div class="corridor-h top-[320px] left-0 right-0"></div> <!-- Corredor Central H -->
+                    
+                    <div class="corridor-h top-[210px] left-[30px] right-[30px] h-[40px] opacity-30"></div> <!-- Hall Norte -->
+                    <div class="corridor-h top-[450px] left-[30px] right-[30px] h-[40px] opacity-30"></div> <!-- Hall Sul -->
+                    
+                    <div class="corridor-v left-[115px] top-[210px] bottom-[210px] w-[30px] opacity-10"></div> <!-- Lateral Oeste -->
+                    <div class="corridor-v right-[115px] top-[210px] bottom-[210px] w-[30px] opacity-10"></div> <!-- Lateral Leste -->
+
+                    <!-- Ícones Decorativos -->
+                    <div class="absolute top-[335px] left-[20px] flex items-center gap-3 opacity-30 pointer-events-none">
+                        <span class="material-symbols-outlined text-xl">wc</span>
+                        <span class="material-symbols-outlined text-xl">elevator</span>
+                    </div>
+                    <div class="absolute top-[335px] right-[20px] flex items-center gap-3 opacity-30 pointer-events-none">
+                        <span class="material-symbols-outlined text-xl">stairs</span>
+                        <span class="material-symbols-outlined text-xl">local_drink</span>
+                    </div>
+                    <div class="absolute top-[10px] left-[485px] flex flex-col items-center gap-4 opacity-20 pointer-events-none">
+                        <span class="material-symbols-outlined text-xl">elevator</span>
+                        <span class="material-symbols-outlined text-xl">elevator</span>
+                    </div>
+
+                    <!-- Top Row -->
+                    <div class="map-2d-room top-[50px] left-[30px] w-[200px] h-[160px]" id="room-Pediatria" onclick="navigateToService('Pediatria')">
+                        <span class="material-symbols-outlined text-blue-400 text-3xl">child_care</span>
+                        <span class="room-label">Pediatria</span>
+                        <div class="door bottom-0"></div>
+                        <svg class="absolute bottom-[-15px] left-1/2 -translate-x-1/2 w-[40px] h-[40px] overflow-visible pointer-events-none">
+                            <path d="M 0 15 Q 35 15 35 50" fill="none" stroke="#cbd5e1" stroke-width="2" />
+                        </svg>
+                    </div>
+                    <div class="map-2d-room top-[50px] left-[245px] w-[200px] h-[160px]" id="room-Dermatologia" onclick="navigateToService('Dermatologia')">
+                        <span class="material-symbols-outlined text-orange-400 text-3xl">face</span>
+                        <span class="room-label">Dermatologia</span>
+                        <div class="door bottom-0"></div>
+                        <svg class="absolute bottom-[-15px] left-1/2 -translate-x-1/2 w-[40px] h-[40px] overflow-visible pointer-events-none">
+                            <path d="M 0 15 Q 35 15 35 50" fill="none" stroke="#cbd5e1" stroke-width="2" />
+                        </svg>
+                    </div>
+                    <div class="map-2d-room top-[50px] right-[245px] w-[200px] h-[160px]" id="room-Oftalmologia" onclick="navigateToService('Oftalmologia')">
+                        <span class="material-symbols-outlined text-purple-400 text-3xl">visibility</span>
+                        <span class="room-label">Oftalmologia</span>
+                        <div class="door bottom-0"></div>
+                        <svg class="absolute bottom-[-15px] left-1/2 -translate-x-1/2 w-[40px] h-[40px] overflow-visible pointer-events-none">
+                            <path d="M 0 15 Q 35 15 35 50" fill="none" stroke="#cbd5e1" stroke-width="2" />
+                        </svg>
+                    </div>
+                    <div class="map-2d-room top-[50px] right-[30px] w-[200px] h-[160px]" id="room-Cardiologia" onclick="navigateToService('Cardiologia')">
+                        <span class="material-symbols-outlined text-red-400 text-3xl">favorite</span>
+                        <span class="room-label">Cardiologia</span>
+                        <div class="door bottom-0"></div>
+                        <svg class="absolute bottom-[-15px] left-1/2 -translate-x-1/2 w-[40px] h-[40px] overflow-visible pointer-events-none">
+                            <path d="M 0 15 Q 35 15 35 50" fill="none" stroke="#cbd5e1" stroke-width="2" />
+                        </svg>
+                    </div>
+
+                    <!-- Center -->
+                    <div class="map-2d-room top-[250px] left-[410px] w-[180px] h-[200px] border-4 border-primary/20 bg-primary/5" id="room-Recepção">
+                        <span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">location_on</span>
+                        <span class="room-label text-primary font-black">Você está aqui</span>
+                    </div>
+
+                    <div class="map-2d-room top-[300px] right-[40px] w-[220px] h-[100px]" id="room-Farmacia" onclick="navigateToService('Farmacia')">
+                        <span class="material-symbols-outlined text-emerald-400 text-3xl">medication</span>
+                        <span class="room-label">Farmácia</span>
+                        <div class="door left-0"></div>
+                        <svg class="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[40px] h-[40px] overflow-visible pointer-events-none rotate-90">
+                            <path d="M 0 15 Q 35 15 35 50" fill="none" stroke="#cbd5e1" stroke-width="2" />
+                        </svg>
+                    </div>
+                    <div class="map-2d-room top-[300px] left-[40px] w-[220px] h-[100px]" id="room-Exames" onclick="navigateToService('Exames')">
+                        <span class="material-symbols-outlined text-emerald-400 text-3xl">biotech</span>
+                        <span class="room-label">Exames</span>
+                        <div class="door right-0"></div>
+                        <svg class="absolute right-[-15px] top-1/2 -translate-y-1/2 w-[40px] h-[40px] overflow-visible pointer-events-none -rotate-90">
+                            <path d="M 0 15 Q 35 15 35 50" fill="none" stroke="#cbd5e1" stroke-width="2" />
+                        </svg>
+                    </div>
+
+                    <!-- Bottom -->
+                    <div class="map-2d-room bottom-[50px] left-[30px] w-[200px] h-[160px]" id="room-Urgencia" onclick="navigateToService('Urgencia')">
+                        <span class="material-symbols-outlined text-red-600 text-3xl">emergency</span>
+                        <span class="room-label">Urgência</span>
+                        <div class="door top-0"></div>
+                        <svg class="absolute top-[-15px] left-1/2 -translate-x-1/2 w-[40px] h-[40px] overflow-visible pointer-events-none rotate-180">
+                            <path d="M 0 15 Q 35 15 35 50" fill="none" stroke="#cbd5e1" stroke-width="2" />
+                        </svg>
+                    </div>
+                    <div class="map-2d-room bottom-[50px] left-[245px] w-[200px] h-[160px]" id="room-Psicologia" onclick="navigateToService('Psicologia')">
+                        <span class="material-symbols-outlined text-blue-300 text-3xl">psychology</span>
+                        <span class="room-label">Psicologia</span>
+                        <div class="door top-0"></div>
+                        <svg class="absolute top-[-15px] left-1/2 -translate-x-1/2 w-[40px] h-[40px] overflow-visible pointer-events-none rotate-180">
+                            <path d="M 0 15 Q 35 15 35 50" fill="none" stroke="#cbd5e1" stroke-width="2" />
+                        </svg>
+                    </div>
+                    <div class="map-2d-room bottom-[50px] right-[245px] w-[200px] h-[160px]" id="room-Fisioterapia" onclick="navigateToService('Fisioterapia')">
+                        <span class="material-symbols-outlined text-emerald-400 text-3xl">fitness_center</span>
+                        <span class="room-label">Fisioterapia</span>
+                        <div class="door top-0"></div>
+                        <svg class="absolute top-[-15px] left-1/2 -translate-x-1/2 w-[40px] h-[40px] overflow-visible pointer-events-none rotate-180">
+                            <path d="M 0 15 Q 35 15 35 50" fill="none" stroke="#cbd5e1" stroke-width="2" />
+                        </svg>
+                    </div>
+                    <div class="map-2d-room bottom-[50px] right-[30px] w-[200px] h-[160px]" id="room-Internação" onclick="navigateToService('Internação')">
+                        <span class="material-symbols-outlined text-slate-400 text-3xl">bed</span>
+                        <span class="room-label">Internação</span>
+                        <div class="door top-0"></div>
+                        <svg class="absolute top-[-15px] left-1/2 -translate-x-1/2 w-[40px] h-[40px] overflow-visible pointer-events-none rotate-180">
+                            <path d="M 0 15 Q 35 15 35 50" fill="none" stroke="#cbd5e1" stroke-width="2" />
+                        </svg>
+                    </div>
+
+                    <svg class="absolute inset-0 w-full h-full pointer-events-none z-10">
+                        <defs>
+                            <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                                <feGaussianBlur stdDeviation="4" result="blur" />
+                                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                            </filter>
+                        </defs>
+                        <!-- Path de Brilho (Rastro) -->
+                        <path id="navigation-path-bg" d="" fill="none" stroke="#DC2626" stroke-width="14" stroke-opacity="0.15" filter="url(#glow)" />
+                        <!-- Path Principal -->
+                        <path id="navigation-path" d="" fill="none" stroke="#DC2626" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" style="stroke-dasharray: 12, 12; animation: dash 30s linear infinite;" />
+                        <circle id="path-start" cx="500" cy="350" r="10" fill="#DC2626" stroke="white" stroke-width="4" style="display:none" />
+                        <g id="path-end-group" style="display:none">
+                            <circle id="path-end-ping" cx="0" cy="0" r="20" fill="#DC2626" opacity="0.3">
+                                <animate attributeName="r" values="10;30;10" dur="2s" repeatCount="indefinite" />
+                                <animate attributeName="opacity" values="0.6;0;0.6" dur="2s" repeatCount="indefinite" />
+                            </circle>
+                            <circle id="path-end-static" cx="0" cy="0" r="12" fill="#DC2626" stroke="white" stroke-width="4" />
+                        </g>
+                    </svg>
+                </div>
+            </div>
+            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-xl px-16 py-5 rounded-full shadow-2xl border border-surface-variant flex gap-12 items-center">
+                <div class="flex items-center gap-3"><div class="w-4 h-4 rounded-full bg-blue-400"></div><span class="text-xs font-black uppercase tracking-widest text-secondary">Norte</span></div>
+                <div class="flex items-center gap-3"><div class="w-4 h-4 rounded-full bg-red-400"></div><span class="text-xs font-black uppercase tracking-widest text-secondary">Leste</span></div>
+                <div class="flex items-center gap-3"><div class="w-4 h-4 rounded-full bg-emerald-400"></div><span class="text-xs font-black uppercase tracking-widest text-secondary">Oeste</span></div>
+                <div class="flex items-center gap-3"><div class="w-4 h-4 rounded-full bg-red-600"></div><span class="text-xs font-black uppercase tracking-widest text-secondary">Sul</span></div>
+            </div>
+        </div>
     </div>
 </div>
 
-<!-- Help Notification Toast -->
-<div id="help-toast" class="fixed bottom-[120px] left-1/2 -translate-x-1/2 z-[2000] hidden flex items-center gap-4 bg-inverse-surface/90 text-inverse-on-surface backdrop-blur-xl px-8 py-4 rounded-full shadow-2xl border border-white/20 animate-[slide-up_0.5s_ease-out]">
-    <span class="material-symbols-outlined text-amber-400 text-[32px] animate-pulse">support_agent</span>
-    <div class="flex flex-col">
-        <span class="font-bold text-xl">Colaborador Acionado!</span>
-        <span class="text-lg opacity-90">Um assistente está a caminho para auxiliá-lo.</span>
-    </div>
+<div id="help-toast" class="fixed bottom-[130px] left-1/2 -translate-x-1/2 z-[300] hidden bg-on-surface text-white px-10 py-5 rounded-full shadow-2xl items-center gap-6 animate-bounce">
+    <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center"><span class="material-symbols-outlined">help</span></div>
+    <span class="text-xl font-black tracking-tight">Precisa de ajuda? Basta acenar para a câmera!</span>
 </div>
 
-<!-- VisionFlow Iframe Integration -->
 <script>
-    let currentHoverElement = null;
-    
-    // Modals
-    const modalsContainer = document.getElementById('modals');
-    const modalNumpad = document.getElementById('modal-numpad');
-    const modalQr = document.getElementById('modal-qr');
-    const modalMap = document.getElementById('modal-map');
-    const modalServices = document.getElementById('modal-services');
-    const helpToast = document.getElementById('help-toast');
-    
-    const cpfDisplay = document.getElementById('cpf-display');
+document.addEventListener('DOMContentLoaded', () => {
+    // State
     let currentCpf = '';
-    
-    function updateCpfDisplay() {
-        let display = currentCpf.padEnd(11, '_');
-        // Format as XXX.XXX.XXX-XX
-        display = display.replace(/^(\w{3})(\w{3})?(\w{3})?(\w{2})?$/, function(match, p1, p2, p3, p4) {
-            let res = p1;
-            if (p2) res += '.' + p2;
-            if (p3) res += '.' + p3;
-            if (p4) res += '-' + p4;
-            return res;
-        });
-        cpfDisplay.textContent = display;
-    }
+    let currentStep = 1;
+    let selectedServiceName = 'Cardiologia';
+    let selectedDateStr = '10 de Maio';
+    let currentHoverElement = null;
+    let isEmergencyActive = false;
 
-    function showModal(modalId) {
+    // Elements
+    const modalsContainer = document.getElementById('modals');
+    const cpfDisplay = document.getElementById('cpf-display');
+    const navBtns = document.querySelectorAll('nav button');
+    const btnTriage = document.getElementById('btn-triage');
+    const helpToast = document.getElementById('help-toast');
+    const emergencyOverlay = document.getElementById('emergency-overlay');
+    const cancelProgress = document.getElementById('cancel-progress');
+    const navigationPath = document.getElementById('navigation-path');
+    const navigationPathBg = document.getElementById('navigation-path-bg');
+
+    // --- Global Functions ---
+    window.showModal = (id) => {
         modalsContainer.classList.remove('hidden');
         document.querySelectorAll('#modals > div').forEach(m => m.classList.add('hidden'));
-        document.getElementById(modalId).classList.remove('hidden');
-        if (modalId === 'modal-numpad') {
-            currentCpf = '';
-            updateCpfDisplay();
+        const target = document.getElementById(id);
+        if (target) {
+            target.classList.remove('hidden');
+            target.classList.add('flex');
+            if (id === 'modal-numpad') { currentCpf = ''; updateCpfDisplay(); }
+            if (id === 'modal-appointment') nextAppointmentStep(1);
+            if (id === 'modal-visitors') {
+                const img = target.querySelector('img');
+                if (img) img.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=CHECKIN_${Date.now()}`;
+            }
         }
-    }
+    };
 
-    function hideModals() {
+    window.hideModals = () => {
         modalsContainer.classList.add('hidden');
-    }
+        document.querySelectorAll('#modals > div').forEach(m => { m.classList.add('hidden'); m.classList.remove('flex'); });
+        if (navigationPath) navigationPath.setAttribute('d', '');
+        if (navigationPathBg) navigationPathBg.setAttribute('d', '');
+        document.querySelectorAll('.map-2d-room').forEach(r => r.classList.remove('active', 'shadow-glow'));
+        const ps = document.getElementById('path-start');
+        const peg = document.getElementById('path-end-group');
+        if (ps) ps.style.display = 'none';
+        if (peg) peg.style.display = 'none';
+    };
 
-    // Attach events to cards
-    const cards = document.querySelectorAll('main button');
-    if(cards.length >= 6) {
-        cards[0].addEventListener('click', () => showModal('modal-numpad')); // Check-in
-        cards[1].addEventListener('click', () => showModal('modal-numpad')); // Resultados
-        cards[2].addEventListener('click', () => showModal('modal-qr')); // Agendamento
-        cards[3].addEventListener('click', () => showModal('modal-qr')); // Visitantes
-        cards[4].addEventListener('click', () => showModal('modal-map')); // Mapa
-    }
+    window.nextAppointmentStep = (step) => {
+        document.querySelectorAll('[id^="appointment-step-"]').forEach(el => el.classList.add('hidden'));
+        const target = document.getElementById(`appointment-step-${step}`);
+        if (target) target.classList.remove('hidden');
+        const backBtn = document.getElementById('appointment-back-btn');
+        if (backBtn) backBtn.style.display = (step === 3) ? 'none' : 'block';
+    };
 
-    // Bottom Navigation Wiring
-    const navBtns = document.querySelectorAll('nav button');
-    if (navBtns.length >= 4) {
-        navBtns[0].addEventListener('click', () => hideModals()); // Início
-        navBtns[1].addEventListener('click', () => showModal('modal-map')); // Mapa
-        navBtns[2].addEventListener('click', () => showModal('modal-services')); // Serviços
-        navBtns[3].addEventListener('click', () => { // Ajuda
-            helpToast.classList.remove('hidden');
-            helpToast.classList.add('flex');
-            setTimeout(() => {
-                helpToast.classList.add('hidden');
-                helpToast.classList.remove('flex');
-            }, 5000);
+    window.selectService = (el, name) => {
+        document.querySelectorAll('.service-chip').forEach(c => c.classList.remove('selected'));
+        el.classList.add('selected');
+        selectedServiceName = name;
+    };
+
+    window.confirmAppointment = () => {
+        document.getElementById('final-date').textContent = selectedDateStr + ', 2026';
+        document.getElementById('final-service').textContent = selectedServiceName;
+        nextAppointmentStep(3);
+    };
+
+    // --- Navigation ---
+    const coords = {
+        'Pediatria': { x: 130, y: 130, door: { x: 130, y: 210 } },
+        'Dermatologia': { x: 345, y: 130, door: { x: 345, y: 210 } },
+        'Oftalmologia': { x: 655, y: 130, door: { x: 655, y: 210 } },
+        'Cardiologia': { x: 870, y: 130, door: { x: 870, y: 210 } },
+        'Farmacia': { x: 850, y: 350, door: { x: 740, y: 350 } },
+        'Exames': { x: 150, y: 350, door: { x: 260, y: 350 } },
+        'Urgencia': { x: 130, y: 570, door: { x: 130, y: 490 } },
+        'Psicologia': { x: 345, y: 570, door: { x: 345, y: 490 } },
+        'Fisioterapia': { x: 655, y: 570, door: { x: 655, y: 490 } },
+        'Internação': { x: 870, y: 570, door: { x: 870, y: 490 } },
+        'Recepção': { x: 500, y: 350 }
+    };
+
+    window.navigateToService = (id) => {
+        showModal('modal-map');
+        const start = coords['Recepção'];
+        const target = coords[id];
+        if (!target) return;
+        
+        document.querySelectorAll('.map-2d-room').forEach(r => r.classList.remove('active'));
+        document.getElementById(`room-${id}`)?.classList.add('active');
+        
+        const ps = document.getElementById('path-start');
+        const peg = document.getElementById('path-end-group');
+        let d = `M ${start.x} ${start.y}`;
+        
+        if (id === 'Farmacia' || id === 'Exames') {
+            // Salas laterais: movimento direto horizontal no corredor central
+            d += ` L ${target.door.x} ${target.door.y}`;
+        } else {
+            // Salas Norte/Sul: Movimento em grade ortogonal (V -> H -> V)
+            const hallY = (target.y < start.y) ? 230 : 470;
+            d += ` L ${start.x} ${hallY}`;      // Sobe/Desce pelo Corredor Central V
+            d += ` L ${target.door.x} ${hallY}`; // Segue horizontalmente pelo Hall Norte/Sul
+            d += ` L ${target.door.x} ${target.door.y}`; // Entra na porta da sala
+        }
+        
+        navigationPath.setAttribute('d', d);
+        if (navigationPathBg) navigationPathBg.setAttribute('d', d);
+        
+        if (ps) ps.style.display = 'block';
+        if (peg) { peg.style.display = 'block'; peg.setAttribute('transform', `translate(${target.door.x}, ${target.door.y})`); }
+        
+        const paths = [navigationPath, navigationPathBg].filter(p => p);
+        paths.forEach(p => {
+            p.style.strokeDasharray = '1000';
+            p.style.strokeDashoffset = '1000';
+            p.style.transition = 'none';
         });
+        
+        setTimeout(() => { 
+            paths.forEach(p => {
+                p.style.transition = 'stroke-dashoffset 2.5s cubic-bezier(0.4, 0, 0.2, 1)'; 
+                p.style.strokeDashoffset = '0'; 
+            });
+        }, 100);
+    };
+
+    // --- Helpers ---
+    function updateCpfDisplay() {
+        let m = currentCpf.padEnd(11, '_');
+        m = m.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+        if (cpfDisplay) cpfDisplay.textContent = m;
     }
 
-    // Lógica do Botão de Triagem
-    const btnTriage = document.getElementById('btn-triage');
+    // --- Listeners ---
+    document.querySelectorAll('.numpad-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (btn.classList.contains('numpad-del')) currentCpf = currentCpf.slice(0, -1);
+            else if (btn.classList.contains('numpad-ok')) { if (currentCpf.length === 11) hideModals(); }
+            else if (currentCpf.length < 11) currentCpf += btn.textContent.trim();
+            updateCpfDisplay();
+        });
+    });
+
+    document.querySelectorAll('.calendar-day:not(.disabled)').forEach(day => {
+        day.addEventListener('click', () => {
+            document.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('selected'));
+            day.classList.add('selected');
+            selectedDateStr = day.textContent + ' de Maio';
+            document.getElementById('selected-date-preview').textContent = selectedDateStr;
+            document.getElementById('selected-date-breadcrumb').textContent = day.textContent + ' Mai, 2026';
+        });
+    });
+
     if (btnTriage) {
         btnTriage.addEventListener('click', () => {
-            const originalContent = btnTriage.innerHTML;
-            btnTriage.innerHTML = '<span class="material-symbols-outlined animate-spin" data-icon="print">print</span><span class="font-headline-md">Imprimindo...</span>';
+            const original = btnTriage.innerHTML;
+            btnTriage.innerHTML = '<span class="material-symbols-outlined animate-spin text-white">print</span><span>Imprimindo...</span>';
             btnTriage.classList.add('opacity-80', 'pointer-events-none');
-            
             setTimeout(() => {
-                btnTriage.innerHTML = '<span class="material-symbols-outlined text-green-400" data-icon="check_circle">check_circle</span><span class="font-headline-md text-white">Senha Emitida!</span>';
-                btnTriage.classList.remove('bg-[#DC2626]');
-                btnTriage.classList.add('bg-green-700');
-                
-                setTimeout(() => {
-                    btnTriage.innerHTML = originalContent;
-                    btnTriage.classList.remove('bg-green-700', 'opacity-80', 'pointer-events-none');
-                    btnTriage.classList.add('bg-[#DC2626]');
-                }, 3000);
+                btnTriage.innerHTML = '<span class="material-symbols-outlined text-white">check_circle</span><span>Senha Emitida!</span>';
+                btnTriage.classList.replace('bg-primary', 'bg-emerald-600');
+                setTimeout(() => { btnTriage.innerHTML = original; btnTriage.classList.replace('bg-emerald-600', 'bg-primary'); btnTriage.classList.remove('opacity-80', 'pointer-events-none'); }, 3000);
             }, 2000);
         });
     }
 
-    // Numpad events
-    document.querySelectorAll('.numpad-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            if (btn.classList.contains('numpad-del')) {
-                currentCpf = currentCpf.slice(0, -1);
-            } else if (btn.classList.contains('numpad-ok')) {
-                if (currentCpf.length === 11) {
-                    hideModals();
-                    // Simula sucesso (poderia usar um alert customizado)
-                    setTimeout(() => {
-                        cards[0].querySelector('span.material-symbols-outlined').textContent = "check_circle";
-                        cards[0].classList.add('ring-4', 'ring-green-500');
-                    }, 300);
-                }
-            } else {
-                if (currentCpf.length < 11) {
-                    currentCpf += btn.textContent.trim();
-                }
-            }
-            updateCpfDisplay();
-            
-            // Interaction feedback
-            btn.classList.add('bg-primary-container', 'text-on-primary-container');
-            setTimeout(() => {
-                btn.classList.remove('bg-primary-container', 'text-on-primary-container');
-            }, 150);
-        });
-    });
+    document.getElementById('card-checkin')?.addEventListener('click', () => showModal('modal-numpad'));
+    document.getElementById('card-results')?.addEventListener('click', () => showModal('modal-numpad'));
+    document.getElementById('card-appointment')?.addEventListener('click', () => showModal('modal-appointment'));
+    document.getElementById('card-visitors')?.addEventListener('click', () => showModal('modal-visitors'));
+    document.getElementById('card-map')?.addEventListener('click', () => showModal('modal-map'));
+    document.getElementById('card-emergency')?.addEventListener('click', () => triggerEmergency());
 
-    // --- 3D Map State & Global Variables ---
-    let mapRotationX = 60;
-    let mapRotationZ = -20;
-    let mapScale = 1.0;
-    const mapPlane = document.querySelector('.map-3d-plane');
-
-    function updateMapTransform() {
-        if (mapPlane) {
-            mapPlane.style.transform = `rotateX(${mapRotationX}deg) rotateZ(${mapRotationZ}deg) scale(${mapScale})`;
-        }
+    if (navBtns.length >= 4) {
+        navBtns[0].addEventListener('click', () => hideModals());
+        navBtns[1].addEventListener('click', () => showModal('modal-map'));
+        navBtns[2].addEventListener('click', () => showModal('modal-services'));
+        navBtns[3].addEventListener('click', () => { helpToast.classList.toggle('hidden'); helpToast.classList.toggle('flex'); });
     }
 
-    // Close modals
-    document.querySelectorAll('.close-modal').forEach(btn => {
-        btn.addEventListener('click', hideModals);
-    });
+    document.querySelectorAll('.close-modal').forEach(b => b.addEventListener('click', hideModals));
 
-    // --- DWELL EMERGENCY LOGIC ---
-    const emergencyOverlay = document.getElementById('emergency-overlay');
-    const emergencyBtns = document.querySelectorAll('.group.bg-\\[\\#DC2626\\]:not(#btn-triage), header button');
+    // --- Gestures ---
+    function triggerEmergency() { isEmergencyActive = true; emergencyOverlay.classList.remove('hidden'); }
+    function cancelEmergency() { isEmergencyActive = false; emergencyOverlay.classList.add('hidden'); cancelProgress.style.strokeDashoffset = 534; }
     
-    // Adiciona classe para identificar botões de emergência
-    emergencyBtns.forEach(btn => {
-        btn.classList.add('dwell-emergency');
-        btn.addEventListener('click', () => {
-            // Se clicado (pinça), aciona também
-            triggerEmergency();
-        });
-    });
-
-    let emergencyDwellTimer = null;
-    let emergencyStartTime = 0;
-    const DWELL_TIME = 3000; // 3 seconds
-    let isEmergencyActive = false;
-
-    // Elemento visual de progresso (poderia ser injetado dinamicamente no botão, mas usaremos um efeito simples no próprio card)
-    function updateDwellVisuals(el, progress) {
-        if (!el) return;
-        // Escurece o fundo proporcionalmente ao tempo
-        const scale = 1 - (progress * 0.05); // Encolhe até 95%
-        el.style.transform = `scale(${scale})`;
-        el.style.boxShadow = `0 0 ${20 + progress * 50}px rgba(220,38,38,${0.3 + progress * 0.7})`;
-        
-        if (progress >= 1) {
-            el.style.transform = '';
-            el.style.boxShadow = '';
-        }
-    }
-
-    function triggerEmergency() {
-        if (isEmergencyActive) return;
-        isEmergencyActive = true;
-        emergencyOverlay.classList.remove('hidden');
-        emergencyOverlay.classList.add('flex');
-    }
-
-    function cancelEmergency() {
-        isEmergencyActive = false;
-        emergencyOverlay.classList.add('hidden');
-        emergencyOverlay.classList.remove('flex');
-        cancelProgress.style.strokeDashoffset = 534;
-    }
-
-    // Lógica para cancelar emergência (outro dwell)
-    const cancelEmergencyBtn = document.getElementById('cancel-emergency-btn');
-    const cancelProgress = document.getElementById('cancel-progress');
-    let cancelTimer = null;
-    let cancelStartTime = 0;
-
-    window.addEventListener('message', (event) => {
-        if (event.data.type === 'VISIONFLOW_CLICK') {
-            const el = document.elementFromPoint(event.data.x, event.data.y);
-            if (el) {
-                el.click();
-            }
-        } else if (event.data.type === 'VISIONFLOW_HOVER') {
-            const el = document.elementFromPoint(event.data.x, event.data.y);
-            
-            // --- Hover State Management ---
+    window.addEventListener('message', (e) => {
+        if (e.data.type === 'VISIONFLOW_CLICK') { const el = document.elementFromPoint(e.data.x, e.data.y); if (el) el.click(); }
+        else if (e.data.type === 'VISIONFLOW_HOVER') {
+            const el = document.elementFromPoint(e.data.x, e.data.y);
             if (currentHoverElement !== el) {
-                if (currentHoverElement) {
-                    currentHoverElement.dispatchEvent(new MouseEvent('mouseout', { bubbles: true }));
-                    currentHoverElement.classList.remove('hovered');
-                    
-                    // Clear Dwell Emergency
-                    if (emergencyDwellTimer) {
-                        clearInterval(emergencyDwellTimer);
-                        emergencyDwellTimer = null;
-                        updateDwellVisuals(currentHoverElement, 0);
-                    }
-                    
-                    // Clear Dwell Cancel
-                    if (cancelTimer) {
-                        clearInterval(cancelTimer);
-                        cancelTimer = null;
-                        cancelProgress.style.strokeDashoffset = 534;
-                    }
-                }
-                
-                if (el && event.data.x >= 0 && event.data.y >= 0) {
-                    el.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
-                    // Only apply hover visual to interactive elements
-                    if (el.tagName === 'BUTTON' || el.closest('button') || el.classList.contains('numpad-btn') || el.closest('.cursor-pointer')) {
-                        el.classList.add('hovered');
-                    }
-
-                    // --- Start Dwell Check ---
-                    const emergencyTarget = el.closest('.dwell-emergency');
-                    if (emergencyTarget && !isEmergencyActive) {
+                if (currentHoverElement) { currentHoverElement.classList.remove('hovered'); if (emergencyDwellTimer) { clearInterval(emergencyDwellTimer); emergencyDwellTimer = null; } if (cancelTimer) { clearInterval(cancelTimer); cancelTimer = null; cancelProgress.style.strokeDashoffset = 534; } }
+                if (el && e.data.x >= 0 && e.data.y >= 0) {
+                    if (el.tagName === 'BUTTON' || el.closest('button') || el.classList.contains('interactable')) el.classList.add('hovered');
+                    if (el.id === 'card-emergency' && !isEmergencyActive) {
                         emergencyStartTime = Date.now();
-                        emergencyDwellTimer = setInterval(() => {
-                            const elapsed = Date.now() - emergencyStartTime;
-                            const progress = Math.min(elapsed / DWELL_TIME, 1);
-                            
-                            updateDwellVisuals(emergencyTarget, progress);
-                            
-                            if (progress >= 1) {
-                                clearInterval(emergencyDwellTimer);
-                                emergencyDwellTimer = null;
-                                triggerEmergency();
-                            }
-                        }, 50); // Update 20fps
+                        emergencyDwellTimer = setInterval(() => { if (Date.now() - emergencyStartTime >= 3000) { clearInterval(emergencyDwellTimer); triggerEmergency(); } }, 50);
                     }
-
-                    const cancelTarget = el.closest('#cancel-emergency-btn');
-                    if (cancelTarget && isEmergencyActive) {
+                    if (el.id === 'cancel-emergency-btn' && isEmergencyActive) {
                         cancelStartTime = Date.now();
-                        cancelTimer = setInterval(() => {
-                            const elapsed = Date.now() - cancelStartTime;
-                            const progress = Math.min(elapsed / 2000, 1); // 2s cancel
-                            
-                            const offset = 534 - (534 * progress);
-                            cancelProgress.style.strokeDashoffset = offset;
-                            
-                            if (progress >= 1) {
-                                clearInterval(cancelTimer);
-                                cancelTimer = null;
-                                cancelEmergency();
-                            }
-                        }, 50);
+                        cancelTimer = setInterval(() => { const p = Math.min((Date.now() - cancelStartTime) / 2000, 1); cancelProgress.style.strokeDashoffset = 534 - (534 * p); if (p >= 1) { clearInterval(cancelTimer); cancelEmergency(); } }, 50);
                     }
                 }
                 currentHoverElement = el;
             }
-        } else if (event.data.type === 'VISIONFLOW_SCROLL') {
-            window.scrollBy(0, event.data.dy);
-        } else if (event.data.type === 'VISIONFLOW_DRAG') {
-            // Support drag for 3D map rotation
-            if (!modalsContainer.classList.contains('hidden') && !modalMap.classList.contains('hidden')) {
-                mapRotationX = Math.max(20, Math.min(80, mapRotationX - event.data.dy * 0.1));
-                mapRotationZ = mapRotationZ - event.data.dx * 0.1;
-                updateMapTransform();
-            }
         }
     });
 
-    function updateMapTransform() {
-        if (mapPlane) {
-            mapPlane.style.transform = `rotateX(${mapRotationX}deg) rotateZ(${mapRotationZ}deg) scale(${mapScale})`;
-        }
-    }
-
-    document.getElementById('zoom-in')?.addEventListener('click', () => {
-        mapScale = Math.min(2.5, mapScale + 0.2);
-        updateMapTransform();
-    });
-
-    document.getElementById('zoom-out')?.addEventListener('click', () => {
-        mapScale = Math.max(0.4, mapScale - 0.2);
-        updateMapTransform();
-    });
-
-    document.getElementById('reset-view')?.addEventListener('click', () => {
-        mapRotationX = 60;
-        mapRotationZ = -20;
-        mapScale = 1.0;
-        updateMapTransform();
-    });
+    setInterval(() => {
+        const now = new Date();
+        document.getElementById('current-time').textContent = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        document.getElementById('current-date').textContent = now.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+    }, 1000);
+});
 </script>
 </body></html>
