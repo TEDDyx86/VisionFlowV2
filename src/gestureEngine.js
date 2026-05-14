@@ -35,10 +35,10 @@ export function processGestures(landmarks) {
     const cursorY = smoothedY;
 
     // Detectar Pinça (distância 3D ou 2D entre polegar e indicador)
+    // Detectar Pinça (apenas distância 2D entre polegar e indicador para evitar jitter de Z)
     const dx = indexTip.x - thumbTip.x;
     const dy = indexTip.y - thumbTip.y;
-    const dz = indexTip.z - thumbTip.z;
-    const distance = Math.sqrt(dx*dx + dy*dy + dz*dz);
+    const distance = Math.sqrt(dx*dx + dy*dy);
     
     const wasPinching = isPinching;
     
@@ -50,15 +50,7 @@ export function processGestures(landmarks) {
         isPinching = false;
     }
 
-    // Lógica de Scroll (Zonas)
-    // Se a mão estiver muito acima (y < 0.2) ou abaixo (y > 0.8), faz o scroll
-    if (indexTip.y < params.scrollTopZone) {
-        triggerScroll(-params.scrollSpeed);
-    } else if (indexTip.y > params.scrollBottomZone) {
-        triggerScroll(params.scrollSpeed);
-    } else {
-        endScroll();
-    }
+    // Lógica de Scroll por Zonas foi substituída por Drag-to-Scroll mais ergonômico.
 
     // Clique
     if (isPinching && !wasPinching) {
@@ -70,11 +62,13 @@ export function processGestures(landmarks) {
         }
     }
 
-    // Arrastar (Drag)
+    // Arrastar (Drag) -> Transformado em Scroll Natural
     if (isPinching && wasPinching) {
         const dragDx = cursorX - lastCursorX;
         const dragDy = cursorY - lastCursorY;
-        if (Math.abs(dragDx) > 1 || Math.abs(dragDy) > 1) { // Reduzir ruído
+        if (Math.abs(dragDy) > 2) { // Threshold para evitar micro-tremores
+            // Multiplicador de velocidade. O negativo inverte o eixo como num celular
+            window.scrollBy({ top: -dragDy * 1.5, behavior: 'instant' }); 
             triggerDrag(cursorX, cursorY, dragDx, dragDy);
         }
     }

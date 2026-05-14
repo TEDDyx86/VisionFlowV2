@@ -59,6 +59,8 @@ window.addEventListener('message', (event) => {
     }
 });
 
+let lastHoverCheck = 0;
+
 export function updateCursor(x, y, isPinching) {
     if (x === null || y === null) {
         if(cursorElement) cursorElement.classList.add('hidden');
@@ -98,48 +100,52 @@ export function updateCursor(x, y, isPinching) {
         }
     }
 
-    // Detecção de Hover
-    const element = document.elementFromPoint(x, y);
-    
-    if (element && element.tagName === 'IFRAME') {
-        const rect = element.getBoundingClientRect();
-        element.contentWindow.postMessage({
-            type: 'VISIONFLOW_HOVER',
-            x: x - rect.left,
-            y: y - rect.top
-        }, '*');
+    // Detecção de Hover com Throttling para Performance
+    const now = Date.now();
+    if (now - lastHoverCheck > 100) {
+        const element = document.elementFromPoint(x, y);
         
-        if (currentHoverElement !== element) {
-            if (currentHoverElement && currentHoverElement.tagName !== 'IFRAME') {
-                currentHoverElement.classList.remove('hovered');
-                cancelDwell();
+        if (element && element.tagName === 'IFRAME') {
+            const rect = element.getBoundingClientRect();
+            element.contentWindow.postMessage({
+                type: 'VISIONFLOW_HOVER',
+                x: x - rect.left,
+                y: y - rect.top
+            }, '*');
+            
+            if (currentHoverElement !== element) {
+                if (currentHoverElement && currentHoverElement.tagName !== 'IFRAME') {
+                    currentHoverElement.classList.remove('hovered');
+                    cancelDwell();
+                }
+                currentHoverElement = element;
             }
-            currentHoverElement = element;
-        }
-    } else if (element && element.classList.contains('interactable')) {
-        if (currentHoverElement !== element) {
+        } else if (element && element.classList.contains('interactable')) {
+            if (currentHoverElement !== element) {
+                if (currentHoverElement) {
+                    currentHoverElement.classList.remove('hovered');
+                    cancelDwell();
+                    if (currentHoverElement.tagName === 'IFRAME') {
+                        currentHoverElement.contentWindow.postMessage({ type: 'VISIONFLOW_HOVER', x: -1, y: -1 }, '*');
+                    }
+                }
+                element.classList.add('hovered');
+                currentHoverElement = element;
+                if (element.classList.contains('dwellable')) {
+                    startDwell();
+                }
+            }
+        } else {
             if (currentHoverElement) {
                 currentHoverElement.classList.remove('hovered');
                 cancelDwell();
                 if (currentHoverElement.tagName === 'IFRAME') {
                     currentHoverElement.contentWindow.postMessage({ type: 'VISIONFLOW_HOVER', x: -1, y: -1 }, '*');
                 }
-            }
-            element.classList.add('hovered');
-            currentHoverElement = element;
-            if (element.classList.contains('dwellable')) {
-                startDwell();
+                currentHoverElement = null;
             }
         }
-    } else {
-        if (currentHoverElement) {
-            currentHoverElement.classList.remove('hovered');
-            cancelDwell();
-            if (currentHoverElement.tagName === 'IFRAME') {
-                currentHoverElement.contentWindow.postMessage({ type: 'VISIONFLOW_HOVER', x: -1, y: -1 }, '*');
-            }
-            currentHoverElement = null;
-        }
+        lastHoverCheck = now;
     }
 }
 
