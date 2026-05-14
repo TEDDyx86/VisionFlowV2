@@ -16,6 +16,12 @@ let lastCursorY = 0;
 
 export function processGestures(landmarks) {
     const params = getCalibrationParams();
+    
+    // Atualiza os parâmetros do filtro dinamicamente baseado no preset selecionado
+    filterX.mincutoff = params.mincutoff;
+    filterX.beta = params.beta;
+    filterY.mincutoff = params.mincutoff;
+    filterY.beta = params.beta;
 
     if (!landmarks) {
         updateCursor(null, null, false);

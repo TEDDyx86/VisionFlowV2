@@ -1,26 +1,20 @@
 import { logEvent } from './eventLog.js';
 
 const presets = {
-    smooth: {
-        smoothing: 0.2,
-        pinchThreshold: 0.08,
-        scrollTopZone: 0.2,
-        scrollBottomZone: 0.8,
-        scrollSpeed: 8
+    smooth: { // Foco em Estabilidade Máxima (Cenário Hospital)
+        mincutoff: 0.05,
+        beta: 0.01,
+        pinchThreshold: 0.08
     },
-    standard: {
-        smoothing: 0.5,
-        pinchThreshold: 0.06,
-        scrollTopZone: 0.25,
-        scrollBottomZone: 0.75,
-        scrollSpeed: 12
+    standard: { // Equilibrado
+        mincutoff: 0.5,
+        beta: 0.05,
+        pinchThreshold: 0.06
     },
-    fast: {
-        smoothing: 0.8,
-        pinchThreshold: 0.04,
-        scrollTopZone: 0.3,
-        scrollBottomZone: 0.7,
-        scrollSpeed: 16
+    fast: { // Foco em Agilidade (Cenário Fast Food)
+        mincutoff: 1.0,
+        beta: 0.08,
+        pinchThreshold: 0.04
     }
 };
 
