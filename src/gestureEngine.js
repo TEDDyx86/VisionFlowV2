@@ -1,14 +1,15 @@
 import { updateCursor, triggerClick, triggerScroll, endScroll, triggerDrag } from './controllers.js';
 import { getCalibrationParams } from './calibration.js';
 import { logEvent } from './eventLog.js';
+import { OneEuroFilter } from './OneEuroFilter.js';
 
 let isPinching = false;
 let lastPinchTime = 0;
 let pinchDebounce = 300; // ms
 
-// Smoothing exponencial
-let smoothedX = 0;
-let smoothedY = 0;
+// Smoothing Dinâmico (Filtro de 1 Euro)
+const filterX = new OneEuroFilter(0.5, 0.05);
+const filterY = new OneEuroFilter(0.5, 0.05);
 
 let lastCursorX = 0;
 let lastCursorY = 0;
@@ -26,9 +27,13 @@ export function processGestures(landmarks) {
     const indexTip = landmarks[8];
     const thumbTip = landmarks[4];
     
-    // Suavização da posição (EMA - Exponential Moving Average)
-    smoothedX = smoothedX * (1 - params.smoothing) + (indexTip.x * window.innerWidth) * params.smoothing;
-    smoothedY = smoothedY * (1 - params.smoothing) + (indexTip.y * window.innerHeight) * params.smoothing;
+    // Converte a coordenada normalizada para a tela e aplica o Filtro de 1 Euro
+    const rawX = indexTip.x * window.innerWidth;
+    const rawY = indexTip.y * window.innerHeight;
+    const timestamp = performance.now();
+
+    const smoothedX = filterX.filter(rawX, timestamp);
+    const smoothedY = filterY.filter(rawY, timestamp);
     
     // Inverter X pois a imagem da câmera é espelhada (mirror effect)
     const cursorX = window.innerWidth - smoothedX; 
