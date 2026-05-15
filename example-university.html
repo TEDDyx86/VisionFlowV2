@@ -194,7 +194,148 @@
         .icon-container {
             background-color: #eef4ff;
         }
+
+        /* Map Styles: Modern Academic Theme */
+        .university-map-container {
+            background-color: #f8fafc;
+            background-image: 
+                linear-gradient(rgba(203, 213, 225, 0.2) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(203, 213, 225, 0.2) 1px, transparent 1px);
+            background-size: 40px 40px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 32px;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
+            border: 2px solid #e2e8f0;
+        }
+
+        .map-building {
+            fill: #ffffff;
+            stroke: #115cb9;
+            stroke-width: 2.5;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.05));
+        }
+
+        .map-building.active {
+            fill: #eff6ff;
+            stroke: #3b82f6;
+            stroke-width: 4;
+            filter: drop-shadow(0 0 15px rgba(59, 130, 246, 0.3));
+        }
+
+        .map-park {
+            fill: #f0fdf4;
+            stroke: #bbf7d0;
+            stroke-width: 1.5;
+        }
+
+        .map-tree {
+            fill: #4ade80;
+            opacity: 0.7;
+        }
+
+        .map-road {
+            fill: none;
+            stroke: #f1f5f9;
+            stroke-width: 24;
+            stroke-linecap: round;
+        }
+
+        .map-sidewalk {
+            fill: none;
+            stroke: #e2e8f0;
+            stroke-width: 28;
+            stroke-linecap: round;
+        }
+
+
+        .nav-path {
+            fill: none;
+            stroke: #115cb9;
+            stroke-width: 5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            opacity: 0;
+        }
+
+        .nav-path.active {
+            opacity: 1;
+            animation: drawPath 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .path-bg {
+            fill: none;
+            stroke: rgba(17, 92, 185, 0.05);
+            stroke-width: 5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        @keyframes drawPath {
+            to { stroke-dashoffset: 0; }
+        }
+
+        .map-label-academic {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+            font-size: 11px;
+            fill: #334155;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            pointer-events: none;
+        }
+
+        .totem-marker {
+            fill: #ba1a1a;
+            stroke: white;
+            stroke-width: 2;
+        }
+
+        .sidebar-tile {
+            @apply interactable p-5 rounded-3xl border-2 border-transparent transition-all text-left group shadow-sm bg-white;
+            border-color: #f1f5f9;
+        }
+
+        .sidebar-tile:hover {
+            border-color: #3b82f6;
+            background: #f8fafc;
+            transform: scale(1.02);
+        }
+
+        .sidebar-tile.active {
+            border-color: #115cb9;
+            background: #eff6ff;
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.1);
+        }
+
+        .status-badge {
+            @apply px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider;
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+        .status-badge.active {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        @keyframes statusPulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        .status-glow {
+            text-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
+            color: #115cb9 !important;
+            transition: all 0.3s ease;
+        }
+
     </style>
+
 </head>
 <body class="font-body-md text-body-md text-on-surface antialiased min-h-screen flex flex-col">
 <!-- TopAppBar -->
@@ -209,12 +350,12 @@
 <div class="flex items-center gap-6 font-headline-md text-headline-md text-on-surface-variant">
 <div class="flex items-center gap-2">
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">calendar_today</span>
-<span>Oct 24, 2023</span>
+<span id="current-date">Oct 24, 2023</span>
 </div>
 <div class="w-px h-8 bg-outline-variant/50"></div>
 <div class="flex items-center gap-2 font-bold text-primary">
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">schedule</span>
-<span>10:45 AM</span>
+<span id="current-time">10:45 AM</span>
 </div>
 </div>
 </header>
@@ -235,7 +376,17 @@
     <!-- Main Services Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
         
-        <!-- Card 1: Quadro de Horários -->
+        <!-- Card 1: Biblioteca (Restaurado) -->
+        <div onclick="showModal('modal-biblioteca')" class="interactable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-blue-500/30">
+            <div class="w-24 h-24 rounded-3xl bg-blue-50 text-blue-600 flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                <span class="material-symbols-outlined text-[48px]">local_library</span>
+            </div>
+            <h3 class="font-headline-md text-2xl text-primary mb-2">Biblioteca</h3>
+            <p class="text-on-surface-variant mb-6">Acesse o acervo digital e<br>gere seu <span class="font-bold text-blue-600">QR Code de acesso</span></p>
+            <button class="bg-blue-600/10 text-blue-600 font-bold px-6 py-3 rounded-xl group-hover:bg-blue-600 group-hover:text-white transition-colors">Acessar Serviços</button>
+        </div>
+
+        <!-- Card 2: Quadro de Horários -->
         <div onclick="showModal('modal-schedule')" class="interactable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30">
             <div class="w-24 h-24 rounded-3xl bg-blue-50 text-secondary flex items-center justify-center mb-6 group-hover:bg-secondary group-hover:text-white transition-all duration-300">
                 <span class="material-symbols-outlined text-[48px]">calendar_month</span>
@@ -245,7 +396,7 @@
             <button class="bg-secondary/10 text-secondary font-bold px-6 py-3 rounded-xl group-hover:bg-secondary group-hover:text-white transition-colors">Ver Grade</button>
         </div>
 
-        <!-- Card 2: RU -->
+        <!-- Card 3: Restaurante (RU) -->
         <div onclick="showModal('modal-menu')" class="interactable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30">
             <div class="w-24 h-24 rounded-3xl bg-orange-50 text-orange-600 flex items-center justify-center mb-6 group-hover:bg-orange-600 group-hover:text-white transition-all duration-300">
                 <span class="material-symbols-outlined text-[48px]">restaurant</span>
@@ -255,7 +406,7 @@
             <button class="bg-orange-600/10 text-orange-600 font-bold px-6 py-3 rounded-xl group-hover:bg-orange-600 group-hover:text-white transition-colors">Cardápio</button>
         </div>
 
-        <!-- Card 3: Palestra -->
+        <!-- Card 4: Eventos & Palestras -->
         <div onclick="showModal('modal-events')" class="interactable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30">
             <div class="w-24 h-24 rounded-3xl bg-purple-50 text-purple-600 flex items-center justify-center mb-6 group-hover:bg-purple-600 group-hover:text-white transition-all duration-300">
                 <span class="material-symbols-outlined text-[48px]">campaign</span>
@@ -265,20 +416,8 @@
             <button class="bg-purple-600/10 text-purple-600 font-bold px-6 py-3 rounded-xl group-hover:bg-purple-600 group-hover:text-white transition-colors">Ver mais</button>
         </div>
 
-        <!-- Card 4: Biblioteca -->
-        <div onclick="showModal('modal-library-qr')" class="interactable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30">
-            <div class="w-24 h-24 rounded-3xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-6 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300">
-                <span class="material-symbols-outlined text-[48px]">local_library</span>
-            </div>
-            <h3 class="font-headline-md text-2xl text-primary mb-2">Biblioteca</h3>
-            <p class="text-on-surface-variant mb-6">Consulte o acervo online e<br><span class="font-bold text-emerald-600">renove seus livros</span></p>
-            <button class="bg-emerald-600 text-white font-bold px-8 py-3 rounded-xl shadow-lg hover:bg-emerald-700 transition-colors flex items-center gap-2">
-                <span class="material-symbols-outlined">qr_code_2</span> Acesse
-            </button>
-        </div>
-
-        <!-- Card 5: Mapa -->
-        <div class="interactable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30">
+        <!-- Card 5: Mapa do Campus -->
+        <div onclick="showModal('modal-map')" class="interactable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30">
             <div class="w-24 h-24 rounded-3xl bg-slate-100 text-slate-600 flex items-center justify-center mb-6 group-hover:bg-slate-600 group-hover:text-white transition-all duration-300">
                 <span class="material-symbols-outlined text-[48px]">map</span>
             </div>
@@ -287,7 +426,7 @@
             <button class="bg-slate-600/10 text-slate-600 font-bold px-6 py-3 rounded-xl group-hover:bg-slate-600 group-hover:text-white transition-colors">Abrir</button>
         </div>
 
-        <!-- Card 6: Secretaria -->
+        <!-- Card 6: Secretaria Virtual -->
         <div onclick="showModal('modal-secretaria-qr')" class="interactable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30">
             <div class="w-24 h-24 rounded-3xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-6 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
                 <span class="material-symbols-outlined text-[48px]">account_balance</span>
@@ -309,7 +448,7 @@
         <span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">home</span>
         <span class="font-label-lg text-label-lg">Home</span>
     </a>
-    <a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container px-6 py-2 active:scale-90 transition-all duration-200 hover:bg-surface-container-high dark:hover:bg-tertiary-container" href="#">
+    <a onclick="showModal('modal-map')" class="interactable flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container px-6 py-2 active:scale-90 transition-all duration-200 hover:bg-surface-container-high dark:hover:bg-tertiary-container" href="javascript:void(0)">
         <span class="material-symbols-outlined mb-1">map</span>
         <span class="font-label-lg text-label-lg">Campus Map</span>
     </a>
@@ -597,27 +736,246 @@
         </div>
     </div>
 
-    <!-- Modal: Biblioteca QR -->
-    <div id="modal-library-qr" class="absolute inset-0 bg-slate-900/40 backdrop-blur-md flex items-center justify-center p-8 opacity-0 transition-opacity duration-300 hidden">
-        <div class="bg-white rounded-[40px] p-12 w-full max-w-[500px] shadow-2xl flex flex-col items-center text-center transform scale-95 transition-transform duration-300">
-            <h2 class="text-3xl font-bold text-slate-800 mb-6">Acesso à Biblioteca</h2>
-            <div class="bg-white p-6 rounded-3xl shadow-xl border-2 border-emerald-100 mb-8">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://catalogo.idp.edu.br/TerminalWeb/" alt="Library QR" class="w-[250px] h-[250px]">
+    <!-- Modal: Biblioteca (NOVO/RESTAURADO) -->
+    <div id="modal-biblioteca" class="absolute inset-0 bg-slate-900/40 backdrop-blur-md flex items-center justify-center p-8 opacity-0 transition-opacity duration-300 hidden">
+        <div class="bg-white rounded-[40px] w-full max-w-[800px] shadow-2xl flex flex-col md:flex-row overflow-hidden transform scale-95 transition-transform duration-300">
+            
+            <!-- Left Side: Info -->
+            <div class="p-10 bg-blue-600 text-white flex flex-col justify-center md:w-1/2">
+                <div class="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center mb-6">
+                    <span class="material-symbols-outlined text-[40px]">local_library</span>
+                </div>
+                <h2 class="text-4xl font-bold mb-4">Biblioteca Digital IDP</h2>
+                <p class="text-blue-100 text-lg mb-8 leading-relaxed">Escaneie o QR Code para acessar o acervo digital, reservas de livros e renovações online.</p>
+                
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3 bg-white/10 p-4 rounded-2xl">
+                        <span class="material-symbols-outlined">schedule</span>
+                        <div>
+                            <span class="block font-bold">Horário de Funcionamento</span>
+                            <span class="text-sm opacity-80">Seg - Sex: 08:00 às 22:00</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <p class="text-lg text-slate-600 mb-8">Escaneie para acessar o catálogo online e gerenciar seus empréstimos.</p>
-            <button onclick="hideModal('modal-library-qr')" class="interactable bg-slate-100 text-slate-700 hover:bg-slate-200 px-8 py-4 rounded-xl font-bold text-xl transition-colors w-full">Voltar</button>
+
+            <!-- Right Side: QR Code -->
+<div class="p-10 bg-white flex flex-col items-center justify-center md:w-1/2 text-center">
+                <div class="relative p-4 bg-white rounded-[32px] border-4 border-blue-50 shadow-xl mb-6">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://biblioteca.idp.edu.br" alt="Biblioteca QR" class="w-[250px] h-[250px]">
+                </div>
+                <p class="text-slate-400 font-bold text-sm uppercase tracking-widest mb-6">Acesso Identificado</p>
+                <button onclick="hideModal('modal-biblioteca')" class="interactable bg-slate-100 text-slate-700 px-8 py-4 rounded-xl font-bold hover:bg-slate-200 transition-colors w-full">Voltar</button>
+            </div>
         </div>
     </div>
 
-    <!-- Modal: Secretaria QR -->
-    <div id="modal-secretaria-qr" class="absolute inset-0 bg-slate-900/40 backdrop-blur-md flex items-center justify-center p-8 opacity-0 transition-opacity duration-300 hidden">
-        <div class="bg-white rounded-[40px] p-12 w-full max-w-[500px] shadow-2xl flex flex-col items-center text-center transform scale-95 transition-transform duration-300">
-            <h2 class="text-3xl font-bold text-slate-800 mb-6">Secretaria Virtual</h2>
-            <div class="bg-white p-6 rounded-3xl shadow-xl border-2 border-indigo-100 mb-8">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://portalrm.idp.edu.br/FrameHTML/web/app/edu/PortalEducacional/%23/" alt="Secretaria QR" class="w-[250px] h-[250px]">
+    <!-- Modal: Mapa do Campus -->
+    <div id="modal-map" class="absolute inset-0 bg-slate-900/40 backdrop-blur-md flex items-center justify-center p-8 opacity-0 transition-all duration-300 hidden z-[100]">
+        <div class="bg-white rounded-[40px] w-full max-w-[1300px] h-[850px] shadow-2xl flex flex-col overflow-hidden border border-white transform scale-95 transition-all duration-300">
+            
+            <!-- Modal Header -->
+            <div class="p-8 border-b border-slate-100 flex justify-between items-center bg-white">
+                <div class="flex items-center gap-6">
+                    <div class="w-16 h-16 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100 shadow-sm">
+                        <span class="material-symbols-outlined text-4xl">map</span>
+                    </div>
+                    <div>
+                        <h2 class="text-3xl font-bold text-slate-800 tracking-tight">Mapa Interativo <span class="text-blue-600">IDP</span></h2>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                            <span class="text-[10px] text-slate-500 font-bold uppercase tracking-widest" id="map-status-text">Sistema Online • Selecione um Destino</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <div class="bg-slate-50 px-6 py-3 rounded-2xl border border-slate-200 flex flex-col justify-center">
+                        <span class="text-[9px] font-black text-slate-400 uppercase block">Localização Atual:</span>
+                        <span class="font-bold text-slate-700 text-sm">Entrada Principal</span>
+                    </div>
+                    <button onclick="hideModal('modal-map')" class="interactable w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center hover:bg-red-50 text-slate-400 hover:text-red-500 transition-all group">
+                        <span class="material-symbols-outlined text-3xl group-hover:rotate-90 transition-transform">close</span>
+                    </button>
+                </div>
             </div>
-            <p class="text-lg text-slate-600 mb-8">Escaneie para acessar o Portal do Aluno, notas e requerimentos.</p>
-            <button onclick="hideModal('modal-secretaria-qr')" class="interactable bg-slate-100 text-slate-700 hover:bg-slate-200 px-8 py-4 rounded-xl font-bold text-xl transition-colors w-full">Voltar</button>
+
+            <!-- Modal Body -->
+            <div class="flex-grow flex p-6 gap-6 bg-slate-50/50 overflow-hidden">
+                
+                <!-- Sidebar: Locais -->
+                <div class="w-80 flex flex-col gap-3 overflow-y-auto pr-2 custom-scrollbar">
+                    <h3 class="font-bold text-slate-400 uppercase text-[10px] tracking-[0.2em] mb-2 px-2">Destinos no Campus</h3>
+                    
+                    <button id="btn-map-Direito" onclick="drawRoute('Direito')" class="sidebar-tile">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100">
+                                <span class="material-symbols-outlined">gavel</span>
+                            </div>
+                            <div>
+                                <span class="block font-bold text-slate-700">Bloco A</span>
+                                <span class="text-[10px] text-slate-400 uppercase tracking-wider">Direito & RI</span>
+                            </div>
+                        </div>
+                    </button>
+
+                    <button id="btn-map-Adm" onclick="drawRoute('Adm')" class="sidebar-tile">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100">
+                                <span class="material-symbols-outlined">business_center</span>
+                            </div>
+                            <div>
+                                <span class="block font-bold text-slate-700">Bloco B</span>
+                                <span class="text-[10px] text-slate-400 uppercase tracking-wider">Adm & Economia</span>
+                            </div>
+                        </div>
+                    </button>
+
+                    <button id="btn-map-Software" onclick="drawRoute('Software')" class="sidebar-tile">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100">
+                                <span class="material-symbols-outlined">code</span>
+                            </div>
+                            <div>
+                                <span class="block font-bold text-slate-700">Bloco C</span>
+                                <span class="text-[10px] text-slate-400 uppercase tracking-wider">Engenharia & TI</span>
+                            </div>
+                        </div>
+                    </button>
+
+                    <button id="btn-map-Biblioteca" onclick="drawRoute('Biblioteca')" class="sidebar-tile">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100">
+                                <span class="material-symbols-outlined">auto_stories</span>
+                            </div>
+                            <div>
+                                <span class="block font-bold text-slate-700">Biblioteca</span>
+                                <span class="text-[10px] text-slate-400 uppercase tracking-wider">Acervo Digital</span>
+                            </div>
+                        </div>
+                    </button>
+
+                    <button id="btn-map-RU" onclick="drawRoute('RU')" class="sidebar-tile">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100">
+                                <span class="material-symbols-outlined">restaurant</span>
+                            </div>
+                            <div>
+                                <span class="block font-bold text-slate-700">Restaurante</span>
+                                <span class="text-[10px] text-slate-400 uppercase tracking-wider">Refeitório Central</span>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+
+                <!-- Main Map Viewport -->
+                <div class="flex-grow university-map-container">
+                    <svg id="campus-svg" class="w-full h-full" viewBox="0 0 1000 700">
+                        <defs>
+                            <pattern id="dotPattern" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
+                                <circle cx="2" cy="2" r="1" fill="#bbf7d0" opacity="0.5" />
+                            </pattern>
+                        </defs>
+
+                        <!-- Parks and Green Areas -->
+                        <rect x="200" y="100" width="250" height="220" rx="20" class="map-park" />
+                        <rect x="200" y="100" width="250" height="220" rx="20" fill="url(#dotPattern)" />
+                        
+                        <rect x="550" y="100" width="250" height="220" rx="20" class="map-park" />
+                        <rect x="550" y="100" width="250" height="220" rx="20" fill="url(#dotPattern)" />
+                        
+                        <rect x="200" y="380" width="600" height="150" rx="20" class="map-park" />
+                        <rect x="200" y="380" width="600" height="150" rx="20" fill="url(#dotPattern)" />
+                        
+                        <!-- Roads and Sidewalks -->
+                        <path d="M 150 700 L 150 100 M 150 350 L 900 350 M 500 350 L 500 100 M 850 350 L 850 100" class="map-road" />
+                        <path d="M 150 700 L 150 100 M 150 350 L 900 350 M 500 350 L 500 100 M 850 350 L 850 100" class="map-sidewalk" />
+
+                        <!-- Central Plaza -->
+                        <circle cx="150" cy="350" r="40" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2" />
+                        <circle cx="150" cy="350" r="30" fill="white" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4" />
+
+                        <!-- Trees -->
+                        <g class="trees-group">
+                            <circle cx="250" cy="150" r="12" class="map-tree" />
+                            <circle cx="300" cy="200" r="10" class="map-tree" />
+                            <circle cx="400" cy="180" r="15" class="map-tree" />
+                            <circle cx="600" cy="150" r="12" class="map-tree" />
+                            <circle cx="700" cy="220" r="10" class="map-tree" />
+                            <circle cx="250" cy="450" r="15" class="map-tree" />
+                            <circle cx="450" cy="420" r="12" class="map-tree" />
+                            <circle cx="700" cy="460" r="10" class="map-tree" />
+                        </g>
+
+                        <!-- Buildings -->
+                        <!-- Bloco A -->
+                        <rect id="svg-Direito" x="50" y="80" width="120" height="100" rx="15" class="map-building" />
+                        <text x="110" y="135" text-anchor="middle" class="map-label-academic">Bloco A</text>
+                        <text x="110" y="150" text-anchor="middle" class="map-label-academic" style="font-size: 8px; opacity: 0.6;">Direito</text>
+
+                        <!-- Bloco B -->
+                        <rect id="svg-Adm" x="440" y="80" width="120" height="100" rx="15" class="map-building" />
+                        <text x="500" y="135" text-anchor="middle" class="map-label-academic">Bloco B</text>
+                        <text x="500" y="150" text-anchor="middle" class="map-label-academic" style="font-size: 8px; opacity: 0.6;">Adm</text>
+
+                        <!-- Bloco C -->
+                        <rect id="svg-Software" x="790" y="80" width="120" height="100" rx="15" class="map-building" />
+                        <text x="850" y="135" text-anchor="middle" class="map-label-academic">Bloco C</text>
+                        <text x="850" y="150" text-anchor="middle" class="map-label-academic" style="font-size: 8px; opacity: 0.6;">Software</text>
+
+                        <!-- Biblioteca -->
+                        <rect id="svg-Biblioteca" x="50" y="300" width="120" height="100" rx="15" class="map-building" />
+                        <text x="110" y="355" text-anchor="middle" class="map-label-academic">Biblio</text>
+                        <text x="110" y="370" text-anchor="middle" class="map-label-academic" style="font-size: 8px; opacity: 0.6;">Central</text>
+
+                        <!-- RU -->
+                        <rect id="svg-RU" x="790" y="300" width="120" height="100" rx="15" class="map-building" />
+                        <text x="850" y="355" text-anchor="middle" class="map-label-academic">RU</text>
+                        <text x="850" y="370" text-anchor="middle" class="map-label-academic" style="font-size: 8px; opacity: 0.6;">Restaurante</text>
+
+                        <!-- Parking Lot -->
+                        <rect x="800" y="550" width="150" height="120" rx="5" fill="#f1f5f9" stroke="#e2e8f0" />
+                        <path d="M 800 580 L 950 580 M 800 610 L 950 610 M 800 640 L 950 640" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4" />
+                        <text x="875" y="660" text-anchor="middle" class="map-label-academic" style="fill: #94a3b8; font-size: 9px;">Estacionamento Principal</text>
+
+                        <!-- Navigation Paths -->
+                        <path id="path-Direito" d="M 150 620 L 150 130 L 110 130" class="nav-path" />
+                        <path id="path-Adm" d="M 150 620 L 150 350 L 500 350 L 500 130" class="nav-path" />
+                        <path id="path-Software" d="M 150 620 L 150 350 L 850 350 L 850 130" class="nav-path" />
+                        <path id="path-Biblioteca" d="M 150 620 L 150 350 L 110 350" class="nav-path" />
+                        <path id="path-RU" d="M 150 620 L 150 350 L 850 350 L 850 330" class="nav-path" />
+
+                        <!-- Totem -->
+                        <circle cx="150" cy="620" r="12" fill="white" stroke="#ef4444" stroke-width="3" />
+                        <circle cx="150" cy="620" r="5" fill="#ef4444" />
+                        <text x="150" y="660" text-anchor="middle" class="map-label-academic" style="font-size: 10px; font-weight: 800; fill: #ef4444;">VOCÊ ESTÁ AQUI</text>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Legend Footer (Modern Academic Theme) -->
+            <div class="p-8 border-t border-slate-100 bg-white flex items-center justify-center gap-16">
+                <div class="flex items-center gap-3">
+                    <div class="w-4 h-4 rounded-full bg-white border-2 border-red-500 flex items-center justify-center">
+                        <div class="w-1.5 h-1.5 rounded-full bg-red-500"></div>
+                    </div>
+                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Sua Localização</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-1.5 rounded-full bg-blue-600"></div>
+                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Trajeto</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="w-4 h-4 rounded-md border-2 border-blue-600 bg-white"></div>
+                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Edifícios</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="flex gap-1.5">
+                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-200"></div>
+                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-100"></div>
+                    </div>
+                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Áreas Verdes</span>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -637,6 +995,39 @@
                 <h2 class="text-4xl font-bold text-slate-800 mb-4">Atendimento Inteligente</h2>
                 <p class="text-xl text-slate-600 mb-8 leading-relaxed">Aponte a câmera para o QR Code para falar no WhatsApp.</p>
                 <button onclick="hideModal('modal-bot')" class="interactable bg-slate-100 text-slate-700 hover:bg-slate-200 px-8 py-4 rounded-xl font-bold text-xl transition-colors">Voltar</button>
+            </div>
+        </div>
+    </div>
+    <!-- Modal: Secretaria Virtual -->
+    <div id="modal-secretaria-qr" class="absolute inset-0 bg-slate-900/40 backdrop-blur-md flex items-center justify-center p-8 opacity-0 transition-opacity duration-300 hidden">
+        <div class="bg-white rounded-[40px] w-full max-w-[800px] shadow-2xl flex flex-col md:flex-row overflow-hidden transform scale-95 transition-transform duration-300">
+            
+            <!-- Left Side: Info -->
+            <div class="p-10 bg-indigo-600 text-white flex flex-col justify-center md:w-1/2">
+                <div class="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center mb-6">
+                    <span class="material-symbols-outlined text-[40px]">account_balance</span>
+                </div>
+                <h2 class="text-4xl font-bold mb-4">Secretaria Virtual IDP</h2>
+                <p class="text-indigo-100 text-lg mb-8 leading-relaxed">Acesse o Portal do Aluno para requerimentos, notas, faltas e documentos oficiais diretamente no seu celular.</p>
+                
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3 bg-white/10 p-4 rounded-2xl">
+                        <span class="material-symbols-outlined text-indigo-200">check_circle</span>
+                        <div>
+                            <span class="block font-bold">Protocolos Online</span>
+                            <span class="text-sm opacity-80">Solicite serviços 24h por dia.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: QR Code -->
+            <div class="p-10 bg-white flex flex-col items-center justify-center md:w-1/2 text-center">
+                <div class="relative p-4 bg-white rounded-[32px] border-4 border-indigo-50 shadow-xl mb-6">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://portaldoaluno.idp.edu.br" alt="Portal do Aluno QR" class="w-[250px] h-[250px]">
+                </div>
+                <p class="text-slate-400 font-bold text-sm uppercase tracking-widest mb-6">Portal do Aluno</p>
+                <button onclick="hideModal('modal-secretaria-qr')" class="interactable bg-slate-100 text-slate-700 px-8 py-4 rounded-xl font-bold hover:bg-slate-200 transition-colors w-full">Voltar</button>
             </div>
         </div>
     </div>
@@ -676,6 +1067,7 @@
             targetModal.querySelector('div')?.classList.add('scale-95');
             setTimeout(() => {
                 targetModal.classList.add('hidden');
+                
                 if ([...document.querySelectorAll('#modals-container > div')].every(m => m.classList.contains('hidden'))) {
                     modalsContainer.classList.add('hidden');
                 }
@@ -798,10 +1190,65 @@
 
     window.registerEvent = function(btn) {
         btn.textContent = "Inscrito!";
-        btn.classList.remove('bg-purple-600');
-        btn.classList.add('bg-emerald-600');
-        btn.disabled = true;
+        btn.classList.add('bg-green-600', 'text-white');
     };
+
+    window.drawRoute = function(id) {
+        const statusText = document.getElementById('map-status-text');
+        const locations = {
+            'Direito': 'Bloco A (Direito)',
+            'Adm': 'Bloco B (Administração)',
+            'Software': 'Bloco C (Tecnologia)',
+            'Biblioteca': 'Biblioteca Central',
+            'RU': 'Restaurante Universitário'
+        };
+
+        // 1. Reset current state
+        document.querySelectorAll('.sidebar-tile').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.nav-path').forEach(path => {
+            path.classList.remove('active');
+            // Force reset animation by clearing dashoffset if needed, 
+            // though CSS classes handle it mostly
+        });
+        document.querySelectorAll('.map-building').forEach(b => b.classList.remove('active'));
+
+        // 2. Set new state
+        const btn = document.getElementById(`btn-map-${id}`);
+        const path = document.getElementById(`path-${id}`);
+        const building = document.getElementById(`svg-${id}`);
+
+        if (btn) btn.classList.add('active');
+        if (building) building.classList.add('active');
+        
+        if (path) {
+            // Trigger drawing animation
+            const length = path.getTotalLength();
+            path.style.strokeDasharray = length;
+            path.style.strokeDashoffset = length;
+            
+            // Force reflow
+            path.getBoundingClientRect();
+            
+            path.classList.add('active');
+            path.style.strokeDashoffset = '0';
+        }
+
+        // 3. Update status text
+        if (statusText && locations[id]) {
+            statusText.textContent = `Rota Calculada: Seguindo para ${locations[id]}`;
+            statusText.classList.add('status-glow');
+        }
+    };
+
+    window.highlightBlock = function(id) {
+        const cleanId = id.replace('block-', '');
+        window.drawRoute(cleanId);
+    };
+
+    window.navigateToCampus = function(id) {
+        window.drawRoute(id);
+    };
+
 
     document.getElementById('btn-atendimento').addEventListener('click', () => showModal('modal-bot'));
 
@@ -833,6 +1280,13 @@
             window.scrollBy(0, event.data.dy);
         }
     });
+    function updateDateTime() {
+        const now = new Date();
+        document.getElementById('current-time').textContent = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        document.getElementById('current-date').textContent = now.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+    }
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
 </script>
 <style>
     .hovered { filter: brightness(1.05) contrast(1.05); transform: scale(1.02); transition: transform 0.2s, filter 0.2s; cursor: pointer; z-index: 9999; }
