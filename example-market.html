@@ -152,12 +152,12 @@
                 Market Fresh
             </a>
             <!-- Desktop Navigation -->
-            <ul class="hidden md:flex gap-lg">
-                <li><a class="text-on-surface-variant font-label-md hover:text-secondary transition-colors duration-200" href="#cat-hortifruti">Hortifruti</a></li>
-                <li><a class="text-on-surface-variant font-label-md hover:text-secondary transition-colors duration-200" href="#cat-laticinios">Laticínios</a></li>
-                <li><a class="text-on-surface-variant font-label-md hover:text-secondary transition-colors duration-200" href="#cat-padaria">Padaria</a></li>
-                <li><a class="text-on-surface-variant font-label-md hover:text-secondary transition-colors duration-200" href="#cat-carnes">Carnes</a></li>
-                <li><a class="text-on-surface-variant font-label-md hover:text-secondary transition-colors duration-200" href="#cat-limpeza">Limpeza</a></li>
+            <ul id="cat-nav-list" class="hidden md:flex gap-2">
+                <li><a data-target="cat-hortifruti" class="interactable cat-nav-link text-on-surface-variant font-label-md px-5 py-3 rounded-full min-h-[48px] flex items-center hover:bg-surface-container hover:text-secondary transition-all duration-200" href="#cat-hortifruti">🥦 Hortifruti</a></li>
+                <li><a data-target="cat-laticinios" class="interactable cat-nav-link text-on-surface-variant font-label-md px-5 py-3 rounded-full min-h-[48px] flex items-center hover:bg-surface-container hover:text-secondary transition-all duration-200" href="#cat-laticinios">🧀 Laticínios</a></li>
+                <li><a data-target="cat-padaria" class="interactable cat-nav-link text-on-surface-variant font-label-md px-5 py-3 rounded-full min-h-[48px] flex items-center hover:bg-surface-container hover:text-secondary transition-all duration-200" href="#cat-padaria">🍞 Padaria</a></li>
+                <li><a data-target="cat-carnes" class="interactable cat-nav-link text-on-surface-variant font-label-md px-5 py-3 rounded-full min-h-[48px] flex items-center hover:bg-surface-container hover:text-secondary transition-all duration-200" href="#cat-carnes">🥩 Carnes</a></li>
+                <li><a data-target="cat-limpeza" class="interactable cat-nav-link text-on-surface-variant font-label-md px-5 py-3 rounded-full min-h-[48px] flex items-center hover:bg-surface-container hover:text-secondary transition-all duration-200" href="#cat-limpeza">🧼 Limpeza</a></li>
             </ul>
             <!-- Trailing Icons -->
             <div class="flex gap-md items-center">
@@ -513,6 +513,38 @@
                 }
             }
         });
+    // --- Market: Scroll-spy nos links de categoria ---
+    (function initMarketScrollSpy() {
+        function setActiveCatLink(targetId) {
+            document.querySelectorAll('.cat-nav-link').forEach(link => {
+                const isActive = link.dataset.target === targetId;
+                link.classList.toggle('bg-secondary-container', isActive);
+                link.classList.toggle('text-on-secondary-container', isActive);
+                link.classList.toggle('font-bold', isActive);
+                link.classList.toggle('text-on-surface-variant', !isActive);
+            });
+        }
+
+        const sections = document.querySelectorAll('[id^="cat-"]');
+        if (!sections.length) return;
+
+        const observer = new IntersectionObserver((entries) => {
+            const visible = entries
+                .filter(e => e.isIntersecting)
+                .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+            if (visible.length > 0) setActiveCatLink(visible[0].target.id);
+        }, {
+            rootMargin: '-80px 0px -60% 0px',
+            threshold: 0
+        });
+
+        sections.forEach(s => observer.observe(s));
+    })();
     </script>
+<style>
+    /* Market: pill indicator de estado ativo */
+    .cat-nav-link { font-weight: 500; }
+    .cat-nav-link.active-cat { background: var(--color-secondary-container); color: var(--color-on-secondary-container); font-weight: 700; }
+</style>
 </body>
 </html>

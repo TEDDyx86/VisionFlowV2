@@ -161,23 +161,23 @@
             Greenhouse
         </div>
         <nav class="flex flex-col gap-4 w-full px-4 flex-grow">
-            <a class="flex flex-col items-center justify-center gap-2 text-primary dark:text-primary-fixed-dim bg-surface-container-low/80 p-6 rounded-2xl shadow-md transition-all duration-300" href="#cat-hamburguer">
+            <a data-target="cat-hamburguer" class="interactable sidebar-nav-item flex flex-col items-center justify-center gap-2 text-primary dark:text-primary-fixed-dim bg-surface-container-low/80 p-6 rounded-2xl shadow-md transition-all duration-300" href="#cat-hamburguer">
                 <span class="material-symbols-outlined text-5xl">lunch_dining</span>
                 <span class="font-label-bold text-label-bold">Hambúrguer</span>
             </a>
-            <a class="flex flex-col items-center justify-center gap-2 text-on-surface-variant dark:text-outline-variant hover:text-primary hover:bg-surface-container-low/80 p-6 rounded-2xl transition-all duration-300" href="#cat-vegetal">
+            <a data-target="cat-vegetal" class="interactable sidebar-nav-item flex flex-col items-center justify-center gap-2 text-on-surface-variant dark:text-outline-variant hover:text-primary hover:bg-surface-container-low/80 p-6 rounded-2xl transition-all duration-300" href="#cat-vegetal">
                 <span class="material-symbols-outlined text-5xl">eco</span>
                 <span class="font-label-bold text-label-bold">Vegetal</span>
             </a>
-            <a class="flex flex-col items-center justify-center gap-2 text-on-surface-variant dark:text-outline-variant hover:text-primary hover:bg-surface-container-low/80 p-6 rounded-2xl transition-all duration-300" href="#cat-acompanhamentos">
+            <a data-target="cat-acompanhamentos" class="interactable sidebar-nav-item flex flex-col items-center justify-center gap-2 text-on-surface-variant dark:text-outline-variant hover:text-primary hover:bg-surface-container-low/80 p-6 rounded-2xl transition-all duration-300" href="#cat-acompanhamentos">
                 <span class="material-symbols-outlined text-5xl">tapas</span>
                 <span class="font-label-bold text-label-bold">Acompanhamentos</span>
             </a>
-            <a class="flex flex-col items-center justify-center gap-2 text-on-surface-variant dark:text-outline-variant hover:text-primary hover:bg-surface-container-low/80 p-6 rounded-2xl transition-all duration-300" href="#cat-bebidas">
+            <a data-target="cat-bebidas" class="interactable sidebar-nav-item flex flex-col items-center justify-center gap-2 text-on-surface-variant dark:text-outline-variant hover:text-primary hover:bg-surface-container-low/80 p-6 rounded-2xl transition-all duration-300" href="#cat-bebidas">
                 <span class="material-symbols-outlined text-5xl">local_drink</span>
                 <span class="font-label-bold text-label-bold">Bebidas</span>
             </a>
-            <a class="flex flex-col items-center justify-center gap-2 text-on-surface-variant dark:text-outline-variant hover:text-primary hover:bg-surface-container-low/80 p-6 rounded-2xl transition-all duration-300" href="#cat-sobremesas">
+            <a data-target="cat-sobremesas" class="interactable sidebar-nav-item flex flex-col items-center justify-center gap-2 text-on-surface-variant dark:text-outline-variant hover:text-primary hover:bg-surface-container-low/80 p-6 rounded-2xl transition-all duration-300" href="#cat-sobremesas">
                 <span class="material-symbols-outlined text-5xl">cake</span>
                 <span class="font-label-bold text-label-bold">Sobremesas</span>
             </a>
@@ -978,6 +978,43 @@
                 }
             }
         });
+    // --- Scroll-spy: Sidebar acompanha a seção visível ---
+    (function initScrollSpy() {
+        const ACTIVE_CLASSES   = ['text-primary', 'bg-surface-container-low/80', 'shadow-md'];
+        const INACTIVE_CLASSES = ['text-on-surface-variant', 'hover:text-primary', 'hover:bg-surface-container-low/80'];
+
+        function setActiveNavItem(targetId) {
+            document.querySelectorAll('.sidebar-nav-item').forEach(link => {
+                const isActive = link.dataset.target === targetId;
+                if (isActive) {
+                    link.classList.add(...ACTIVE_CLASSES);
+                    link.classList.remove(...INACTIVE_CLASSES);
+                } else {
+                    link.classList.remove(...ACTIVE_CLASSES);
+                    link.classList.add(...INACTIVE_CLASSES);
+                }
+            });
+        }
+
+        const sections = document.querySelectorAll('[id^="cat-"]');
+        if (!sections.length) return;
+
+        const observer = new IntersectionObserver((entries) => {
+            // Pega a entrada mais próxima do topo que está intersectando
+            const visible = entries
+                .filter(e => e.isIntersecting)
+                .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+            if (visible.length > 0) {
+                setActiveNavItem(visible[0].target.id);
+            }
+        }, {
+            root: document.getElementById('scrollable-main'),
+            rootMargin: '-10% 0px -60% 0px', // Ativa quando a seção ocupa a faixa superior do viewport
+            threshold: 0
+        });
+
+        sections.forEach(section => observer.observe(section));
+    })();
     </script>
 
 </body>
