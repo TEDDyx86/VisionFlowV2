@@ -10,7 +10,6 @@ export function logEvent(message) {
     try {
         const savedLogs = JSON.parse(localStorage.getItem('visionflow_logs') || '[]');
         savedLogs.push(logEntry);
-        // Manter apenas os últimos 50 logs para não estourar o storage
         if (savedLogs.length > 50) savedLogs.shift();
         localStorage.setItem('visionflow_logs', JSON.stringify(savedLogs));
     } catch (e) {

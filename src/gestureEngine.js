@@ -78,8 +78,7 @@ export function processGestures(landmarks) {
         const dragDx = cursorX - lastCursorX;
         const dragDy = cursorY - lastCursorY;
         if (Math.abs(dragDy) > 2) { // Threshold para evitar micro-tremores
-            // Multiplicador de velocidade. O negativo inverte o eixo como num celular
-            window.scrollBy({ top: -dragDy * 1.5, behavior: 'instant' }); 
+            // triggerDrag roteia para o iframe ativo ou para o scroll da página principal
             triggerDrag(cursorX, cursorY, dragDx, dragDy);
         }
     }

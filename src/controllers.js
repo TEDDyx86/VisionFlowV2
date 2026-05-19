@@ -221,5 +221,8 @@ export function triggerDrag(x, y, dx, dy) {
             dx: dx,
             dy: dy
         }, '*');
+    } else {
+        // Fallback: scroll da janela principal (ex: quando iframe não está ativo)
+        window.scrollBy({ top: -dy * 1.5, behavior: 'instant' });
     }
 }

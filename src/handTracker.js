@@ -40,7 +40,7 @@ function onResults(results) {
     canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
 
     if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
-        statusHand.className = 'status-badge';
+        statusHand.className = 'px-4 py-1.5 text-xs rounded-full bg-green-500/20 text-green-400 border border-green-500/30 font-bold whitespace-nowrap';
         statusHand.innerText = 'Mão Detectada';
 
         for (const landmarks of results.multiHandLandmarks) {
@@ -52,7 +52,7 @@ function onResults(results) {
         // Passa os landmarks da primeira mão detectada para o GestureEngine
         processGestures(results.multiHandLandmarks[0]);
     } else {
-        statusHand.className = 'status-badge offline';
+        statusHand.className = 'px-4 py-1.5 text-xs rounded-full bg-red-500/20 text-red-400 border border-red-500/30 font-bold whitespace-nowrap';
         statusHand.innerText = 'Mão não detectada';
         
         // Passa nulo se perdeu a mão

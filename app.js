@@ -39,10 +39,11 @@ document.addEventListener('DOMContentLoaded', () => {
         onRevoke: () => {
             logEvent('Acesso à câmera revogado');
             stopCamera();
-            document.getElementById('status-cam').className = 'status-badge offline';
-            document.getElementById('status-cam').innerText = 'Câmera Off';
-            document.getElementById('status-hand').className = 'status-badge offline';
-            document.getElementById('status-hand').innerText = 'Mão não detectada';
+            const camBadge = document.getElementById('status-cam');
+            const handBadge = document.getElementById('status-hand');
+            const offlineClass = 'px-4 py-1.5 text-xs rounded-full bg-red-500/20 text-red-400 border border-red-500/30 font-bold whitespace-nowrap';
+            if (camBadge) { camBadge.className = offlineClass; camBadge.innerText = 'Câmera Off'; }
+            if (handBadge) { handBadge.className = offlineClass; handBadge.innerText = 'Mão não detectada'; }
             
             // Volta para a tela de consentimento
             document.getElementById('overlay').classList.add('active');

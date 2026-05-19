@@ -11,8 +11,11 @@ export async function startCamera() {
         return new Promise((resolve) => {
             videoElement.onloadedmetadata = () => {
                 videoElement.play();
-                document.getElementById('status-cam').className = 'status-badge';
-                document.getElementById('status-cam').innerText = 'Câmera On';
+                const camBadge = document.getElementById('status-cam');
+                if (camBadge) {
+                    camBadge.className = 'px-4 py-1.5 text-xs rounded-full bg-green-500/20 text-green-400 border border-green-500/30 font-bold whitespace-nowrap';
+                    camBadge.innerText = 'Câmera On';
+                }
                 resolve(videoElement);
             };
         });
