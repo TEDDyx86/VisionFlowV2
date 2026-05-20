@@ -1,3 +1,5 @@
+import { getCalibrationParams } from './calibration.js';
+
 const cursorElement = document.getElementById('custom-cursor');
 const statusGesture = document.getElementById('status-hand'); // Alterado para status-hand no novo design
 
@@ -232,16 +234,65 @@ export function endScroll() {
     }
 }
 
-export function triggerDrag(x, y, dx, dy) {
+export function triggerDrag(x, y, dx, dy, isFromInertia = false) {
+    const params = getCalibrationParams();
+    const multiplier = params && params.scrollMultiplier ? params.scrollMultiplier : 1.8;
+    
+    // Se for inércia, a velocidade já foi escalada inicialmente pelo multiplier.
+    const finalDx = isFromInertia ? dx : dx * multiplier;
+    const finalDy = isFromInertia ? dy : dy * multiplier;
+
     const element = document.elementFromPoint(x, y);
     if (element && element.tagName === 'IFRAME') {
         element.contentWindow.postMessage({
             type: 'VISIONFLOW_DRAG',
-            dx: dx,
-            dy: dy
+            dx: finalDx,
+            dy: finalDy
         }, '*');
     } else {
         // Fallback: scroll da janela principal (ex: quando iframe não está ativo)
-        window.scrollBy({ top: -dy * 1.5, behavior: 'instant' });
+        window.scrollBy({ top: -finalDy * 1.5, behavior: 'instant' });
+    }
+}
+
+// Lógica de Inércia Física para o Scroll (Momentum)
+let inertiaFrameId = null;
+let currentInertiaX = 0;
+let currentInertiaY = 0;
+const FRICTION = 0.94; // Amortecimento suave de 6% por frame
+
+export function startScrollInertia(x, y, vx, vy) {
+    stopScrollInertia();
+    
+    const params = getCalibrationParams();
+    const multiplier = params && params.scrollMultiplier ? params.scrollMultiplier : 1.8;
+    
+    // A velocidade inicial da inércia é escalada pelo multiplicador de calibração
+    currentInertiaX = vx * multiplier;
+    currentInertiaY = vy * multiplier;
+    
+    function step() {
+        if (Math.abs(currentInertiaX) < 0.2 && Math.abs(currentInertiaY) < 0.2) {
+            stopScrollInertia();
+            return;
+        }
+        
+        // Disparar o movimento de scroll indicando que é um evento inercial (isFromInertia = true)
+        triggerDrag(x, y, currentInertiaX, currentInertiaY, true);
+        
+        // Desaceleração gradual
+        currentInertiaX *= FRICTION;
+        currentInertiaY *= FRICTION;
+        
+        inertiaFrameId = requestAnimationFrame(step);
+    }
+    
+    inertiaFrameId = requestAnimationFrame(step);
+}
+
+export function stopScrollInertia() {
+    if (inertiaFrameId) {
+        cancelAnimationFrame(inertiaFrameId);
+        inertiaFrameId = null;
     }
 }

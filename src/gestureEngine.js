@@ -1,4 +1,4 @@
-import { updateCursor, triggerClick, triggerScroll, endScroll, triggerDrag } from './controllers.js';
+import { updateCursor, triggerClick, triggerScroll, endScroll, triggerDrag, startScrollInertia, stopScrollInertia } from './controllers.js';
 import { getCalibrationParams } from './calibration.js';
 import { logEvent } from './eventLog.js';
 import { OneEuroFilter } from './OneEuroFilter.js';
@@ -13,6 +13,8 @@ const filterY = new OneEuroFilter(0.5, 0.05);
 
 let lastCursorX = 0;
 let lastCursorY = 0;
+let lastDragDx = 0;
+let lastDragDy = 0;
 
 export function processGestures(landmarks) {
     const params = getCalibrationParams();
@@ -24,6 +26,9 @@ export function processGestures(landmarks) {
     filterY.beta = params.beta;
 
     if (!landmarks) {
+        // Se a mão sumir do frame, interrompe a inércia por segurança
+        stopScrollInertia();
+        isPinching = false;
         updateCursor(null, null, false);
         return;
     }
@@ -65,6 +70,9 @@ export function processGestures(landmarks) {
 
     // Clique
     if (isPinching && !wasPinching) {
+        // Novo gesto de pinça cancela qualquer inércia ativa instantaneamente
+        stopScrollInertia();
+        
         const now = Date.now();
         if (now - lastPinchTime > pinchDebounce) {
             triggerClick(cursorX, cursorY);
@@ -77,10 +85,26 @@ export function processGestures(landmarks) {
     if (isPinching && wasPinching) {
         const dragDx = cursorX - lastCursorX;
         const dragDy = cursorY - lastCursorY;
+        
+        // Salva a velocidade física do último frame para a inércia física
+        lastDragDx = dragDx;
+        lastDragDy = dragDy;
+        
         if (Math.abs(dragDy) > 2) { // Threshold para evitar micro-tremores
             // triggerDrag roteia para o iframe ativo ou para o scroll da página principal
             triggerDrag(cursorX, cursorY, dragDx, dragDy);
         }
+    }
+
+    // Ao liberar a pinça, verifica se a velocidade instantânea recente justifica inércia
+    if (!isPinching && wasPinching) {
+        if (Math.abs(lastDragDy) > 3) {
+            logEvent(`Scroll Inercial Ativado: dy=${lastDragDy.toFixed(1)}`);
+            startScrollInertia(cursorX, cursorY, lastDragDx, lastDragDy);
+        }
+        // Reseta os buffers de velocidade do arrasto
+        lastDragDx = 0;
+        lastDragDy = 0;
     }
 
     lastCursorX = cursorX;
