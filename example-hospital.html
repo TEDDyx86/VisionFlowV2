@@ -1373,7 +1373,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (currentHoverElement) {
                     currentHoverElement.dispatchEvent(new MouseEvent('mouseout', { bubbles: true }));
                     currentHoverElement.classList.remove('hovered');
-                    if (currentHoverElement.classList.contains('dwellable')) {
+                    const wasDwellable = currentHoverElement.classList.contains('dwellable') || 
+                                         currentHoverElement.classList.contains('interactable') || 
+                                         ['BUTTON', 'A'].includes(currentHoverElement.tagName) || 
+                                         currentHoverElement.getAttribute('role') === 'button' ||
+                                         currentHoverElement.classList.contains('calendar-day') || 
+                                         currentHoverElement.classList.contains('service-chip');
+                    if (wasDwellable) {
                         window.parent.postMessage({ type: 'VISIONFLOW_DWELL_CANCEL' }, '*');
                     }
                 }
@@ -1381,7 +1387,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (el && event.data.x >= 0 && event.data.y >= 0) {
                     el.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
                     el.classList.add('hovered');
-                    if (el.classList.contains('dwellable')) {
+                    const isDwellable = el.classList.contains('dwellable') || 
+                                        el.classList.contains('interactable') || 
+                                        ['BUTTON', 'A'].includes(el.tagName) || 
+                                        el.getAttribute('role') === 'button' ||
+                                        el.classList.contains('calendar-day') || 
+                                        el.classList.contains('service-chip');
+                    if (isDwellable) {
                         const dt = getDwellTime(el);
                         window.parent.postMessage({ type: 'VISIONFLOW_DWELL_START', dwellTime: dt }, '*');
                     }
@@ -1411,7 +1423,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } else if (event.data.type === 'VISIONFLOW_DRAG') {
             const dy = event.data.dy;
-            const modalScroll = document.querySelector('.modal:not(.hidden) .overflow-y-auto, .modal:not(.hidden) .overflow-auto');
+            const modalScroll = document.querySelector('#modals > div:not(.hidden) .overflow-y-auto, #modals > div:not(.hidden) .overflow-auto');
             
             if (modalScroll) {
                 modalScroll.scrollBy({ top: -dy * 2, behavior: 'auto' });
@@ -1420,7 +1432,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } else if (event.data.type === 'VISIONFLOW_SCROLL') {
             const dy = event.data.dy;
-            const modalScroll = document.querySelector('.modal:not(.hidden) .overflow-y-auto, .modal:not(.hidden) .overflow-auto');
+            const modalScroll = document.querySelector('#modals > div:not(.hidden) .overflow-y-auto, #modals > div:not(.hidden) .overflow-auto');
             
             if (modalScroll) {
                 modalScroll.scrollBy({ top: dy * 2, behavior: 'auto' });
