@@ -140,6 +140,13 @@
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 24px;
         }
+
+        /* Estilo premium de foco de teclado */
+        .focus-fallback {
+            outline: 3px solid #22c55e !important;
+            outline-offset: 4px;
+            box-shadow: 0 0 15px rgba(34, 197, 94, 0.5) !important;
+        }
     </style>
 </head>
 <body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
@@ -153,15 +160,15 @@
             </a>
             <!-- Desktop Navigation -->
             <ul id="cat-nav-list" class="hidden md:flex gap-2">
-                <li><a data-target="cat-hortifruti" class="interactable cat-nav-link text-on-surface-variant font-label-md px-5 py-3 rounded-full min-h-[48px] flex items-center hover:bg-surface-container hover:text-secondary transition-all duration-200" href="#cat-hortifruti">🥦 Hortifruti</a></li>
-                <li><a data-target="cat-laticinios" class="interactable cat-nav-link text-on-surface-variant font-label-md px-5 py-3 rounded-full min-h-[48px] flex items-center hover:bg-surface-container hover:text-secondary transition-all duration-200" href="#cat-laticinios">🧀 Laticínios</a></li>
-                <li><a data-target="cat-padaria" class="interactable cat-nav-link text-on-surface-variant font-label-md px-5 py-3 rounded-full min-h-[48px] flex items-center hover:bg-surface-container hover:text-secondary transition-all duration-200" href="#cat-padaria">🍞 Padaria</a></li>
-                <li><a data-target="cat-carnes" class="interactable cat-nav-link text-on-surface-variant font-label-md px-5 py-3 rounded-full min-h-[48px] flex items-center hover:bg-surface-container hover:text-secondary transition-all duration-200" href="#cat-carnes">🥩 Carnes</a></li>
-                <li><a data-target="cat-limpeza" class="interactable cat-nav-link text-on-surface-variant font-label-md px-5 py-3 rounded-full min-h-[48px] flex items-center hover:bg-surface-container hover:text-secondary transition-all duration-200" href="#cat-limpeza">🧼 Limpeza</a></li>
+                <li><a data-target="cat-hortifruti" class="interactable dwellable cat-nav-link text-on-surface-variant font-label-md px-5 py-3 rounded-full min-h-[48px] flex items-center hover:bg-surface-container hover:text-secondary transition-all duration-200" href="#cat-hortifruti" data-dwell-time="600">🥦 Hortifruti</a></li>
+                <li><a data-target="cat-laticinios" class="interactable dwellable cat-nav-link text-on-surface-variant font-label-md px-5 py-3 rounded-full min-h-[48px] flex items-center hover:bg-surface-container hover:text-secondary transition-all duration-200" href="#cat-laticinios" data-dwell-time="600">🧀 Laticínios</a></li>
+                <li><a data-target="cat-padaria" class="interactable dwellable cat-nav-link text-on-surface-variant font-label-md px-5 py-3 rounded-full min-h-[48px] flex items-center hover:bg-surface-container hover:text-secondary transition-all duration-200" href="#cat-padaria" data-dwell-time="600">🍞 Padaria</a></li>
+                <li><a data-target="cat-carnes" class="interactable dwellable cat-nav-link text-on-surface-variant font-label-md px-5 py-3 rounded-full min-h-[48px] flex items-center hover:bg-surface-container hover:text-secondary transition-all duration-200" href="#cat-carnes" data-dwell-time="600">🥩 Carnes</a></li>
+                <li><a data-target="cat-limpeza" class="interactable dwellable cat-nav-link text-on-surface-variant font-label-md px-5 py-3 rounded-full min-h-[48px] flex items-center hover:bg-surface-container hover:text-secondary transition-all duration-200" href="#cat-limpeza" data-dwell-time="600">🧼 Limpeza</a></li>
             </ul>
             <!-- Trailing Icons -->
             <div class="flex gap-md items-center">
-                <button id="cart-btn" aria-label="shopping_cart" class="bg-primary-container text-on-primary-container px-4 py-2 rounded-full font-label-md flex items-center gap-2 hover:bg-primary hover:text-on-primary transition-colors duration-200 shadow-md transform hover:scale-105">
+                <button id="cart-btn" aria-label="shopping_cart" class="interactable dwellable bg-primary-container text-on-primary-container px-4 py-2 rounded-full font-label-md flex items-center gap-2 hover:bg-primary hover:text-on-primary transition-colors duration-200 shadow-md transform hover:scale-105" data-dwell-time="1000">
                     <span class="material-symbols-outlined">shopping_cart</span>
                     <span id="cart-counter">0 itens</span>
                     <span id="cart-total" class="ml-2 border-l border-on-primary-container/30 pl-2 font-bold">R$ 0,00</span>
@@ -213,7 +220,7 @@
                     <span class="material-symbols-outlined text-4xl text-primary">shopping_basket</span>
                     Seu Carrinho
                 </h2>
-                <button id="close-cart-btn" class="p-2 rounded-full hover:bg-surface-container transition-colors text-on-surface-variant">
+                <button id="close-cart-btn" class="interactable dwellable p-2 rounded-full hover:bg-surface-container transition-colors text-on-surface-variant" data-dwell-time="500">
                     <span class="material-symbols-outlined text-3xl">close</span>
                 </button>
             </div>
@@ -236,7 +243,7 @@
                     <span class="font-body-lg text-on-surface-variant">Total da Compra</span>
                     <span id="cart-total-modal" class="font-display-lg text-primary font-bold">R$ 0,00</span>
                 </div>
-                <button id="checkout-btn" class="w-full py-5 rounded-xl bg-primary text-on-primary font-headline-sm font-bold flex items-center justify-center gap-3 hover:bg-surface-tint shadow-lg transition-all transform hover:-translate-y-1 opacity-50 cursor-not-allowed">
+                <button id="checkout-btn" class="interactable dwellable w-full py-5 rounded-xl bg-primary text-on-primary font-headline-sm font-bold flex items-center justify-center gap-3 hover:bg-surface-tint shadow-lg transition-all transform hover:-translate-y-1 opacity-50 cursor-not-allowed" data-dwell-time="1000">
                     <span class="material-symbols-outlined text-3xl">payments</span>
                     Finalizar Compra
                 </button>
@@ -335,7 +342,7 @@
                                 <span class="font-headline-md text-headline-md text-primary font-bold">${formatMoney(p.price)}</span>
                                 ${p.oldPrice ? `<span class="text-sm line-through text-outline">${formatMoney(p.oldPrice)}</span>` : ''}
                             </div>
-                            <button onclick="addToCart('${p.id}', '${p.name}', ${p.price})" class="w-full py-4 rounded-xl bg-primary-container text-on-primary-container font-label-md font-bold hover:bg-primary hover:text-on-primary flex items-center justify-center gap-2 transition-all shadow-md transform hover:scale-105 active:scale-95">
+                            <button onclick="addToCart('${p.id}', '${p.name}', ${p.price})" class="interactable dwellable w-full py-4 rounded-xl bg-primary-container text-on-primary-container font-label-md font-bold hover:bg-primary hover:text-on-primary flex items-center justify-center gap-2 transition-all shadow-md transform hover:scale-105 active:scale-95" data-dwell-time="800">
                                 <span class="material-symbols-outlined">add_shopping_cart</span> Adicionar
                             </button>
                         </div>
@@ -426,11 +433,11 @@
                                 <span class="font-body-md text-primary font-bold">${formatMoney(item.price)} <span class="text-on-surface-variant font-normal text-sm">/ un</span></span>
                             </div>
                             <div class="flex items-center gap-4 bg-surface-container rounded-lg p-1">
-                                <button onclick="updateItemQty('${id}', -1)" class="w-10 h-10 rounded-md bg-surface flex items-center justify-center text-on-surface shadow hover:bg-error hover:text-on-error transition-colors">
+                                <button onclick="updateItemQty('${id}', -1)" class="interactable dwellable w-10 h-10 rounded-md bg-surface flex items-center justify-center text-on-surface shadow hover:bg-error hover:text-on-error transition-colors" data-dwell-time="600">
                                     <span class="material-symbols-outlined">${item.qty === 1 ? 'delete' : 'remove'}</span>
                                 </button>
                                 <span class="font-headline-md w-8 text-center">${item.qty}</span>
-                                <button onclick="updateItemQty('${id}', 1)" class="w-10 h-10 rounded-md bg-surface flex items-center justify-center text-on-surface shadow hover:bg-primary hover:text-on-primary transition-colors">
+                                <button onclick="updateItemQty('${id}', 1)" class="interactable dwellable w-10 h-10 rounded-md bg-surface flex items-center justify-center text-on-surface shadow hover:bg-primary hover:text-on-primary transition-colors" data-dwell-time="600">
                                     <span class="material-symbols-outlined">add</span>
                                 </button>
                             </div>
@@ -473,30 +480,88 @@
 
         // VisionFlow Iframe Integration
         let currentHoverElement = null;
+
+        function getDwellTime(element) {
+            if (element && element.dataset.dwellTime) {
+                return parseInt(element.dataset.dwellTime, 10);
+            }
+            return 800; // Padrão reduzido de dwell
+        }
+
+        function getVisibleInteractables() {
+            const list = Array.from(document.querySelectorAll('.interactable, .dwellable, button, a, [role="button"]'));
+            return list.filter(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.width === 0 || rect.height === 0) return false;
+                
+                let curr = el;
+                while (curr) {
+                    const style = window.getComputedStyle(curr);
+                    if (style.display === 'none' || style.visibility === 'hidden' || curr.classList.contains('hidden')) {
+                        return false;
+                    }
+                    curr = curr.parentElement;
+                }
+                return true;
+            });
+        }
+
         window.addEventListener('message', (event) => {
             if (event.data.type === 'VISIONFLOW_CLICK') {
-                const el = document.elementFromPoint(event.data.x, event.data.y);
+                const rawEl = document.elementFromPoint(event.data.x, event.data.y);
+                const el = rawEl ? rawEl.closest('.interactable, .dwellable, button, a, [role="button"]') : null;
                 if (el) {
+                    document.querySelectorAll('.focus-fallback').forEach(item => item.classList.remove('focus-fallback'));
                     el.click();
                 }
             } else if (event.data.type === 'VISIONFLOW_HOVER') {
-                const el = document.elementFromPoint(event.data.x, event.data.y);
+                const rawEl = document.elementFromPoint(event.data.x, event.data.y);
+                const el = rawEl ? rawEl.closest('.interactable, .dwellable, button, a, [role="button"]') : null;
+                
                 if (currentHoverElement !== el) {
                     if (currentHoverElement) {
                         currentHoverElement.dispatchEvent(new MouseEvent('mouseout', { bubbles: true }));
                         currentHoverElement.classList.remove('hovered');
+                        if (currentHoverElement.classList.contains('dwellable')) {
+                            window.parent.postMessage({ type: 'VISIONFLOW_DWELL_CANCEL' }, '*');
+                        }
                     }
+                    
                     if (el && event.data.x >= 0 && event.data.y >= 0) {
                         el.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
                         el.classList.add('hovered');
+                        if (el.classList.contains('dwellable')) {
+                            const dt = getDwellTime(el);
+                            window.parent.postMessage({ type: 'VISIONFLOW_DWELL_START', dwellTime: dt }, '*');
+                        }
                     }
                     currentHoverElement = el;
+                }
+            } else if (event.data.type === 'VISIONFLOW_KEY') {
+                const items = getVisibleInteractables();
+                if (items.length === 0) return;
+
+                let activeIdx = items.findIndex(el => el.classList.contains('focus-fallback'));
+                
+                if (['ArrowDown', 'ArrowRight', 's', 'S', 'd', 'D'].includes(event.data.key)) {
+                    if (activeIdx >= 0) items[activeIdx].classList.remove('focus-fallback');
+                    activeIdx = (activeIdx + 1) % items.length;
+                    items[activeIdx].classList.add('focus-fallback');
+                    items[activeIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else if (['ArrowUp', 'ArrowLeft', 'w', 'W', 'a', 'A'].includes(event.data.key)) {
+                    if (activeIdx >= 0) items[activeIdx].classList.remove('focus-fallback');
+                    activeIdx = (activeIdx - 1 + items.length) % items.length;
+                    items[activeIdx].classList.add('focus-fallback');
+                    items[activeIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else if (['Enter', ' '].includes(event.data.key)) {
+                    if (activeIdx >= 0 && activeIdx < items.length) {
+                        items[activeIdx].click();
+                    }
                 }
             } else if (event.data.type === 'VISIONFLOW_DRAG') {
                 const dy = event.data.dy;
                 const modalScroll = document.getElementById('cart-scroll-container');
                 
-                // Se o modal do carrinho estiver aberto, scrolla ele, senão a janela (body)
                 if (!cartModal.classList.contains('hidden') && modalScroll) {
                     modalScroll.scrollBy({ top: -dy * 2, behavior: 'auto' });
                 } else {

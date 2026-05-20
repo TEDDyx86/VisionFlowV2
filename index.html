@@ -160,31 +160,31 @@
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
                     <!-- Cards -->
-                    <div class="interactable flex flex-col items-center text-center p-10 rounded-3xl glass-panel glow-hover cursor-pointer transition-all duration-300" data-template="example-restaurant.html">
+                    <div class="interactable dwellable flex flex-col items-center text-center p-10 rounded-3xl glass-panel glow-hover cursor-pointer transition-all duration-300" data-template="example-restaurant.html" data-dwell-time="800">
                         <span class="material-symbols-outlined text-6xl text-green-400 mb-6">fastfood</span>
                         <h3 class="text-3xl font-bold mb-2 text-white">Fast Food</h3>
                         <p class="text-gray-400">Autoatendimento Premium</p>
                     </div>
                     
-                    <div class="interactable flex flex-col items-center text-center p-10 rounded-3xl glass-panel glow-hover cursor-pointer transition-all duration-300" data-template="example-market.html">
+                    <div class="interactable dwellable flex flex-col items-center text-center p-10 rounded-3xl glass-panel glow-hover cursor-pointer transition-all duration-300" data-template="example-market.html" data-dwell-time="800">
                         <span class="material-symbols-outlined text-6xl text-yellow-400 mb-6">shopping_cart</span>
                         <h3 class="text-3xl font-bold mb-2 text-white">Mercado</h3>
                         <p class="text-gray-400">Self-checkout Rápido</p>
                     </div>
                     
-                    <div class="interactable flex flex-col items-center text-center p-10 rounded-3xl glass-panel glow-hover cursor-pointer transition-all duration-300" data-template="example-hospital.html">
+                    <div class="interactable dwellable flex flex-col items-center text-center p-10 rounded-3xl glass-panel glow-hover cursor-pointer transition-all duration-300" data-template="example-hospital.html" data-dwell-time="800">
                         <span class="material-symbols-outlined text-6xl text-red-400 mb-6">local_hospital</span>
                         <h3 class="text-3xl font-bold mb-2 text-white">Hospital</h3>
                         <p class="text-gray-400">Triagem e Agendamento</p>
                     </div>
                     
-                    <div class="interactable flex flex-col items-center text-center p-10 rounded-3xl glass-panel glow-hover cursor-pointer transition-all duration-300" data-template="example-university.html">
+                    <div class="interactable dwellable flex flex-col items-center text-center p-10 rounded-3xl glass-panel glow-hover cursor-pointer transition-all duration-300" data-template="example-university.html" data-dwell-time="800">
                         <span class="material-symbols-outlined text-6xl text-blue-400 mb-6">school</span>
                         <h3 class="text-3xl font-bold mb-2 text-white">Universidade</h3>
                         <p class="text-gray-400">Diretório e Mapa</p>
                     </div>
                     
-                    <div class="interactable flex flex-col items-center text-center p-10 rounded-3xl glass-panel glow-hover cursor-pointer transition-all duration-300 md:col-span-2 lg:col-span-2" data-template="example-3d.html" style="background: linear-gradient(135deg, rgba(47,217,244,0.1) 0%, rgba(255,255,255,0.03) 100%);">
+                    <div class="interactable dwellable flex flex-col items-center text-center p-10 rounded-3xl glass-panel glow-hover cursor-pointer transition-all duration-300 md:col-span-2 lg:col-span-2" data-template="example-3d.html" data-dwell-time="800" style="background: linear-gradient(135deg, rgba(47,217,244,0.1) 0%, rgba(255,255,255,0.03) 100%);">
                         <span class="material-symbols-outlined text-6xl text-primary mb-6">3d_rotation</span>
                         <h3 class="text-3xl font-bold mb-2 text-white">Configurator 3D</h3>
                         <p class="text-gray-400">Visualização Interativa de Produtos</p>
@@ -193,7 +193,7 @@
 
                 <!-- Footer with Tutorial Button -->
                 <div class="mt-16 text-center">
-                    <button id="btn-tutorial" class="interactable inline-flex items-center gap-3 px-8 py-4 rounded-full glass-panel border border-primary/30 text-primary hover:bg-primary/10 transition-colors cursor-pointer" data-template="tutorial.html">
+                    <button id="btn-tutorial" class="interactable dwellable inline-flex items-center gap-3 px-8 py-4 rounded-full glass-panel border border-primary/30 text-primary hover:bg-primary/10 transition-colors cursor-pointer" data-template="tutorial.html" data-dwell-time="800">
                         <span class="material-symbols-outlined">help</span>
                         <span class="font-bold tracking-wide uppercase">Como usar o Totem</span>
                     </button>
@@ -205,7 +205,7 @@
         <div id="iframe-view" class="hidden absolute inset-0 z-[60] bg-background flex flex-col w-full h-full">
             <!-- Top Bar Dedicated to Navigation (no overlap) -->
             <div class="flex items-center justify-between px-6 py-4 bg-[#0b1326] border-b border-primary/20 z-50 shadow-[0_4px_30px_rgba(0,0,0,0.5)] shrink-0">
-                <button id="btn-back-home" class="interactable flex items-center gap-3 px-6 py-3 bg-white/5 border border-white/20 text-white rounded-full hover:bg-primary/20 hover:border-primary hover:text-primary transition-all shadow-lg cursor-pointer whitespace-nowrap">
+                <button id="btn-back-home" class="interactable dwellable flex items-center gap-3 px-6 py-3 bg-white/5 border border-white/20 text-white rounded-full hover:bg-primary/20 hover:border-primary hover:text-primary transition-all shadow-lg cursor-pointer whitespace-nowrap" data-dwell-time="600">
                     <span class="material-symbols-outlined">arrow_back</span>
                     <span class="font-bold tracking-wide">Voltar ao Menu Inicial</span>
                 </button>

@@ -7,12 +7,25 @@ let currentHoverElement = null;
 // Dwell Actions
 let dwellStartTime = 0;
 let dwellAnimationFrame = null;
-const DWELL_TIME = 3000;
+let activeDwellElement = null;
+let iframeDwellTime = null;
+const DWELL_TIME_DEFAULT = 800; // ms - padrão reduzido de 3000ms
+
+function getDwellTime(element) {
+    if (iframeDwellTime !== null) {
+        return iframeDwellTime;
+    }
+    if (element && element.dataset.dwellTime) {
+        return parseInt(element.dataset.dwellTime, 10);
+    }
+    return DWELL_TIME_DEFAULT;
+}
 
 function updateDwellProgress() {
     const now = Date.now();
     const elapsed = now - dwellStartTime;
-    const progress = Math.min(elapsed / DWELL_TIME, 1);
+    const dwellTime = getDwellTime(activeDwellElement);
+    const progress = Math.min(elapsed / dwellTime, 1);
     
     if(cursorElement) {
         const circle = cursorElement.querySelector('.cursor-dwell-circle');
@@ -32,8 +45,10 @@ function updateDwellProgress() {
     }
 }
 
-function startDwell() {
+function startDwell(element, customDwellTime = null) {
     cancelDwell();
+    activeDwellElement = element;
+    iframeDwellTime = customDwellTime;
     dwellStartTime = Date.now();
     if(cursorElement) cursorElement.classList.add('dwelling');
     dwellAnimationFrame = requestAnimationFrame(updateDwellProgress);
@@ -44,6 +59,8 @@ function cancelDwell() {
         cancelAnimationFrame(dwellAnimationFrame);
         dwellAnimationFrame = null;
     }
+    activeDwellElement = null;
+    iframeDwellTime = null;
     if(cursorElement) {
         cursorElement.classList.remove('dwelling');
         const circle = cursorElement.querySelector('.cursor-dwell-circle');
@@ -53,7 +70,7 @@ function cancelDwell() {
 
 window.addEventListener('message', (event) => {
     if (event.data.type === 'VISIONFLOW_DWELL_START') {
-        startDwell();
+        startDwell(null, event.data.dwellTime);
     } else if (event.data.type === 'VISIONFLOW_DWELL_CANCEL') {
         cancelDwell();
     }
@@ -103,7 +120,8 @@ export function updateCursor(x, y, isPinching) {
     // Detecção de Hover com Throttling para Performance
     const now = Date.now();
     if (now - lastHoverCheck > 100) {
-        const element = document.elementFromPoint(x, y);
+        const rawEl = document.elementFromPoint(x, y);
+        const element = rawEl ? rawEl.closest('.interactable, .dwellable, button, a, [role="button"]') || rawEl : null;
         
         if (element && element.tagName === 'IFRAME') {
             const rect = element.getBoundingClientRect();
@@ -120,7 +138,7 @@ export function updateCursor(x, y, isPinching) {
                 }
                 currentHoverElement = element;
             }
-        } else if (element && element.classList.contains('interactable')) {
+        } else if (element && (element.classList.contains('interactable') || element.classList.contains('dwellable'))) {
             if (currentHoverElement !== element) {
                 if (currentHoverElement) {
                     currentHoverElement.classList.remove('hovered');
@@ -132,7 +150,7 @@ export function updateCursor(x, y, isPinching) {
                 element.classList.add('hovered');
                 currentHoverElement = element;
                 if (element.classList.contains('dwellable')) {
-                    startDwell();
+                    startDwell(element);
                 }
             }
         } else {
@@ -151,7 +169,8 @@ export function updateCursor(x, y, isPinching) {
 
 export function triggerClick(x, y) {
     // Simular evento de clique na posição (x,y)
-    const element = document.elementFromPoint(x, y);
+    const rawEl = document.elementFromPoint(x, y);
+    const element = rawEl ? rawEl.closest('.interactable, .dwellable, button, a, [role="button"]') || rawEl : null;
     if (element) {
         if (element.tagName === 'IFRAME') {
             const rect = element.getBoundingClientRect();
@@ -164,7 +183,7 @@ export function triggerClick(x, y) {
         }
 
         // Efeito visual no card se for iterativo
-        if (element.classList.contains('interactable')) {
+        if (element.classList.contains('interactable') || element.classList.contains('dwellable')) {
             element.classList.add('clicked');
             setTimeout(() => element.classList.remove('clicked'), 200);
         }

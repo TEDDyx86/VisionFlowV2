@@ -11,6 +11,21 @@ export function initFallbackKeyboard() {
         // Ignora se estivermos digitando num input
         if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
 
+        // Se o iframe estiver visível, repassa a tecla e ignora a lógica do pai
+        const iframeView = document.getElementById('iframe-view');
+        const templateFrame = document.getElementById('template-frame');
+        
+        if (iframeView && !iframeView.classList.contains('hidden') && templateFrame && templateFrame.contentWindow) {
+            if (['ArrowDown', 'ArrowRight', 's', 'S', 'd', 'D', 'ArrowUp', 'ArrowLeft', 'w', 'W', 'a', 'A', 'Enter', ' '].includes(e.key)) {
+                e.preventDefault();
+                templateFrame.contentWindow.postMessage({
+                    type: 'VISIONFLOW_KEY',
+                    key: e.key
+                }, '*');
+            }
+            return;
+        }
+
         // Se pressionar W/A/S/D ou Setas
         if (['ArrowDown', 'ArrowRight', 's', 'S', 'd', 'D'].includes(e.key)) {
             e.preventDefault();

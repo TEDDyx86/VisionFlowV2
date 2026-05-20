@@ -151,6 +151,13 @@
             background: rgba(0, 108, 73, 0.2);
             border-radius: 4px;
         }
+
+        /* Estilo premium de foco de teclado */
+        .focus-fallback {
+            outline: 3px solid #006c49 !important;
+            outline-offset: 4px;
+            box-shadow: 0 0 15px rgba(0, 108, 73, 0.5) !important;
+        }
     </style>
 </head>
 <body class="bg-background text-on-background font-body-md h-screen flex overflow-hidden antialiased">
@@ -161,29 +168,29 @@
             Greenhouse
         </div>
         <nav class="flex flex-col gap-4 w-full px-4 flex-grow">
-            <a data-target="cat-hamburguer" class="interactable sidebar-nav-item flex flex-col items-center justify-center gap-2 text-primary dark:text-primary-fixed-dim bg-surface-container-low/80 p-6 rounded-2xl shadow-md transition-all duration-300" href="#cat-hamburguer">
+            <a data-target="cat-hamburguer" class="interactable sidebar-nav-item flex flex-col items-center justify-center gap-2 text-primary dark:text-primary-fixed-dim bg-surface-container-low/80 p-6 rounded-2xl shadow-md transition-all duration-300" href="#cat-hamburguer" data-dwell-time="800">
                 <span class="material-symbols-outlined text-5xl">lunch_dining</span>
                 <span class="font-label-bold text-label-bold">Hambúrguer</span>
             </a>
-            <a data-target="cat-vegetal" class="interactable sidebar-nav-item flex flex-col items-center justify-center gap-2 text-on-surface-variant dark:text-outline-variant hover:text-primary hover:bg-surface-container-low/80 p-6 rounded-2xl transition-all duration-300" href="#cat-vegetal">
+            <a data-target="cat-vegetal" class="interactable sidebar-nav-item flex flex-col items-center justify-center gap-2 text-on-surface-variant dark:text-outline-variant hover:text-primary hover:bg-surface-container-low/80 p-6 rounded-2xl transition-all duration-300" href="#cat-vegetal" data-dwell-time="800">
                 <span class="material-symbols-outlined text-5xl">eco</span>
                 <span class="font-label-bold text-label-bold">Vegetal</span>
             </a>
-            <a data-target="cat-acompanhamentos" class="interactable sidebar-nav-item flex flex-col items-center justify-center gap-2 text-on-surface-variant dark:text-outline-variant hover:text-primary hover:bg-surface-container-low/80 p-6 rounded-2xl transition-all duration-300" href="#cat-acompanhamentos">
+            <a data-target="cat-acompanhamentos" class="interactable sidebar-nav-item flex flex-col items-center justify-center gap-2 text-on-surface-variant dark:text-outline-variant hover:text-primary hover:bg-surface-container-low/80 p-6 rounded-2xl transition-all duration-300" href="#cat-acompanhamentos" data-dwell-time="800">
                 <span class="material-symbols-outlined text-5xl">tapas</span>
                 <span class="font-label-bold text-label-bold">Acompanhamentos</span>
             </a>
-            <a data-target="cat-bebidas" class="interactable sidebar-nav-item flex flex-col items-center justify-center gap-2 text-on-surface-variant dark:text-outline-variant hover:text-primary hover:bg-surface-container-low/80 p-6 rounded-2xl transition-all duration-300" href="#cat-bebidas">
+            <a data-target="cat-bebidas" class="interactable sidebar-nav-item flex flex-col items-center justify-center gap-2 text-on-surface-variant dark:text-outline-variant hover:text-primary hover:bg-surface-container-low/80 p-6 rounded-2xl transition-all duration-300" href="#cat-bebidas" data-dwell-time="800">
                 <span class="material-symbols-outlined text-5xl">local_drink</span>
                 <span class="font-label-bold text-label-bold">Bebidas</span>
             </a>
-            <a data-target="cat-sobremesas" class="interactable sidebar-nav-item flex flex-col items-center justify-center gap-2 text-on-surface-variant dark:text-outline-variant hover:text-primary hover:bg-surface-container-low/80 p-6 rounded-2xl transition-all duration-300" href="#cat-sobremesas">
+            <a data-target="cat-sobremesas" class="interactable sidebar-nav-item flex flex-col items-center justify-center gap-2 text-on-surface-variant dark:text-outline-variant hover:text-primary hover:bg-surface-container-low/80 p-6 rounded-2xl transition-all duration-300" href="#cat-sobremesas" data-dwell-time="800">
                 <span class="material-symbols-outlined text-5xl">cake</span>
                 <span class="font-label-bold text-label-bold">Sobremesas</span>
             </a>
         </nav>
         <div class="mt-auto px-4 w-full">
-            <button id="open-cart-btn" class="relative w-full flex flex-col items-center justify-center gap-2 bg-primary text-on-primary hover:bg-primary-container hover:text-on-primary-container transition-all duration-300 p-6 rounded-2xl shadow-xl">
+            <button id="open-cart-btn" class="interactable sidebar-nav-item relative w-full flex flex-col items-center justify-center gap-2 bg-primary text-on-primary hover:bg-primary-container hover:text-on-primary-container transition-all duration-300 p-6 rounded-2xl shadow-xl" data-dwell-time="1000">
                 <span class="material-symbols-outlined text-4xl">shopping_cart</span>
                 <span class="font-label-bold text-label-bold">Carrinho</span>
                 <span id="cart-badge" class="absolute top-2 right-2 bg-error text-on-error rounded-full w-8 h-8 flex items-center justify-center text-label-bold shadow-md hidden">0</span>
@@ -206,11 +213,11 @@
                         <div class="flex flex-wrap items-center gap-6 mt-4">
                             <span class="text-headline-lg font-headline-lg text-primary mr-2">R$ 39,97</span>
                             
-                            <button id="customize-btn" class="bg-surface-container text-on-surface-variant px-8 py-5 rounded-full font-label-bold text-headline-md shadow-md hover:bg-outline-variant transition-all duration-300 transform hover:scale-105 flex items-center gap-3">
+                            <button id="customize-btn" data-name="Whopper Clássico" data-price="39.97" class="interactable dwellable bg-surface-container text-on-surface-variant px-8 py-5 rounded-full font-label-bold text-headline-md shadow-md hover:bg-outline-variant transition-all duration-300 transform hover:scale-105 flex items-center gap-3" data-dwell-time="800">
                                 <span class="material-symbols-outlined text-3xl">tune</span> Personalizar
                             </button>
                             
-                            <button id="add-to-order-btn" data-name="Whopper Clássico" data-price="39.97" class="add-item-btn relative bg-primary text-on-primary px-8 py-5 rounded-full font-label-bold text-headline-md shadow-xl shadow-primary/30 hover:bg-primary-container hover:text-on-primary-container transition-all duration-300 transform hover:scale-105 flex items-center gap-3">
+                            <button id="add-to-order-btn" data-name="Whopper Clássico" data-price="39.97" class="interactable dwellable add-item-btn relative bg-primary text-on-primary px-8 py-5 rounded-full font-label-bold text-headline-md shadow-xl shadow-primary/30 hover:bg-primary-container hover:text-on-primary-container transition-all duration-300 transform hover:scale-105 flex items-center gap-3" data-dwell-time="800">
                                 <span class="material-symbols-outlined text-3xl">add_shopping_cart</span> Adicionar ao Pedido
                             </button>
                         </div>
@@ -237,10 +244,10 @@
                             <div class="flex items-center justify-between mt-auto gap-2">
                                 <span class="text-headline-md font-headline-md text-primary font-bold">R$ 49,90</span>
                                 <div class="flex gap-2">
-                                    <button data-name="Whopper Duplo" data-price="49.90" class="customize-btn-card bg-surface-container text-on-surface-variant hover:bg-outline-variant w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                    <button data-name="Whopper Duplo" data-price="49.90" class="interactable dwellable customize-btn-card bg-surface-container text-on-surface-variant hover:bg-outline-variant w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110" data-dwell-time="600">
                                         <span class="material-symbols-outlined text-3xl">tune</span>
                                     </button>
-                                    <button data-name="Whopper Duplo" data-price="49.90" class="add-item-btn bg-surface-variant text-primary hover:bg-primary hover:text-on-primary w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                    <button data-name="Whopper Duplo" data-price="49.90" class="interactable dwellable add-item-btn bg-surface-variant text-primary hover:bg-primary hover:text-on-primary w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110" data-dwell-time="800">
                                         <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">add</span>
                                     </button>
                                 </div>
@@ -258,10 +265,10 @@
                             <div class="flex items-center justify-between mt-auto gap-2">
                                 <span class="text-headline-md font-headline-md text-primary font-bold">R$ 25,90</span>
                                 <div class="flex gap-2">
-                                    <button data-name="Cheeseburger Clássico" data-price="25.90" class="customize-btn-card bg-surface-container text-on-surface-variant hover:bg-outline-variant w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                    <button data-name="Cheeseburger Clássico" data-price="25.90" class="interactable dwellable customize-btn-card bg-surface-container text-on-surface-variant hover:bg-outline-variant w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110" data-dwell-time="600">
                                         <span class="material-symbols-outlined text-3xl">tune</span>
                                     </button>
-                                    <button data-name="Cheeseburger Clássico" data-price="25.90" class="add-item-btn bg-surface-variant text-primary hover:bg-primary hover:text-on-primary w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                    <button data-name="Cheeseburger Clássico" data-price="25.90" class="interactable dwellable add-item-btn bg-surface-variant text-primary hover:bg-primary hover:text-on-primary w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110" data-dwell-time="800">
                                         <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">add</span>
                                     </button>
                                 </div>
@@ -279,10 +286,10 @@
                             <div class="flex items-center justify-between mt-auto gap-2">
                                 <span class="text-headline-md font-headline-md text-primary font-bold">R$ 35,50</span>
                                 <div class="flex gap-2">
-                                    <button data-name="Bacon Burger" data-price="35.50" class="customize-btn-card bg-surface-container text-on-surface-variant hover:bg-outline-variant w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                    <button data-name="Bacon Burger" data-price="35.50" class="interactable dwellable customize-btn-card bg-surface-container text-on-surface-variant hover:bg-outline-variant w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110" data-dwell-time="600">
                                         <span class="material-symbols-outlined text-3xl">tune</span>
                                     </button>
-                                    <button data-name="Bacon Burger" data-price="35.50" class="add-item-btn bg-surface-variant text-primary hover:bg-primary hover:text-on-primary w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                    <button data-name="Bacon Burger" data-price="35.50" class="interactable dwellable add-item-btn bg-surface-variant text-primary hover:bg-primary hover:text-on-primary w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110" data-dwell-time="800">
                                         <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">add</span>
                                     </button>
                                 </div>
@@ -307,10 +314,10 @@
                             <div class="flex items-center justify-between mt-auto gap-2">
                                 <span class="text-headline-md font-headline-md text-primary font-bold">R$ 32,90</span>
                                 <div class="flex gap-2">
-                                    <button data-name="Veggie Burger" data-price="32.90" class="customize-btn-card bg-surface-container text-on-surface-variant hover:bg-outline-variant w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                    <button data-name="Veggie Burger" data-price="32.90" class="interactable dwellable customize-btn-card bg-surface-container text-on-surface-variant hover:bg-outline-variant w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110" data-dwell-time="600">
                                         <span class="material-symbols-outlined text-3xl">tune</span>
                                     </button>
-                                    <button data-name="Veggie Burger" data-price="32.90" class="add-item-btn bg-surface-variant text-primary hover:bg-primary hover:text-on-primary w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                    <button data-name="Veggie Burger" data-price="32.90" class="interactable dwellable add-item-btn bg-surface-variant text-primary hover:bg-primary hover:text-on-primary w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110" data-dwell-time="800">
                                         <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">add</span>
                                     </button>
                                 </div>
@@ -328,10 +335,10 @@
                             <div class="flex items-center justify-between mt-auto gap-2">
                                 <span class="text-headline-md font-headline-md text-primary font-bold">R$ 24,50</span>
                                 <div class="flex gap-2">
-                                    <button data-name="Salada Tropical" data-price="24.50" class="customize-btn-card bg-surface-container text-on-surface-variant hover:bg-outline-variant w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                    <button data-name="Salada Tropical" data-price="24.50" class="interactable dwellable customize-btn-card bg-surface-container text-on-surface-variant hover:bg-outline-variant w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110" data-dwell-time="600">
                                         <span class="material-symbols-outlined text-3xl">tune</span>
                                     </button>
-                                    <button data-name="Salada Tropical" data-price="24.50" class="add-item-btn bg-surface-variant text-primary hover:bg-primary hover:text-on-primary w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                    <button data-name="Salada Tropical" data-price="24.50" class="interactable dwellable add-item-btn bg-surface-variant text-primary hover:bg-primary hover:text-on-primary w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110" data-dwell-time="800">
                                         <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">add</span>
                                     </button>
                                 </div>
@@ -356,10 +363,10 @@
                             <div class="flex items-center justify-between mt-auto gap-2">
                                 <span class="text-headline-md font-headline-md text-primary font-bold">R$ 18,50</span>
                                 <div class="flex gap-2">
-                                    <button data-name="Batata Frita Grande" data-price="18.50" class="customize-btn-card bg-surface-container text-on-surface-variant hover:bg-outline-variant w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                    <button data-name="Batata Frita Grande" data-price="18.50" class="interactable dwellable customize-btn-card bg-surface-container text-on-surface-variant hover:bg-outline-variant w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110" data-dwell-time="600">
                                         <span class="material-symbols-outlined text-3xl">tune</span>
                                     </button>
-                                    <button data-name="Batata Frita Grande" data-price="18.50" class="add-item-btn bg-surface-variant text-primary hover:bg-primary hover:text-on-primary w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                    <button data-name="Batata Frita Grande" data-price="18.50" class="interactable dwellable add-item-btn bg-surface-variant text-primary hover:bg-primary hover:text-on-primary w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110" data-dwell-time="800">
                                         <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">add</span>
                                     </button>
                                 </div>
@@ -377,10 +384,10 @@
                             <div class="flex items-center justify-between mt-auto gap-2">
                                 <span class="text-headline-md font-headline-md text-primary font-bold">R$ 16,90</span>
                                 <div class="flex gap-2">
-                                    <button data-name="Onion Rings" data-price="16.90" class="customize-btn-card bg-surface-container text-on-surface-variant hover:bg-outline-variant w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                    <button data-name="Onion Rings" data-price="16.90" class="interactable dwellable customize-btn-card bg-surface-container text-on-surface-variant hover:bg-outline-variant w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110" data-dwell-time="600">
                                         <span class="material-symbols-outlined text-3xl">tune</span>
                                     </button>
-                                    <button data-name="Onion Rings" data-price="16.90" class="add-item-btn bg-surface-variant text-primary hover:bg-primary hover:text-on-primary w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                    <button data-name="Onion Rings" data-price="16.90" class="interactable dwellable add-item-btn bg-surface-variant text-primary hover:bg-primary hover:text-on-primary w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110" data-dwell-time="800">
                                         <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">add</span>
                                     </button>
                                 </div>
@@ -405,10 +412,10 @@
                             <div class="flex items-center justify-between mt-auto gap-2">
                                 <span class="text-headline-md font-headline-md text-primary font-bold">R$ 14,90</span>
                                 <div class="flex gap-2">
-                                    <button data-name="Refrigerante 500ml" data-price="14.90" class="customize-btn-card bg-surface-container text-on-surface-variant hover:bg-outline-variant w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                    <button data-name="Refrigerante 500ml" data-price="14.90" class="interactable dwellable customize-btn-card bg-surface-container text-on-surface-variant hover:bg-outline-variant w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110" data-dwell-time="600">
                                         <span class="material-symbols-outlined text-3xl">tune</span>
                                     </button>
-                                    <button data-name="Refrigerante 500ml" data-price="14.90" class="add-item-btn bg-surface-variant text-primary hover:bg-primary hover:text-on-primary w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                    <button data-name="Refrigerante 500ml" data-price="14.90" class="interactable dwellable add-item-btn bg-surface-variant text-primary hover:bg-primary hover:text-on-primary w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110" data-dwell-time="800">
                                         <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">add</span>
                                     </button>
                                 </div>
@@ -426,10 +433,10 @@
                             <div class="flex items-center justify-between mt-auto gap-2">
                                 <span class="text-headline-md font-headline-md text-primary font-bold">R$ 12,50</span>
                                 <div class="flex gap-2">
-                                    <button data-name="Suco Natural Laranja" data-price="12.50" class="customize-btn-card bg-surface-container text-on-surface-variant hover:bg-outline-variant w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                    <button data-name="Suco Natural Laranja" data-price="12.50" class="interactable dwellable customize-btn-card bg-surface-container text-on-surface-variant hover:bg-outline-variant w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110" data-dwell-time="600">
                                         <span class="material-symbols-outlined text-3xl">tune</span>
                                     </button>
-                                    <button data-name="Suco Natural Laranja" data-price="12.50" class="add-item-btn bg-surface-variant text-primary hover:bg-primary hover:text-on-primary w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                    <button data-name="Suco Natural Laranja" data-price="12.50" class="interactable dwellable add-item-btn bg-surface-variant text-primary hover:bg-primary hover:text-on-primary w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110" data-dwell-time="800">
                                         <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">add</span>
                                     </button>
                                 </div>
@@ -454,10 +461,10 @@
                             <div class="flex items-center justify-between mt-auto gap-2">
                                 <span class="text-headline-md font-headline-md text-primary font-bold">R$ 11,00</span>
                                 <div class="flex gap-2">
-                                    <button data-name="Sundae Chocolate" data-price="11.00" class="customize-btn-card bg-surface-container text-on-surface-variant hover:bg-outline-variant w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                    <button data-name="Sundae Chocolate" data-price="11.00" class="interactable dwellable customize-btn-card bg-surface-container text-on-surface-variant hover:bg-outline-variant w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110" data-dwell-time="600">
                                         <span class="material-symbols-outlined text-3xl">tune</span>
                                     </button>
-                                    <button data-name="Sundae Chocolate" data-price="11.00" class="add-item-btn bg-surface-variant text-primary hover:bg-primary hover:text-on-primary w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110">
+                                    <button data-name="Sundae Chocolate" data-price="11.00" class="interactable dwellable add-item-btn bg-surface-variant text-primary hover:bg-primary hover:text-on-primary w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shadow-md transform hover:scale-110" data-dwell-time="800">
                                         <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">add</span>
                                     </button>
                                 </div>
@@ -484,7 +491,7 @@
         <div class="bg-surface rounded-[2rem] shadow-2xl w-full max-w-4xl overflow-hidden flex flex-col h-[85vh] border border-outline-variant/30 transform transition-transform duration-300 scale-95" id="customize-modal-content">
             <div class="p-8 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-low">
                 <h2 id="customize-title" class="text-display-sm font-headline-lg text-primary font-bold">Personalizar Item</h2>
-                <button id="close-customize" class="text-on-surface-variant hover:text-error transition-colors p-4 rounded-full bg-surface-container hover:bg-error-container shadow-sm">
+                <button id="close-customize" class="interactable dwellable text-on-surface-variant hover:text-error transition-colors p-4 rounded-full bg-surface-container hover:bg-error-container shadow-sm" data-dwell-time="500">
                     <span class="material-symbols-outlined text-4xl">close</span>
                 </button>
             </div>
@@ -492,7 +499,7 @@
                 <!-- Items will be injected dynamically -->
             </div>
             <div class="p-8 border-t border-outline-variant/30 bg-surface-container-low flex justify-end">
-                <button id="confirm-customization" class="bg-primary text-on-primary px-16 py-8 rounded-full font-headline-md text-headline-lg font-bold shadow-2xl hover:bg-primary-container hover:text-on-primary-container transition-all transform hover:scale-105 flex items-center gap-4">
+                <button id="confirm-customization" class="interactable dwellable bg-primary text-on-primary px-16 py-8 rounded-full font-headline-md text-headline-lg font-bold shadow-2xl hover:bg-primary-container hover:text-on-primary-container transition-all transform hover:scale-105 flex items-center gap-4" data-dwell-time="1000">
                     Confirmar (+ R$ <span id="customize-extra-total">0,00</span>) <span class="material-symbols-outlined text-4xl">check_circle</span>
                 </button>
             </div>
@@ -504,7 +511,7 @@
         <div class="bg-surface rounded-l-[2rem] md:rounded-[2rem] shadow-2xl w-full max-w-md overflow-hidden flex flex-col h-full md:h-[90vh] border border-outline-variant/30 transform transition-transform duration-300 translate-x-full" id="cart-modal-content">
             <div class="p-6 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-low">
                 <h2 class="text-headline-md font-headline-lg text-primary font-bold flex items-center gap-2"><span class="material-symbols-outlined text-4xl">shopping_cart</span> Seu Pedido</h2>
-                <button id="close-cart" class="text-on-surface-variant hover:text-error transition-colors p-3 rounded-full bg-surface-container hover:bg-error-container shadow-sm">
+                <button id="close-cart" class="interactable dwellable text-on-surface-variant hover:text-error transition-colors p-3 rounded-full bg-surface-container hover:bg-error-container shadow-sm" data-dwell-time="500">
                     <span class="material-symbols-outlined text-3xl">close</span>
                 </button>
             </div>
@@ -520,7 +527,7 @@
                     <span>Total:</span>
                     <span id="cart-total" class="text-primary">R$ 0,00</span>
                 </div>
-                <button id="checkout-btn" class="bg-primary text-on-primary w-full py-5 rounded-full font-headline-md font-bold shadow-xl hover:bg-primary-container hover:text-on-primary-container transition-all transform hover:scale-105 flex justify-center items-center gap-3">
+                <button id="checkout-btn" class="interactable dwellable bg-primary text-on-primary w-full py-5 rounded-full font-headline-md font-bold shadow-xl hover:bg-primary-container hover:text-on-primary-container transition-all transform hover:scale-105 flex justify-center items-center gap-3" data-dwell-time="1000">
                     Finalizar Pedido <span class="material-symbols-outlined">arrow_forward</span>
                 </button>
             </div>
@@ -645,11 +652,11 @@
                 const canAdd = currentVal < opt.max;
                 
                 const removeBtnClass = canRemove 
-                    ? 'bg-surface text-error hover:bg-error-container interactable cursor-pointer' 
+                    ? 'bg-surface text-error hover:bg-error-container interactable dwellable cursor-pointer' 
                     : 'bg-surface-container text-outline-variant opacity-50 cursor-not-allowed';
                     
                 const addBtnClass = canAdd 
-                    ? 'bg-primary text-on-primary hover:bg-primary-container hover:text-on-primary-container interactable cursor-pointer' 
+                    ? 'bg-primary text-on-primary hover:bg-primary-container hover:text-on-primary-container interactable dwellable cursor-pointer' 
                     : 'bg-surface-container text-outline-variant opacity-50 cursor-not-allowed';
 
                 modalScrollable.innerHTML += `
@@ -662,9 +669,9 @@
                             </div>
                         </div>
                         <div class="flex items-center gap-6 bg-surface-container rounded-full p-2 shadow-inner">
-                            <button data-action="customize-remove" data-id="${opt.id}" class="w-20 h-20 rounded-full flex items-center justify-center shadow-md transition-colors ${removeBtnClass}" ${!canRemove ? 'disabled' : ''}><span class="material-symbols-outlined text-5xl">remove</span></button>
+                            <button data-action="customize-remove" data-id="${opt.id}" class="w-20 h-20 rounded-full flex items-center justify-center shadow-md transition-colors ${removeBtnClass}" ${!canRemove ? 'disabled' : ''} data-dwell-time="600"><span class="material-symbols-outlined text-5xl">remove</span></button>
                             <span class="text-display-sm font-headline-lg w-12 text-center text-primary font-bold">${currentVal}</span>
-                            <button data-action="customize-add" data-id="${opt.id}" class="w-20 h-20 rounded-full flex items-center justify-center shadow-lg transition-colors ${addBtnClass}" ${!canAdd ? 'disabled' : ''}><span class="material-symbols-outlined text-5xl">add</span></button>
+                            <button data-action="customize-add" data-id="${opt.id}" class="w-20 h-20 rounded-full flex items-center justify-center shadow-lg transition-colors ${addBtnClass}" ${!canAdd ? 'disabled' : ''} data-dwell-time="600"><span class="material-symbols-outlined text-5xl">add</span></button>
                         </div>
                     </div>
                 `;
@@ -777,13 +784,13 @@
                                 ${customText}
                             </div>
                             <div class="flex items-center gap-3 bg-surface-container rounded-full p-1 shadow-inner">
-                                <button class="w-10 h-10 rounded-full bg-surface flex items-center justify-center text-error hover:bg-error-container shadow-md transition-colors interactable" data-action="cart-remove" data-index="${index}"><span class="material-symbols-outlined">remove</span></button>
+                                <button class="w-10 h-10 rounded-full bg-surface flex items-center justify-center text-error hover:bg-error-container shadow-md transition-colors interactable dwellable" data-action="cart-remove" data-index="${index}" data-dwell-time="600"><span class="material-symbols-outlined">remove</span></button>
                                 <span class="text-body-lg font-bold w-6 text-center text-primary">${item.qty}</span>
-                                <button class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center hover:bg-primary-container shadow-lg transition-colors interactable" data-action="cart-add" data-index="${index}"><span class="material-symbols-outlined">add</span></button>
+                                <button class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center hover:bg-primary-container shadow-lg transition-colors interactable dwellable" data-action="cart-add" data-index="${index}" data-dwell-time="600"><span class="material-symbols-outlined">add</span></button>
                             </div>
                         </div>
                         <div class="flex justify-start">
-                            <button class="text-sm font-bold text-on-surface-variant flex items-center gap-1 hover:text-primary transition-colors interactable" data-action="cart-customize" data-index="${index}">
+                            <button class="text-sm font-bold text-on-surface-variant flex items-center gap-1 hover:text-primary transition-colors interactable dwellable" data-action="cart-customize" data-index="${index}" data-dwell-time="600">
                                 <span class="material-symbols-outlined text-sm">edit</span> Personalizar
                             </button>
                         </div>
@@ -935,24 +942,83 @@
 
         // VisionFlow Event Listener
         let currentHoverElement = null;
+
+        function getDwellTime(element) {
+            if (element && element.dataset.dwellTime) {
+                return parseInt(element.dataset.dwellTime, 10);
+            }
+            return 800; // Padrão
+        }
+
+        function getVisibleInteractables() {
+            const list = Array.from(document.querySelectorAll('.interactable, .dwellable, button, a, [role="button"]'));
+            return list.filter(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.width === 0 || rect.height === 0) return false;
+                
+                let curr = el;
+                while (curr) {
+                    const style = window.getComputedStyle(curr);
+                    if (style.display === 'none' || style.visibility === 'hidden' || curr.classList.contains('hidden')) {
+                        return false;
+                    }
+                    curr = curr.parentElement;
+                }
+                return true;
+            });
+        }
+
         window.addEventListener('message', (event) => {
             if (event.data.type === 'VISIONFLOW_CLICK') {
-                const el = document.elementFromPoint(event.data.x, event.data.y);
+                const rawEl = document.elementFromPoint(event.data.x, event.data.y);
+                const el = rawEl ? rawEl.closest('.interactable, .dwellable, button, a, [role="button"]') : null;
                 if (el) {
+                    document.querySelectorAll('.focus-fallback').forEach(item => item.classList.remove('focus-fallback'));
                     el.click();
                 }
             } else if (event.data.type === 'VISIONFLOW_HOVER') {
-                const el = document.elementFromPoint(event.data.x, event.data.y);
+                const rawEl = document.elementFromPoint(event.data.x, event.data.y);
+                const el = rawEl ? rawEl.closest('.interactable, .dwellable, button, a, [role="button"]') : null;
+                
                 if (currentHoverElement !== el) {
                     if (currentHoverElement) {
                         currentHoverElement.dispatchEvent(new MouseEvent('mouseout', { bubbles: true }));
                         currentHoverElement.classList.remove('hovered');
+                        if (currentHoverElement.classList.contains('dwellable')) {
+                            window.parent.postMessage({ type: 'VISIONFLOW_DWELL_CANCEL' }, '*');
+                        }
                     }
+                    
                     if (el && event.data.x >= 0 && event.data.y >= 0) {
                         el.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
                         el.classList.add('hovered');
+                        if (el.classList.contains('dwellable')) {
+                            const dt = getDwellTime(el);
+                            window.parent.postMessage({ type: 'VISIONFLOW_DWELL_START', dwellTime: dt }, '*');
+                        }
                     }
                     currentHoverElement = el;
+                }
+            } else if (event.data.type === 'VISIONFLOW_KEY') {
+                const items = getVisibleInteractables();
+                if (items.length === 0) return;
+
+                let activeIdx = items.findIndex(el => el.classList.contains('focus-fallback'));
+                
+                if (['ArrowDown', 'ArrowRight', 's', 'S', 'd', 'D'].includes(event.data.key)) {
+                    if (activeIdx >= 0) items[activeIdx].classList.remove('focus-fallback');
+                    activeIdx = (activeIdx + 1) % items.length;
+                    items[activeIdx].classList.add('focus-fallback');
+                    items[activeIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else if (['ArrowUp', 'ArrowLeft', 'w', 'W', 'a', 'A'].includes(event.data.key)) {
+                    if (activeIdx >= 0) items[activeIdx].classList.remove('focus-fallback');
+                    activeIdx = (activeIdx - 1 + items.length) % items.length;
+                    items[activeIdx].classList.add('focus-fallback');
+                    items[activeIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else if (['Enter', ' '].includes(event.data.key)) {
+                    if (activeIdx >= 0 && activeIdx < items.length) {
+                        items[activeIdx].click();
+                    }
                 }
             } else if (event.data.type === 'VISIONFLOW_DRAG') {
                 if (!modal.classList.contains('hidden')) {

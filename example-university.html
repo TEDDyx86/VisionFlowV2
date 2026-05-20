@@ -169,6 +169,13 @@
         }
     </script>
 <style>
+        /* Estilo premium de foco de teclado */
+        .focus-fallback {
+            outline: 3px solid #3b82f6 !important;
+            outline-offset: 4px;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.6) !important;
+        }
+
         body {
             background-color: #eef4ff; /* Pale blue academic background */
             background-image: radial-gradient(circle at top right, #ffffff 0%, transparent 40%), radial-gradient(circle at bottom left, #ffffff 0%, transparent 40%);
@@ -367,7 +374,7 @@
             <h1 class="font-headline-xl text-headline-xl text-primary mb-2">Bem-vindo ao Campus</h1>
             <p class="font-body-lg text-body-lg text-on-surface-variant">Sua agenda e serviços do dia em um só lugar.</p>
         </div>
-        <button id="btn-atendimento" class="bg-primary-container text-on-primary-container font-bold text-xl px-10 py-5 rounded-2xl shadow-lg hover:bg-secondary hover:text-white transition-all duration-300 flex items-center gap-4 group">
+        <button id="btn-atendimento" class="interactable dwellable bg-primary-container text-on-primary-container font-bold text-xl px-10 py-5 rounded-2xl shadow-lg hover:bg-secondary hover:text-white transition-all duration-300 flex items-center gap-4 group" data-dwell-time="800">
             <span class="material-symbols-outlined text-[32px] group-hover:rotate-12 transition-transform">forum</span>
             Falar com Atendimento
         </button>
@@ -377,7 +384,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
         
         <!-- Card 1: Biblioteca (Restaurado) -->
-        <div onclick="showModal('modal-biblioteca')" class="interactable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-blue-500/30">
+        <div onclick="showModal('modal-biblioteca')" class="interactable dwellable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-blue-500/30" data-dwell-time="800">
             <div class="w-24 h-24 rounded-3xl bg-blue-50 text-blue-600 flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
                 <span class="material-symbols-outlined text-[48px]">local_library</span>
             </div>
@@ -387,7 +394,7 @@
         </div>
 
         <!-- Card 2: Quadro de Horários -->
-        <div onclick="showModal('modal-schedule')" class="interactable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30">
+        <div onclick="showModal('modal-schedule')" class="interactable dwellable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30" data-dwell-time="800">
             <div class="w-24 h-24 rounded-3xl bg-blue-50 text-secondary flex items-center justify-center mb-6 group-hover:bg-secondary group-hover:text-white transition-all duration-300">
                 <span class="material-symbols-outlined text-[48px]">calendar_month</span>
             </div>
@@ -397,7 +404,7 @@
         </div>
 
         <!-- Card 3: Restaurante (RU) -->
-        <div onclick="showModal('modal-menu')" class="interactable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30">
+        <div onclick="showModal('modal-menu')" class="interactable dwellable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30" data-dwell-time="800">
             <div class="w-24 h-24 rounded-3xl bg-orange-50 text-orange-600 flex items-center justify-center mb-6 group-hover:bg-orange-600 group-hover:text-white transition-all duration-300">
                 <span class="material-symbols-outlined text-[48px]">restaurant</span>
             </div>
@@ -407,7 +414,7 @@
         </div>
 
         <!-- Card 4: Eventos & Palestras -->
-        <div onclick="showModal('modal-events')" class="interactable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30">
+        <div onclick="showModal('modal-events')" class="interactable dwellable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30" data-dwell-time="800">
             <div class="w-24 h-24 rounded-3xl bg-purple-50 text-purple-600 flex items-center justify-center mb-6 group-hover:bg-purple-600 group-hover:text-white transition-all duration-300">
                 <span class="material-symbols-outlined text-[48px]">campaign</span>
             </div>
@@ -417,7 +424,7 @@
         </div>
 
         <!-- Card 5: Mapa do Campus -->
-        <div onclick="showModal('modal-map')" class="interactable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30">
+        <div onclick="showModal('modal-map')" class="interactable dwellable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30" data-dwell-time="800">
             <div class="w-24 h-24 rounded-3xl bg-slate-100 text-slate-600 flex items-center justify-center mb-6 group-hover:bg-slate-600 group-hover:text-white transition-all duration-300">
                 <span class="material-symbols-outlined text-[48px]">map</span>
             </div>
@@ -427,7 +434,7 @@
         </div>
 
         <!-- Card 6: Secretaria Virtual -->
-        <div onclick="showModal('modal-secretaria-qr')" class="interactable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30">
+        <div onclick="showModal('modal-secretaria-qr')" class="interactable dwellable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30" data-dwell-time="800">
             <div class="w-24 h-24 rounded-3xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-6 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
                 <span class="material-symbols-outlined text-[48px]">account_balance</span>
             </div>
@@ -445,19 +452,19 @@
 <!-- BottomNavBar -->
 <nav id="bottom-nav" class="bg-white/80 backdrop-blur-xl dark:bg-tertiary/90 text-secondary dark:text-secondary-fixed-dim font-label-lg text-label-lg fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-28 px-gutter border-t border-white/30 dark:border-white/10 shadow-[0_-8px_24px_rgba(17,92,185,0.06)]">
     <!-- Botões com altura mínima de 72px para alvo gestual adequado -->
-    <button id="bnav-home" onclick="setActiveBottomNav('home')" class="interactable flex flex-col items-center justify-center gap-1 min-w-[80px] min-h-[72px] px-6 py-3 rounded-2xl transition-all duration-200 bg-secondary-container text-on-secondary-container" aria-label="Início">
+    <button id="bnav-home" onclick="setActiveBottomNav('home')" class="interactable dwellable flex flex-col items-center justify-center gap-1 min-w-[80px] min-h-[72px] px-6 py-3 rounded-2xl transition-all duration-200 bg-secondary-container text-on-secondary-container" aria-label="Início" data-dwell-time="600">
         <span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">home</span>
         <span class="font-label-lg text-label-lg">Início</span>
     </button>
-    <button id="bnav-map" onclick="setActiveBottomNav('map'); showModal('modal-map')" class="interactable flex flex-col items-center justify-center gap-1 min-w-[80px] min-h-[72px] px-6 py-3 rounded-2xl transition-all duration-200 text-on-surface-variant hover:bg-surface-container" aria-label="Mapa do Campus">
+    <button id="bnav-map" onclick="setActiveBottomNav('map'); showModal('modal-map')" class="interactable dwellable flex flex-col items-center justify-center gap-1 min-w-[80px] min-h-[72px] px-6 py-3 rounded-2xl transition-all duration-200 text-on-surface-variant hover:bg-surface-container" aria-label="Mapa do Campus" data-dwell-time="600">
         <span class="material-symbols-outlined text-[28px]">map</span>
         <span class="font-label-lg text-label-lg">Mapa</span>
     </button>
-    <button id="bnav-schedule" onclick="setActiveBottomNav('schedule'); showModal('modal-schedule')" class="interactable flex flex-col items-center justify-center gap-1 min-w-[80px] min-h-[72px] px-6 py-3 rounded-2xl transition-all duration-200 text-on-surface-variant hover:bg-surface-container" aria-label="Horários">
+    <button id="bnav-schedule" onclick="setActiveBottomNav('schedule'); showModal('modal-schedule')" class="interactable dwellable flex flex-col items-center justify-center gap-1 min-w-[80px] min-h-[72px] px-6 py-3 rounded-2xl transition-all duration-200 text-on-surface-variant hover:bg-surface-container" aria-label="Horários" data-dwell-time="600">
         <span class="material-symbols-outlined text-[28px]">calendar_month</span>
         <span class="font-label-lg text-label-lg">Horários</span>
     </button>
-    <button id="bnav-emergency" onclick="setActiveBottomNav('emergency')" class="interactable flex flex-col items-center justify-center gap-1 min-w-[80px] min-h-[72px] px-6 py-3 rounded-2xl transition-all duration-200 text-error hover:bg-error-container" aria-label="Emergência">
+    <button id="bnav-emergency" onclick="setActiveBottomNav('emergency')" class="interactable dwellable flex flex-col items-center justify-center gap-1 min-w-[80px] min-h-[72px] px-6 py-3 rounded-2xl transition-all duration-200 text-error hover:bg-error-container" aria-label="Emergência" data-dwell-time="600">
         <span class="material-symbols-outlined text-[28px]">emergency</span>
         <span class="font-label-lg text-label-lg">Emergência</span>
     </button>
@@ -1255,30 +1262,104 @@
 
     // --- Carousel Logic Removed ---
 
+    // VisionFlow Iframe Integration
+    let currentHoverElement = null;
+
+    function getDwellTime(element) {
+        if (element && element.dataset.dwellTime) {
+            return parseInt(element.dataset.dwellTime, 10);
+        }
+        return 800; // Padrão reduzido de dwell
+    }
+
+    function getVisibleInteractables() {
+        const list = Array.from(document.querySelectorAll('.interactable, .dwellable, button, a, [role="button"], .glass-card, .sidebar-tile'));
+        return list.filter(el => {
+            const rect = el.getBoundingClientRect();
+            if (rect.width === 0 || rect.height === 0) return false;
+            
+            let curr = el;
+            while (curr) {
+                const style = window.getComputedStyle(curr);
+                if (style.display === 'none' || style.visibility === 'hidden' || curr.classList.contains('hidden')) {
+                    return false;
+                }
+                curr = curr.parentElement;
+            }
+            return true;
+        });
+    }
+
     window.addEventListener('message', (event) => {
         if (event.data.type === 'VISIONFLOW_CLICK') {
-            const el = document.elementFromPoint(event.data.x, event.data.y);
+            const rawEl = document.elementFromPoint(event.data.x, event.data.y);
+            const el = rawEl ? rawEl.closest('.interactable, .dwellable, button, a, [role="button"], .glass-card, .sidebar-tile') : null;
             if (el) {
+                document.querySelectorAll('.focus-fallback').forEach(item => item.classList.remove('focus-fallback'));
                 el.click();
             }
         } else if (event.data.type === 'VISIONFLOW_HOVER') {
-            const el = document.elementFromPoint(event.data.x, event.data.y);
+            const rawEl = document.elementFromPoint(event.data.x, event.data.y);
+            const el = rawEl ? rawEl.closest('.interactable, .dwellable, button, a, [role="button"], .glass-card, .sidebar-tile') : null;
+            
             if (currentHoverElement !== el) {
                 if (currentHoverElement) {
                     currentHoverElement.dispatchEvent(new MouseEvent('mouseout', { bubbles: true }));
                     currentHoverElement.classList.remove('hovered');
+                    if (currentHoverElement.classList.contains('dwellable')) {
+                        window.parent.postMessage({ type: 'VISIONFLOW_DWELL_CANCEL' }, '*');
+                    }
                 }
+                
                 if (el && event.data.x >= 0 && event.data.y >= 0) {
                     el.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
-                    // Only apply hover visual to interactive elements
-                    if (el.tagName === 'BUTTON' || el.closest('button') || el.closest('.cursor-pointer')) {
-                        el.classList.add('hovered');
+                    el.classList.add('hovered');
+                    if (el.classList.contains('dwellable')) {
+                        const dt = getDwellTime(el);
+                        window.parent.postMessage({ type: 'VISIONFLOW_DWELL_START', dwellTime: dt }, '*');
                     }
                 }
                 currentHoverElement = el;
             }
+        } else if (event.data.type === 'VISIONFLOW_KEY') {
+            const items = getVisibleInteractables();
+            if (items.length === 0) return;
+
+            let activeIdx = items.findIndex(el => el.classList.contains('focus-fallback'));
+            
+            if (['ArrowDown', 'ArrowRight', 's', 'S', 'd', 'D'].includes(event.data.key)) {
+                if (activeIdx >= 0) items[activeIdx].classList.remove('focus-fallback');
+                activeIdx = (activeIdx + 1) % items.length;
+                items[activeIdx].classList.add('focus-fallback');
+                items[activeIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else if (['ArrowUp', 'ArrowLeft', 'w', 'W', 'a', 'A'].includes(event.data.key)) {
+                if (activeIdx >= 0) items[activeIdx].classList.remove('focus-fallback');
+                activeIdx = (activeIdx - 1 + items.length) % items.length;
+                items[activeIdx].classList.add('focus-fallback');
+                items[activeIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else if (['Enter', ' '].includes(event.data.key)) {
+                if (activeIdx >= 0 && activeIdx < items.length) {
+                    items[activeIdx].click();
+                }
+            }
+        } else if (event.data.type === 'VISIONFLOW_DRAG') {
+            const dy = event.data.dy;
+            const modalScroll = document.querySelector('.modal:not(.hidden) .overflow-y-auto, .modal:not(.hidden) .overflow-auto');
+            
+            if (modalScroll) {
+                modalScroll.scrollBy({ top: -dy * 2, behavior: 'auto' });
+            } else {
+                window.scrollBy(0, -dy * 2);
+            }
         } else if (event.data.type === 'VISIONFLOW_SCROLL') {
-            window.scrollBy(0, event.data.dy);
+            const dy = event.data.dy;
+            const modalScroll = document.querySelector('.modal:not(.hidden) .overflow-y-auto, .modal:not(.hidden) .overflow-auto');
+            
+            if (modalScroll) {
+                modalScroll.scrollBy({ top: dy * 2, behavior: 'auto' });
+            } else {
+                window.scrollBy(0, dy * 2);
+            }
         }
     });
     function updateDateTime() {

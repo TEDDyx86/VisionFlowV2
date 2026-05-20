@@ -31,6 +31,13 @@
             background-color: rgba(59, 130, 246, 0.2);
         }
 
+        /* Estilo premium de foco de teclado */
+        .focus-fallback {
+            outline: 3px solid #2fd9f4 !important;
+            outline-offset: 4px;
+            box-shadow: 0 0 15px rgba(47, 217, 244, 0.6) !important;
+        }
+
         /* Simple animation for tutorial illustration */
         @keyframes pinch {
             0% { transform: scale(1); }
@@ -92,7 +99,8 @@
     </div>
 
     <!-- Back Button -->
-    <button class="interactable px-12 py-5 bg-blue-600 hover:bg-blue-500 rounded-full text-2xl font-bold shadow-lg shadow-blue-500/30 transition-all border border-blue-400/30"
+    <button class="interactable dwellable px-12 py-5 bg-blue-600 hover:bg-blue-500 rounded-full text-2xl font-bold shadow-lg shadow-blue-500/30 transition-all border border-blue-400/30"
+            data-dwell-time="800"
             onclick="voltarAoInicio()">
         Entendi, voltar ao início
     </button>
@@ -103,44 +111,127 @@
     </div>
 
     <script>
-        // O inject.py iria carregar o listener, mas agora está embutido para controle offline
+        // Função para voltar ao menu inicial enviando mensagem ou por redirecionamento
         function voltarAoInicio() {
             if (window.parent && window.parent !== window) {
-                // Envia comando para o Host fechar a sub-tela
                 window.parent.postMessage({ type: 'VISIONFLOW_CLOSE_MODULE' }, '*');
             } else {
-                window.location.href = 'index.html'; // Fallback
+                window.location.href = 'index.html';
             }
         }
-        
+
         let currentHoverElement = null;
+
+        function getDwellTime(element) {
+            if (element && element.dataset.dwellTime) {
+                return parseInt(element.dataset.dwellTime, 10);
+            }
+            return 800; // Tempo de dwell padrão
+        }
+
+        function getVisibleInteractables() {
+            const list = Array.from(document.querySelectorAll('.interactable, .dwellable, button, a, [role="button"]'));
+            return list.filter(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.width === 0 || rect.height === 0) return false;
+                
+                let curr = el;
+                while (curr) {
+                    const style = window.getComputedStyle(curr);
+                    if (style.display === 'none' || style.visibility === 'hidden' || curr.classList.contains('hidden')) {
+                        return false;
+                    }
+                    curr = curr.parentElement;
+                }
+                return true;
+            });
+        }
+
         window.addEventListener('message', (event) => {
             if (event.data.type === 'VISIONFLOW_CLICK') {
-                const el = document.elementFromPoint(event.data.x, event.data.y);
+                const rawEl = document.elementFromPoint(event.data.x, event.data.y);
+                const el = rawEl ? rawEl.closest('.interactable, .dwellable, button, a, [role="button"]') : null;
                 if (el) {
+                    document.querySelectorAll('.focus-fallback').forEach(item => item.classList.remove('focus-fallback'));
                     el.click();
                 }
             } else if (event.data.type === 'VISIONFLOW_HOVER') {
-                const el = document.elementFromPoint(event.data.x, event.data.y);
+                const rawEl = document.elementFromPoint(event.data.x, event.data.y);
+                const el = rawEl ? rawEl.closest('.interactable, .dwellable, button, a, [role="button"]') : null;
+                
                 if (currentHoverElement !== el) {
                     if (currentHoverElement) {
                         currentHoverElement.dispatchEvent(new MouseEvent('mouseout', { bubbles: true }));
                         currentHoverElement.classList.remove('hovered');
+                        if (currentHoverElement.classList.contains('dwellable')) {
+                            window.parent.postMessage({ type: 'VISIONFLOW_DWELL_CANCEL' }, '*');
+                        }
                     }
+                    
                     if (el && event.data.x >= 0 && event.data.y >= 0) {
                         el.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
                         el.classList.add('hovered');
+                        if (el.classList.contains('dwellable')) {
+                            const dt = getDwellTime(el);
+                            window.parent.postMessage({ type: 'VISIONFLOW_DWELL_START', dwellTime: dt }, '*');
+                        }
                     }
                     currentHoverElement = el;
+                }
+            } else if (event.data.type === 'VISIONFLOW_KEY') {
+                const items = getVisibleInteractables();
+                if (items.length === 0) return;
+
+                let activeIdx = items.findIndex(el => el.classList.contains('focus-fallback'));
+                
+                if (['ArrowDown', 'ArrowRight', 's', 'S', 'd', 'D'].includes(event.data.key)) {
+                    if (activeIdx >= 0) items[activeIdx].classList.remove('focus-fallback');
+                    activeIdx = (activeIdx + 1) % items.length;
+                    items[activeIdx].classList.add('focus-fallback');
+                    items[activeIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else if (['ArrowUp', 'ArrowLeft', 'w', 'W', 'a', 'A'].includes(event.data.key)) {
+                    if (activeIdx >= 0) items[activeIdx].classList.remove('focus-fallback');
+                    activeIdx = (activeIdx - 1 + items.length) % items.length;
+                    items[activeIdx].classList.add('focus-fallback');
+                    items[activeIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else if (['Enter', ' '].includes(event.data.key)) {
+                    if (activeIdx >= 0 && activeIdx < items.length) {
+                        items[activeIdx].click();
+                    }
                 }
             } else if (event.data.type === 'VISIONFLOW_SCROLL') {
                 window.scrollBy(0, event.data.dy);
             }
         });
 
-        // Listener manual para desenvolvimento
+        // Suporte para teclado manual local no desenvolvimento
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') voltarAoInicio();
+            
+            // Permite também testar a navegação por teclado diretamente no iframe localmente
+            if (window.parent === window) {
+                const items = getVisibleInteractables();
+                if (items.length === 0) return;
+                
+                let activeIdx = items.findIndex(el => el.classList.contains('focus-fallback'));
+                
+                if (['ArrowDown', 'ArrowRight', 's', 'd'].includes(e.key.toLowerCase())) {
+                    e.preventDefault();
+                    if (activeIdx >= 0) items[activeIdx].classList.remove('focus-fallback');
+                    activeIdx = (activeIdx + 1) % items.length;
+                    items[activeIdx].classList.add('focus-fallback');
+                } else if (['ArrowUp', 'ArrowLeft', 'w', 'a'].includes(e.key.toLowerCase())) {
+                    e.preventDefault();
+                    if (activeIdx >= 0) items[activeIdx].classList.remove('focus-fallback');
+                    activeIdx = (activeIdx - 1 + items.length) % items.length;
+                    items[activeIdx].classList.add('focus-fallback');
+                } else if (['Enter', ' '].includes(e.key)) {
+                    e.preventDefault();
+                    if (activeIdx >= 0 && activeIdx < items.length) {
+                        items[activeIdx].click();
+                    }
+                }
+            }
         });
     </script>
 </body>
