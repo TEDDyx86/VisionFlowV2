@@ -859,66 +859,104 @@
             <div class="flex-grow flex p-6 gap-6 bg-slate-50/50 overflow-hidden">
                 
                 <!-- Sidebar: Locais -->
-                <div class="w-80 flex flex-col gap-3 overflow-y-auto pr-2 custom-scrollbar">
-                    <h3 class="font-bold text-slate-400 uppercase text-[10px] tracking-[0.2em] mb-2 px-2">Destinos no Campus</h3>
+                <div class="w-96 flex flex-col gap-3 overflow-y-auto pr-2 custom-scrollbar">
+                    <div class="flex gap-2 mb-2 px-1">
+                        <button class="interactable dwellable flex-1 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest bg-blue-600 text-white transition-all" id="filter-todos">Todos</button>
+                        <button class="interactable dwellable flex-1 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-400 transition-all" id="filter-servicos">Serviços</button>
+                    </div>
                     
-                    <button id="btn-map-Direito" onclick="drawRoute('Direito')" class="sidebar-tile">
+                    <button id="btn-map-Direito" onclick="drawRoute('Direito')" class="interactable dwellable sidebar-tile min-h-[88px]">
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100">
-                                <span class="material-symbols-outlined">gavel</span>
+                            <div class="relative w-14 h-14 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100 flex-shrink-0">
+                                <span class="material-symbols-outlined text-[28px]">gavel</span>
+                                <svg class="absolute inset-0 w-full h-full" viewBox="0 0 56 56">
+                                    <circle id="dwell-tile-Direito" cx="28" cy="28" r="26" fill="none" stroke="#2563eb" stroke-width="3"
+                                        stroke-linecap="round" stroke-dasharray="163" stroke-dashoffset="163"
+                                        style="transform: rotate(-90deg); transform-origin: 28px 28px; opacity: 0; transition: opacity 0.1s;" />
+                                </svg>
                             </div>
-                            <div>
-                                <span class="block font-bold text-slate-700">Bloco A</span>
-                                <span class="text-[10px] text-slate-400 uppercase tracking-wider">Direito & RI</span>
+                            <div class="flex-1 text-left">
+                                <span class="block font-bold text-slate-700 text-base">Bloco A</span>
+                                <span class="text-[11px] text-slate-400 uppercase tracking-wider">Direito & RI</span>
+                                <span class="block text-[11px] text-blue-500 font-semibold mt-1">● 120m · ~2 min</span>
                             </div>
+                            <span id="badge-Direito" class="hidden text-[9px] font-black uppercase tracking-wider bg-green-100 text-green-700 px-2 py-1 rounded-full">Ativa</span>
                         </div>
                     </button>
 
-                    <button id="btn-map-Adm" onclick="drawRoute('Adm')" class="sidebar-tile">
+                    <button id="btn-map-Adm" onclick="drawRoute('Adm')" class="interactable dwellable sidebar-tile min-h-[88px]">
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100">
-                                <span class="material-symbols-outlined">business_center</span>
+                            <div class="relative w-14 h-14 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100 flex-shrink-0">
+                                <span class="material-symbols-outlined text-[28px]">business_center</span>
+                                <svg class="absolute inset-0 w-full h-full" viewBox="0 0 56 56">
+                                    <circle id="dwell-tile-Adm" cx="28" cy="28" r="26" fill="none" stroke="#2563eb" stroke-width="3"
+                                        stroke-linecap="round" stroke-dasharray="163" stroke-dashoffset="163"
+                                        style="transform: rotate(-90deg); transform-origin: 28px 28px; opacity: 0; transition: opacity 0.1s;" />
+                                </svg>
                             </div>
-                            <div>
-                                <span class="block font-bold text-slate-700">Bloco B</span>
-                                <span class="text-[10px] text-slate-400 uppercase tracking-wider">Adm & Economia</span>
+                            <div class="flex-1 text-left">
+                                <span class="block font-bold text-slate-700 text-base">Bloco B</span>
+                                <span class="text-[11px] text-slate-400 uppercase tracking-wider">Adm & Economia</span>
+                                <span class="block text-[11px] text-blue-500 font-semibold mt-1">● 200m · ~3 min</span>
                             </div>
+                            <span id="badge-Adm" class="hidden text-[9px] font-black uppercase tracking-wider bg-green-100 text-green-700 px-2 py-1 rounded-full">Ativa</span>
                         </div>
                     </button>
 
-                    <button id="btn-map-Software" onclick="drawRoute('Software')" class="sidebar-tile">
+                    <button id="btn-map-Software" onclick="drawRoute('Software')" class="interactable dwellable sidebar-tile min-h-[88px]">
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100">
-                                <span class="material-symbols-outlined">code</span>
+                            <div class="relative w-14 h-14 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100 flex-shrink-0">
+                                <span class="material-symbols-outlined text-[28px]">code</span>
+                                <svg class="absolute inset-0 w-full h-full" viewBox="0 0 56 56">
+                                    <circle id="dwell-tile-Software" cx="28" cy="28" r="26" fill="none" stroke="#2563eb" stroke-width="3"
+                                        stroke-linecap="round" stroke-dasharray="163" stroke-dashoffset="163"
+                                        style="transform: rotate(-90deg); transform-origin: 28px 28px; opacity: 0; transition: opacity 0.1s;" />
+                                </svg>
                             </div>
-                            <div>
-                                <span class="block font-bold text-slate-700">Bloco C</span>
-                                <span class="text-[10px] text-slate-400 uppercase tracking-wider">Engenharia & TI</span>
+                            <div class="flex-1 text-left">
+                                <span class="block font-bold text-slate-700 text-base">Bloco C</span>
+                                <span class="text-[11px] text-slate-400 uppercase tracking-wider">Engenharia & TI</span>
+                                <span class="block text-[11px] text-blue-500 font-semibold mt-1">● 280m · ~4 min</span>
                             </div>
+                            <span id="badge-Software" class="hidden text-[9px] font-black uppercase tracking-wider bg-green-100 text-green-700 px-2 py-1 rounded-full">Ativa</span>
                         </div>
                     </button>
 
-                    <button id="btn-map-Biblioteca" onclick="drawRoute('Biblioteca')" class="sidebar-tile">
+                    <button id="btn-map-Biblioteca" onclick="drawRoute('Biblioteca')" class="interactable dwellable sidebar-tile min-h-[88px]">
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100">
-                                <span class="material-symbols-outlined">auto_stories</span>
+                            <div class="relative w-14 h-14 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100 flex-shrink-0">
+                                <span class="material-symbols-outlined text-[28px]">auto_stories</span>
+                                <svg class="absolute inset-0 w-full h-full" viewBox="0 0 56 56">
+                                    <circle id="dwell-tile-Biblioteca" cx="28" cy="28" r="26" fill="none" stroke="#2563eb" stroke-width="3"
+                                        stroke-linecap="round" stroke-dasharray="163" stroke-dashoffset="163"
+                                        style="transform: rotate(-90deg); transform-origin: 28px 28px; opacity: 0; transition: opacity 0.1s;" />
+                                </svg>
                             </div>
-                            <div>
-                                <span class="block font-bold text-slate-700">Biblioteca</span>
-                                <span class="text-[10px] text-slate-400 uppercase tracking-wider">Acervo Digital</span>
+                            <div class="flex-1 text-left">
+                                <span class="block font-bold text-slate-700 text-base">Biblioteca</span>
+                                <span class="text-[11px] text-slate-400 uppercase tracking-wider">Acervo Digital</span>
+                                <span class="block text-[11px] text-blue-500 font-semibold mt-1">● 150m · ~2 min</span>
                             </div>
+                            <span id="badge-Biblioteca" class="hidden text-[9px] font-black uppercase tracking-wider bg-green-100 text-green-700 px-2 py-1 rounded-full">Ativa</span>
                         </div>
                     </button>
 
-                    <button id="btn-map-RU" onclick="drawRoute('RU')" class="sidebar-tile">
+                    <button id="btn-map-RU" onclick="drawRoute('RU')" class="interactable dwellable sidebar-tile min-h-[88px]">
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100">
-                                <span class="material-symbols-outlined">restaurant</span>
+                            <div class="relative w-14 h-14 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100 flex-shrink-0">
+                                <span class="material-symbols-outlined text-[28px]">restaurant</span>
+                                <svg class="absolute inset-0 w-full h-full" viewBox="0 0 56 56">
+                                    <circle id="dwell-tile-RU" cx="28" cy="28" r="26" fill="none" stroke="#2563eb" stroke-width="3"
+                                        stroke-linecap="round" stroke-dasharray="163" stroke-dashoffset="163"
+                                        style="transform: rotate(-90deg); transform-origin: 28px 28px; opacity: 0; transition: opacity 0.1s;" />
+                                </svg>
                             </div>
-                            <div>
-                                <span class="block font-bold text-slate-700">Restaurante</span>
-                                <span class="text-[10px] text-slate-400 uppercase tracking-wider">Refeitório Central</span>
+                            <div class="flex-1 text-left">
+                                <span class="block font-bold text-slate-700 text-base">Restaurante</span>
+                                <span class="text-[11px] text-slate-400 uppercase tracking-wider">Refeitório Central</span>
+                                <span class="block text-[11px] text-blue-500 font-semibold mt-1">● 310m · ~4 min</span>
                             </div>
+                            <span id="badge-RU" class="hidden text-[9px] font-black uppercase tracking-wider bg-green-100 text-green-700 px-2 py-1 rounded-full">Ativa</span>
                         </div>
                     </button>
                 </div>
