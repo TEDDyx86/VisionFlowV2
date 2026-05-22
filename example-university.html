@@ -1437,6 +1437,58 @@
 
     // --- Carousel Logic Removed ---
 
+    // Estado de dwell nos edifícios SVG
+    let svgDwellTarget   = null; // id do destino em dwell (ex: 'Direito')
+    let svgDwellStart    = null; // timestamp de início
+    let svgDwellFrame    = null; // requestAnimationFrame handle
+    const SVG_DWELL_MS   = 2000; // 2 segundos
+
+    function startSvgDwell(routeId) {
+        cancelSvgDwell();
+        svgDwellTarget = routeId;
+        svgDwellStart  = performance.now();
+
+        const ring = document.getElementById(`dwell-${routeId}`);
+        if (ring) {
+            ring.style.opacity = '1';
+            ring.style.strokeDashoffset = '138';
+        }
+
+        function tick(now) {
+            const elapsed  = now - svgDwellStart;
+            const progress = Math.min(elapsed / SVG_DWELL_MS, 1);
+            const offset   = 138 * (1 - progress);
+
+            if (ring) ring.style.strokeDashoffset = offset;
+
+            if (progress >= 1) {
+                cancelSvgDwell();
+                window.drawRoute(routeId);
+            } else {
+                svgDwellFrame = requestAnimationFrame(tick);
+            }
+        }
+
+        svgDwellFrame = requestAnimationFrame(tick);
+    }
+
+    function cancelSvgDwell() {
+        if (svgDwellFrame) cancelAnimationFrame(svgDwellFrame);
+        svgDwellFrame = null;
+
+        if (svgDwellTarget) {
+            const ring = document.getElementById(`dwell-${svgDwellTarget}`);
+            if (ring) {
+                ring.style.transition = 'stroke-dashoffset 0.2s ease, opacity 0.2s ease';
+                ring.style.strokeDashoffset = '138';
+                ring.style.opacity = '0';
+                setTimeout(() => { ring.style.transition = ''; }, 200);
+            }
+        }
+        svgDwellTarget = null;
+        svgDwellStart  = null;
+    }
+
     window.addEventListener('message', (event) => {
         if (event.data.type === 'VISIONFLOW_CLICK') {
             const el = document.elementFromPoint(event.data.x, event.data.y);
@@ -1449,12 +1501,48 @@
                 if (currentHoverElement) {
                     currentHoverElement.dispatchEvent(new MouseEvent('mouseout', { bubbles: true }));
                     currentHoverElement.classList.remove('hovered');
+                    // Cancela dwell SVG se sair de um edifício
+                    if (svgDwellTarget) {
+                        window.parent.postMessage({ type: 'VISIONFLOW_DWELL_CANCEL' }, '*');
+                        const lbl = document.getElementById(`lbl-${svgDwellTarget}`);
+                        if (lbl) lbl.classList.remove('hovered');
+                        cancelSvgDwell();
+                    }
                 }
                 if (el && event.data.x >= 0 && event.data.y >= 0) {
                     el.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
                     // Only apply hover visual to interactive elements
                     if (el.tagName === 'BUTTON' || el.closest('button') || el.closest('.cursor-pointer')) {
                         el.classList.add('hovered');
+                        // Verifica se o elemento ou ancestral tem data-route (edifício SVG)
+                        const buildingEl = el.closest('[data-route]');
+                        const routeId    = buildingEl ? buildingEl.getAttribute('data-route') : null;
+
+                        if (routeId && routeId !== svgDwellTarget) {
+                            // Entrou em um novo edifício: inicia dwell + sinaliza parent
+                            window.parent.postMessage({ type: 'VISIONFLOW_DWELL_START' }, '*');
+                            startSvgDwell(routeId);
+
+                            // Destaca label do bloco
+                            const lbl = document.getElementById(`lbl-${routeId}`);
+                            if (lbl) lbl.classList.add('hovered');
+
+                            // Pulsa tile correspondente na sidebar
+                            const tile = document.getElementById(`btn-map-${routeId}`);
+                            if (tile) {
+                                tile.classList.remove('pulse');
+                                void tile.offsetWidth; // reset animation
+                                tile.classList.add('pulse');
+                                setTimeout(() => tile.classList.remove('pulse'), 400);
+                            }
+
+                        } else if (!routeId && svgDwellTarget) {
+                            // Saiu de edifício sem completar dwell
+                            window.parent.postMessage({ type: 'VISIONFLOW_DWELL_CANCEL' }, '*');
+                            const lbl = document.getElementById(`lbl-${svgDwellTarget}`);
+                            if (lbl) lbl.classList.remove('hovered');
+                            cancelSvgDwell();
+                        }
                     }
                 }
                 currentHoverElement = el;
