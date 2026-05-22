@@ -968,28 +968,33 @@
 
                         <!-- Buildings -->
                         <!-- Bloco A -->
-                        <rect id="svg-Direito" x="50" y="80" width="120" height="100" rx="15" class="map-building" />
-                        <text x="110" y="135" text-anchor="middle" class="map-label-academic">Bloco A</text>
+                        <rect id="svg-Direito" x="50" y="80" width="120" height="100" rx="15" class="map-building" data-route="Direito" />
+                        <circle id="dwell-Direito" cx="110" cy="130" r="22" class="dwell-ring" />
+                        <text x="110" y="135" text-anchor="middle" id="lbl-Direito" class="map-label-academic">Bloco A</text>
                         <text x="110" y="150" text-anchor="middle" class="map-label-academic" style="font-size: 8px; opacity: 0.6;">Direito</text>
 
                         <!-- Bloco B -->
-                        <rect id="svg-Adm" x="440" y="80" width="120" height="100" rx="15" class="map-building" />
-                        <text x="500" y="135" text-anchor="middle" class="map-label-academic">Bloco B</text>
+                        <rect id="svg-Adm" x="440" y="80" width="120" height="100" rx="15" class="map-building" data-route="Adm" />
+                        <circle id="dwell-Adm" cx="500" cy="130" r="22" class="dwell-ring" />
+                        <text x="500" y="135" text-anchor="middle" id="lbl-Adm" class="map-label-academic">Bloco B</text>
                         <text x="500" y="150" text-anchor="middle" class="map-label-academic" style="font-size: 8px; opacity: 0.6;">Adm</text>
 
                         <!-- Bloco C -->
-                        <rect id="svg-Software" x="790" y="80" width="120" height="100" rx="15" class="map-building" />
-                        <text x="850" y="135" text-anchor="middle" class="map-label-academic">Bloco C</text>
+                        <rect id="svg-Software" x="790" y="80" width="120" height="100" rx="15" class="map-building" data-route="Software" />
+                        <circle id="dwell-Software" cx="850" cy="130" r="22" class="dwell-ring" />
+                        <text x="850" y="135" text-anchor="middle" id="lbl-Software" class="map-label-academic">Bloco C</text>
                         <text x="850" y="150" text-anchor="middle" class="map-label-academic" style="font-size: 8px; opacity: 0.6;">Software</text>
 
                         <!-- Biblioteca -->
-                        <rect id="svg-Biblioteca" x="50" y="300" width="120" height="100" rx="15" class="map-building" />
-                        <text x="110" y="355" text-anchor="middle" class="map-label-academic">Biblio</text>
+                        <rect id="svg-Biblioteca" x="50" y="300" width="120" height="100" rx="15" class="map-building" data-route="Biblioteca" />
+                        <circle id="dwell-Biblioteca" cx="110" cy="350" r="22" class="dwell-ring" />
+                        <text x="110" y="355" text-anchor="middle" id="lbl-Biblioteca" class="map-label-academic">Biblio</text>
                         <text x="110" y="370" text-anchor="middle" class="map-label-academic" style="font-size: 8px; opacity: 0.6;">Central</text>
 
                         <!-- RU -->
-                        <rect id="svg-RU" x="790" y="300" width="120" height="100" rx="15" class="map-building" />
-                        <text x="850" y="355" text-anchor="middle" class="map-label-academic">RU</text>
+                        <rect id="svg-RU" x="790" y="300" width="120" height="100" rx="15" class="map-building" data-route="RU" />
+                        <circle id="dwell-RU" cx="850" cy="350" r="22" class="dwell-ring" />
+                        <text x="850" y="355" text-anchor="middle" id="lbl-RU" class="map-label-academic">RU</text>
                         <text x="850" y="370" text-anchor="middle" class="map-label-academic" style="font-size: 8px; opacity: 0.6;">Restaurante</text>
 
                         <!-- Parking Lot -->
@@ -997,43 +1002,96 @@
                         <path d="M 800 580 L 950 580 M 800 610 L 950 610 M 800 640 L 950 640" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4" />
                         <text x="875" y="660" text-anchor="middle" class="map-label-academic" style="fill: #94a3b8; font-size: 9px;">Estacionamento Principal</text>
 
-                        <!-- Navigation Paths -->
-                        <path id="path-Direito" d="M 150 620 L 150 130 L 110 130" class="nav-path" />
-                        <path id="path-Adm" d="M 150 620 L 150 350 L 500 350 L 500 130" class="nav-path" />
-                        <path id="path-Software" d="M 150 620 L 150 350 L 850 350 L 850 130" class="nav-path" />
-                        <path id="path-Biblioteca" d="M 150 620 L 150 350 L 110 350" class="nav-path" />
-                        <path id="path-RU" d="M 150 620 L 150 350 L 850 350 L 850 330" class="nav-path" />
+                        <!-- Navigation Paths (bg branca + linha azul sobrepostas) -->
+                        <path id="path-bg-Direito"   d="M 150 620 L 150 130 L 110 130"                           class="nav-path-bg" />
+                        <path id="path-Direito"      d="M 150 620 L 150 130 L 110 130"                           class="nav-path" />
 
-                        <!-- Totem -->
-                        <circle cx="150" cy="620" r="12" fill="white" stroke="#ef4444" stroke-width="3" />
-                        <circle cx="150" cy="620" r="5" fill="#ef4444" />
+                        <path id="path-bg-Adm"       d="M 150 620 L 150 350 L 500 350 L 500 130"                 class="nav-path-bg" />
+                        <path id="path-Adm"          d="M 150 620 L 150 350 L 500 350 L 500 130"                 class="nav-path" />
+
+                        <path id="path-bg-Software"  d="M 150 620 L 150 350 L 850 350 L 850 130"                 class="nav-path-bg" />
+                        <path id="path-Software"     d="M 150 620 L 150 350 L 850 350 L 850 130"                 class="nav-path" />
+
+                        <path id="path-bg-Biblioteca" d="M 150 620 L 150 350 L 110 350"                          class="nav-path-bg" />
+                        <path id="path-Biblioteca"    d="M 150 620 L 150 350 L 110 350"                          class="nav-path" />
+
+                        <path id="path-bg-RU"        d="M 150 620 L 150 350 L 850 350 L 850 330"                 class="nav-path-bg" />
+                        <path id="path-RU"           d="M 150 620 L 150 350 L 850 350 L 850 330"                 class="nav-path" />
+
+                        <!-- Destination Pins (aparecem ao fim da animação de rota) -->
+                        <!-- Pin Direito: endpoint de path = (110, 130) -->
+                        <g id="pin-Direito" class="dest-pin">
+                            <circle cx="110" cy="115" r="10" fill="#16a34a" />
+                            <circle cx="110" cy="115" r="4"  fill="white" />
+                        </g>
+
+                        <!-- Pin Adm: endpoint = (500, 130) -->
+                        <g id="pin-Adm" class="dest-pin">
+                            <circle cx="500" cy="115" r="10" fill="#16a34a" />
+                            <circle cx="500" cy="115" r="4"  fill="white" />
+                        </g>
+
+                        <!-- Pin Software: endpoint = (850, 130) -->
+                        <g id="pin-Software" class="dest-pin">
+                            <circle cx="850" cy="115" r="10" fill="#16a34a" />
+                            <circle cx="850" cy="115" r="4"  fill="white" />
+                        </g>
+
+                        <!-- Pin Biblioteca: endpoint = (110, 350) -->
+                        <g id="pin-Biblioteca" class="dest-pin">
+                            <circle cx="95"  cy="350" r="10" fill="#16a34a" />
+                            <circle cx="95"  cy="350" r="4"  fill="white" />
+                        </g>
+
+                        <!-- Pin RU: endpoint = (850, 330) -->
+                        <g id="pin-RU" class="dest-pin">
+                            <circle cx="850" cy="315" r="10" fill="#16a34a" />
+                            <circle cx="850" cy="315" r="4"  fill="white" />
+                        </g>
+
+                        <!-- Totem: Você Está Aqui com anel sonar -->
+                        <g id="totem-marker">
+                            <!-- Anel sonar animado -->
+                            <g class="sonar-ring" style="transform-origin: 150px 620px;">
+                                <circle cx="150" cy="620" r="18" stroke="#ef4444" stroke-width="1.5" fill="none" />
+                            </g>
+                            <!-- Anel estático -->
+                            <circle cx="150" cy="620" r="14" fill="white" stroke="#ef4444" stroke-width="2" />
+                            <!-- Ponto central -->
+                            <circle cx="150" cy="620" r="6" fill="#ef4444" />
+                        </g>
                         <text x="150" y="660" text-anchor="middle" class="map-label-academic" style="font-size: 10px; font-weight: 800; fill: #ef4444;">VOCÊ ESTÁ AQUI</text>
                     </svg>
                 </div>
             </div>
 
-            <!-- Legend Footer (Modern Academic Theme) -->
-            <div class="p-8 border-t border-slate-100 bg-white flex items-center justify-center gap-16">
-                <div class="flex items-center gap-3">
-                    <div class="w-4 h-4 rounded-full bg-white border-2 border-red-500 flex items-center justify-center">
-                        <div class="w-1.5 h-1.5 rounded-full bg-red-500"></div>
+            <!-- Footer Dinâmico -->
+            <div class="p-6 border-t border-slate-100 bg-white flex items-center justify-between gap-8">
+                <!-- Estado do footer -->
+                <div class="flex items-center gap-4 flex-1">
+                    <div id="map-footer-spinner" class="hidden w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                    <span id="map-footer-text" class="text-sm font-semibold text-slate-500">
+                        Selecione um destino na lista ou aponte para um edifício
+                    </span>
+                </div>
+                <!-- Legenda compacta -->
+                <div class="flex items-center gap-8 flex-shrink-0">
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-4 rounded-full bg-white border-2 border-red-500 flex items-center justify-center">
+                            <div class="w-1.5 h-1.5 rounded-full bg-red-500"></div>
+                        </div>
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Você Aqui</span>
                     </div>
-                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Sua Localização</span>
-                </div>
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-1.5 rounded-full bg-blue-600"></div>
-                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Trajeto</span>
-                </div>
-                <div class="flex items-center gap-3">
-                    <div class="w-4 h-4 rounded-md border-2 border-blue-600 bg-white"></div>
-                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Edifícios</span>
-                </div>
-                <div class="flex items-center gap-3">
-                    <div class="flex gap-1.5">
-                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-200"></div>
-                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-100"></div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-1.5 rounded-full bg-blue-600"></div>
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Trajeto</span>
                     </div>
-                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Áreas Verdes</span>
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-4 rounded-full bg-green-600 flex items-center justify-center">
+                            <div class="w-1.5 h-1.5 rounded-full bg-white"></div>
+                        </div>
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Destino</span>
+                    </div>
                 </div>
             </div>
         </div>
