@@ -1344,9 +1344,33 @@
         btn.classList.add('bg-green-600', 'text-white');
     };
 
-    // Stub — Task 6 substitui pela implementação completa
     let inactivityTimer = null;
-    function resetInactivityTimer() { /* implementado na Task 6 */ }
+    let drawRouteAnimTimer = null;
+
+    function resetInactivityTimer() {
+        if (inactivityTimer) clearTimeout(inactivityTimer);
+        inactivityTimer = setTimeout(() => {
+            // Reset completo do mapa ao estado padrão
+            document.querySelectorAll('.sidebar-tile').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('[id^="badge-"]').forEach(b => b.classList.add('hidden'));
+            document.querySelectorAll('.nav-path, .nav-path-bg').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.map-building').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.dest-pin').forEach(p => p.classList.remove('active'));
+
+            const footerText    = document.getElementById('map-footer-text');
+            const footerSpinner = document.getElementById('map-footer-spinner');
+            if (footerSpinner) footerSpinner.classList.add('hidden');
+            if (footerText) {
+                footerText.style.transition = 'opacity 0.5s ease';
+                footerText.style.opacity = '0';
+                setTimeout(() => {
+                    footerText.textContent = 'Selecione um destino na lista ou aponte para um edifício';
+                    footerText.style.opacity = '1';
+                    setTimeout(() => { footerText.style.transition = ''; }, 500);
+                }, 500);
+            }
+        }, 8000);
+    }
 
     const routeInfo = {
         'Direito':   { label: 'Bloco A (Direito)',           dist: '120m', time: '~2 min' },
@@ -1359,6 +1383,11 @@
     window.drawRoute = function(id) {
         const footerText    = document.getElementById('map-footer-text');
         const footerSpinner = document.getElementById('map-footer-spinner');
+
+        // Cancela timeouts pendentes de animação anterior
+        if (typeof drawRouteAnimTimer !== 'undefined' && drawRouteAnimTimer) {
+            clearTimeout(drawRouteAnimTimer);
+        }
 
         // 1. Reset todos os estados anteriores
         document.querySelectorAll('.sidebar-tile').forEach(btn => {
@@ -1409,7 +1438,7 @@
         if (footerText)    footerText.textContent = 'Calculando trajeto...';
 
         // 6. Após animação (~1.4s): exibe pin destino + atualiza footer
-        setTimeout(() => {
+        drawRouteAnimTimer = setTimeout(() => {
             const pin = document.getElementById(`pin-${id}`);
             if (pin) pin.classList.add('active');
 
