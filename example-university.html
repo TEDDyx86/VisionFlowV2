@@ -169,13 +169,6 @@
         }
     </script>
 <style>
-        /* Estilo premium de foco de teclado */
-        .focus-fallback {
-            outline: 3px solid #3b82f6 !important;
-            outline-offset: 4px;
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.6) !important;
-        }
-
         body {
             background-color: #eef4ff; /* Pale blue academic background */
             background-image: radial-gradient(circle at top right, #ffffff 0%, transparent 40%), radial-gradient(circle at bottom left, #ffffff 0%, transparent 40%);
@@ -374,7 +367,7 @@
             <h1 class="font-headline-xl text-headline-xl text-primary mb-2">Bem-vindo ao Campus</h1>
             <p class="font-body-lg text-body-lg text-on-surface-variant">Sua agenda e serviços do dia em um só lugar.</p>
         </div>
-        <button id="btn-atendimento" class="interactable dwellable bg-primary-container text-on-primary-container font-bold text-xl px-10 py-5 rounded-2xl shadow-lg hover:bg-secondary hover:text-white transition-all duration-300 flex items-center gap-4 group" data-dwell-time="800">
+        <button id="btn-atendimento" class="bg-primary-container text-on-primary-container font-bold text-xl px-10 py-5 rounded-2xl shadow-lg hover:bg-secondary hover:text-white transition-all duration-300 flex items-center gap-4 group">
             <span class="material-symbols-outlined text-[32px] group-hover:rotate-12 transition-transform">forum</span>
             Falar com Atendimento
         </button>
@@ -384,7 +377,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
         
         <!-- Card 1: Biblioteca (Restaurado) -->
-        <div onclick="showModal('modal-biblioteca')" class="interactable dwellable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-blue-500/30" data-dwell-time="800">
+        <div onclick="showModal('modal-biblioteca')" class="interactable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-blue-500/30">
             <div class="w-24 h-24 rounded-3xl bg-blue-50 text-blue-600 flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
                 <span class="material-symbols-outlined text-[48px]">local_library</span>
             </div>
@@ -394,7 +387,7 @@
         </div>
 
         <!-- Card 2: Quadro de Horários -->
-        <div onclick="showModal('modal-schedule')" class="interactable dwellable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30" data-dwell-time="800">
+        <div onclick="showModal('modal-schedule')" class="interactable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30">
             <div class="w-24 h-24 rounded-3xl bg-blue-50 text-secondary flex items-center justify-center mb-6 group-hover:bg-secondary group-hover:text-white transition-all duration-300">
                 <span class="material-symbols-outlined text-[48px]">calendar_month</span>
             </div>
@@ -404,7 +397,7 @@
         </div>
 
         <!-- Card 3: Restaurante (RU) -->
-        <div onclick="showModal('modal-menu')" class="interactable dwellable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30" data-dwell-time="800">
+        <div onclick="showModal('modal-menu')" class="interactable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30">
             <div class="w-24 h-24 rounded-3xl bg-orange-50 text-orange-600 flex items-center justify-center mb-6 group-hover:bg-orange-600 group-hover:text-white transition-all duration-300">
                 <span class="material-symbols-outlined text-[48px]">restaurant</span>
             </div>
@@ -414,7 +407,7 @@
         </div>
 
         <!-- Card 4: Eventos & Palestras -->
-        <div onclick="showModal('modal-events')" class="interactable dwellable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30" data-dwell-time="800">
+        <div onclick="showModal('modal-events')" class="interactable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30">
             <div class="w-24 h-24 rounded-3xl bg-purple-50 text-purple-600 flex items-center justify-center mb-6 group-hover:bg-purple-600 group-hover:text-white transition-all duration-300">
                 <span class="material-symbols-outlined text-[48px]">campaign</span>
             </div>
@@ -424,7 +417,7 @@
         </div>
 
         <!-- Card 5: Mapa do Campus -->
-        <div onclick="showModal('modal-map')" class="interactable dwellable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30" data-dwell-time="800">
+        <div onclick="showModal('modal-map')" class="interactable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30">
             <div class="w-24 h-24 rounded-3xl bg-slate-100 text-slate-600 flex items-center justify-center mb-6 group-hover:bg-slate-600 group-hover:text-white transition-all duration-300">
                 <span class="material-symbols-outlined text-[48px]">map</span>
             </div>
@@ -434,7 +427,7 @@
         </div>
 
         <!-- Card 6: Secretaria Virtual -->
-        <div onclick="showModal('modal-secretaria-qr')" class="interactable dwellable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30" data-dwell-time="800">
+        <div onclick="showModal('modal-secretaria-qr')" class="interactable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30">
             <div class="w-24 h-24 rounded-3xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-6 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
                 <span class="material-symbols-outlined text-[48px]">account_balance</span>
             </div>
@@ -450,24 +443,23 @@
 </main>
 
 <!-- BottomNavBar -->
-<nav id="bottom-nav" class="bg-white/80 backdrop-blur-xl dark:bg-tertiary/90 text-secondary dark:text-secondary-fixed-dim font-label-lg text-label-lg fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-28 px-gutter border-t border-white/30 dark:border-white/10 shadow-[0_-8px_24px_rgba(17,92,185,0.06)]">
-    <!-- Botões com altura mínima de 72px para alvo gestual adequado -->
-    <button id="bnav-home" onclick="setActiveBottomNav('home')" class="interactable dwellable flex flex-col items-center justify-center gap-1 min-w-[80px] min-h-[72px] px-6 py-3 rounded-2xl transition-all duration-200 bg-secondary-container text-on-secondary-container" aria-label="Início" data-dwell-time="600">
-        <span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">home</span>
-        <span class="font-label-lg text-label-lg">Início</span>
-    </button>
-    <button id="bnav-map" onclick="setActiveBottomNav('map'); showModal('modal-map')" class="interactable dwellable flex flex-col items-center justify-center gap-1 min-w-[80px] min-h-[72px] px-6 py-3 rounded-2xl transition-all duration-200 text-on-surface-variant hover:bg-surface-container" aria-label="Mapa do Campus" data-dwell-time="600">
-        <span class="material-symbols-outlined text-[28px]">map</span>
-        <span class="font-label-lg text-label-lg">Mapa</span>
-    </button>
-    <button id="bnav-schedule" onclick="setActiveBottomNav('schedule'); showModal('modal-schedule')" class="interactable dwellable flex flex-col items-center justify-center gap-1 min-w-[80px] min-h-[72px] px-6 py-3 rounded-2xl transition-all duration-200 text-on-surface-variant hover:bg-surface-container" aria-label="Horários" data-dwell-time="600">
-        <span class="material-symbols-outlined text-[28px]">calendar_month</span>
-        <span class="font-label-lg text-label-lg">Horários</span>
-    </button>
-    <button id="bnav-emergency" onclick="setActiveBottomNav('emergency')" class="interactable dwellable flex flex-col items-center justify-center gap-1 min-w-[80px] min-h-[72px] px-6 py-3 rounded-2xl transition-all duration-200 text-error hover:bg-error-container" aria-label="Emergência" data-dwell-time="600">
-        <span class="material-symbols-outlined text-[28px]">emergency</span>
-        <span class="font-label-lg text-label-lg">Emergência</span>
-    </button>
+<nav class="bg-white/80 backdrop-blur-xl dark:bg-tertiary/90 text-secondary dark:text-secondary-fixed-dim font-label-lg text-label-lg docked full-width bottom-0 rounded-t-xl border-t border-white/30 dark:border-white/10 shadow-[0_-8px_24px_rgba(17,92,185,0.06)] fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-28 px-gutter pb-4 md:hidden">
+    <a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-6 py-2 active:scale-90 transition-all duration-200 hover:bg-surface-container-high dark:hover:bg-tertiary-container" href="#">
+        <span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">home</span>
+        <span class="font-label-lg text-label-lg">Home</span>
+    </a>
+    <a onclick="showModal('modal-map')" class="interactable flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container px-6 py-2 active:scale-90 transition-all duration-200 hover:bg-surface-container-high dark:hover:bg-tertiary-container" href="javascript:void(0)">
+        <span class="material-symbols-outlined mb-1">map</span>
+        <span class="font-label-lg text-label-lg">Campus Map</span>
+    </a>
+    <a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container px-6 py-2 active:scale-90 transition-all duration-200 hover:bg-surface-container-high dark:hover:bg-tertiary-container" href="#">
+        <span class="material-symbols-outlined mb-1">contact_phone</span>
+        <span class="font-label-lg text-label-lg">Directory</span>
+    </a>
+    <a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container px-6 py-2 active:scale-90 transition-all duration-200 hover:bg-surface-container-high dark:hover:bg-tertiary-container" href="#">
+        <span class="material-symbols-outlined mb-1">emergency</span>
+        <span class="font-label-lg text-label-lg text-error">Emergency</span>
+    </a>
 </nav>
 
 <!-- Modals Container -->
@@ -485,7 +477,7 @@
                     </div>
                     <h2 class="text-3xl font-bold text-primary">Quadro de Horários</h2>
                 </div>
-                <button onclick="hideModal('modal-schedule')" class="interactable w-[72px] h-[72px] rounded-full bg-slate-200 flex items-center justify-center hover:bg-error hover:text-white transition-colors">
+                <button onclick="hideModal('modal-schedule')" class="interactable w-12 h-12 rounded-full bg-slate-200 flex items-center justify-center hover:bg-error hover:text-white transition-colors">
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </div>
@@ -591,7 +583,7 @@
                     </div>
                     <h2 class="text-3xl font-bold text-slate-800">Cardápio da Semana</h2>
                 </div>
-                <button onclick="hideModal('modal-menu')" class="interactable w-[72px] h-[72px] rounded-full bg-white flex items-center justify-center hover:bg-error hover:text-white transition-colors shadow-sm">
+                <button onclick="hideModal('modal-menu')" class="interactable w-12 h-12 rounded-full bg-white flex items-center justify-center hover:bg-error hover:text-white transition-colors shadow-sm">
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </div>
@@ -686,7 +678,7 @@
                     </div>
                     <h2 class="text-3xl font-bold text-slate-800">Calendário de Eventos</h2>
                 </div>
-                <button onclick="hideModal('modal-events')" class="interactable w-[72px] h-[72px] rounded-full bg-white flex items-center justify-center hover:bg-error hover:text-white transition-colors shadow-sm">
+                <button onclick="hideModal('modal-events')" class="interactable w-12 h-12 rounded-full bg-white flex items-center justify-center hover:bg-error hover:text-white transition-colors shadow-sm">
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </div>
@@ -1262,104 +1254,30 @@
 
     // --- Carousel Logic Removed ---
 
-    // VisionFlow Iframe Integration
-    let currentHoverElement = null;
-
-    function getDwellTime(element) {
-        if (element && element.dataset.dwellTime) {
-            return parseInt(element.dataset.dwellTime, 10);
-        }
-        return 800; // Padrão reduzido de dwell
-    }
-
-    function getVisibleInteractables() {
-        const list = Array.from(document.querySelectorAll('.interactable, .dwellable, button, a, [role="button"], .glass-card, .sidebar-tile'));
-        return list.filter(el => {
-            const rect = el.getBoundingClientRect();
-            if (rect.width === 0 || rect.height === 0) return false;
-            
-            let curr = el;
-            while (curr) {
-                const style = window.getComputedStyle(curr);
-                if (style.display === 'none' || style.visibility === 'hidden' || curr.classList.contains('hidden')) {
-                    return false;
-                }
-                curr = curr.parentElement;
-            }
-            return true;
-        });
-    }
-
     window.addEventListener('message', (event) => {
         if (event.data.type === 'VISIONFLOW_CLICK') {
-            const rawEl = document.elementFromPoint(event.data.x, event.data.y);
-            const el = rawEl ? rawEl.closest('.interactable, .dwellable, button, a, [role="button"], .glass-card, .sidebar-tile') : null;
+            const el = document.elementFromPoint(event.data.x, event.data.y);
             if (el) {
-                document.querySelectorAll('.focus-fallback').forEach(item => item.classList.remove('focus-fallback'));
                 el.click();
             }
         } else if (event.data.type === 'VISIONFLOW_HOVER') {
-            const rawEl = document.elementFromPoint(event.data.x, event.data.y);
-            const el = rawEl ? rawEl.closest('.interactable, .dwellable, button, a, [role="button"], .glass-card, .sidebar-tile') : null;
-            
+            const el = document.elementFromPoint(event.data.x, event.data.y);
             if (currentHoverElement !== el) {
                 if (currentHoverElement) {
                     currentHoverElement.dispatchEvent(new MouseEvent('mouseout', { bubbles: true }));
                     currentHoverElement.classList.remove('hovered');
-                    if (currentHoverElement.classList.contains('dwellable')) {
-                        window.parent.postMessage({ type: 'VISIONFLOW_DWELL_CANCEL' }, '*');
-                    }
                 }
-                
                 if (el && event.data.x >= 0 && event.data.y >= 0) {
                     el.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
-                    el.classList.add('hovered');
-                    if (el.classList.contains('dwellable')) {
-                        const dt = getDwellTime(el);
-                        window.parent.postMessage({ type: 'VISIONFLOW_DWELL_START', dwellTime: dt }, '*');
+                    // Only apply hover visual to interactive elements
+                    if (el.tagName === 'BUTTON' || el.closest('button') || el.closest('.cursor-pointer')) {
+                        el.classList.add('hovered');
                     }
                 }
                 currentHoverElement = el;
             }
-        } else if (event.data.type === 'VISIONFLOW_KEY') {
-            const items = getVisibleInteractables();
-            if (items.length === 0) return;
-
-            let activeIdx = items.findIndex(el => el.classList.contains('focus-fallback'));
-            
-            if (['ArrowDown', 'ArrowRight', 's', 'S', 'd', 'D'].includes(event.data.key)) {
-                if (activeIdx >= 0) items[activeIdx].classList.remove('focus-fallback');
-                activeIdx = (activeIdx + 1) % items.length;
-                items[activeIdx].classList.add('focus-fallback');
-                items[activeIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
-            } else if (['ArrowUp', 'ArrowLeft', 'w', 'W', 'a', 'A'].includes(event.data.key)) {
-                if (activeIdx >= 0) items[activeIdx].classList.remove('focus-fallback');
-                activeIdx = (activeIdx - 1 + items.length) % items.length;
-                items[activeIdx].classList.add('focus-fallback');
-                items[activeIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
-            } else if (['Enter', ' '].includes(event.data.key)) {
-                if (activeIdx >= 0 && activeIdx < items.length) {
-                    items[activeIdx].click();
-                }
-            }
-        } else if (event.data.type === 'VISIONFLOW_DRAG') {
-            const dy = event.data.dy;
-            const modalScroll = document.querySelector('.modal:not(.hidden) .overflow-y-auto, .modal:not(.hidden) .overflow-auto');
-            
-            if (modalScroll) {
-                modalScroll.scrollBy({ top: -dy * 2, behavior: 'auto' });
-            } else {
-                window.scrollBy(0, -dy * 2);
-            }
         } else if (event.data.type === 'VISIONFLOW_SCROLL') {
-            const dy = event.data.dy;
-            const modalScroll = document.querySelector('.modal:not(.hidden) .overflow-y-auto, .modal:not(.hidden) .overflow-auto');
-            
-            if (modalScroll) {
-                modalScroll.scrollBy({ top: dy * 2, behavior: 'auto' });
-            } else {
-                window.scrollBy(0, dy * 2);
-            }
+            window.scrollBy(0, event.data.dy);
         }
     });
     function updateDateTime() {
@@ -1369,38 +1287,9 @@
     }
     updateDateTime();
     setInterval(updateDateTime, 1000);
-    // --- BottomNav Active State ---
-    window.setActiveBottomNav = function(key) {
-        const navItems = {
-            home:      document.getElementById('bnav-home'),
-            map:       document.getElementById('bnav-map'),
-            schedule:  document.getElementById('bnav-schedule'),
-            emergency: document.getElementById('bnav-emergency'),
-        };
-        const activeClasses    = ['bg-secondary-container', 'text-on-secondary-container'];
-        const inactiveClasses  = ['text-on-surface-variant', 'hover:bg-surface-container'];
-        Object.entries(navItems).forEach(([k, btn]) => {
-            if (!btn) return;
-            if (k === key) {
-                btn.classList.add(...activeClasses);
-                btn.classList.remove(...inactiveClasses);
-            } else {
-                btn.classList.remove(...activeClasses);
-                btn.classList.add(...inactiveClasses);
-            }
-        });
-    };
-    // Ao fechar um modal, volta o estado do bnav para 'home'
-    const _origHideModal = window.hideModal;
-    window.hideModal = function(id) {
-        if (_origHideModal) _origHideModal(id);
-        setActiveBottomNav('home');
-    };
 </script>
 <style>
     .hovered { filter: brightness(1.05) contrast(1.05); transform: scale(1.02); transition: transform 0.2s, filter 0.2s; cursor: pointer; z-index: 9999; }
-    /* Fix duplo-clique: botões internos dos cards não devem interceptar eventos de cursor gestual */
-    .interactable.glass-card button { pointer-events: none; }
 </style>
 
 </body></html>
