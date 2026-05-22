@@ -197,37 +197,33 @@
 
         /* Map Styles: Modern Academic Theme */
         .university-map-container {
-            background-color: #f8fafc;
-            background-image: 
-                linear-gradient(rgba(203, 213, 225, 0.2) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(203, 213, 225, 0.2) 1px, transparent 1px);
-            background-size: 40px 40px;
+            background-color: #e8e8e8;
             position: relative;
             overflow: hidden;
             border-radius: 32px;
-            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
-            border: 2px solid #e2e8f0;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.08);
+            border: 2px solid #d4d4d4;
         }
 
         .map-building {
-            fill: #ffffff;
-            stroke: #115cb9;
-            stroke-width: 2.5;
+            fill: #fafaf8;
+            stroke: none;
             transition: all 0.3s ease;
-            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.05));
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.12));
         }
 
         .map-building.active {
             fill: #eff6ff;
-            stroke: #3b82f6;
-            stroke-width: 4;
-            filter: drop-shadow(0 0 15px rgba(59, 130, 246, 0.3));
+            filter: drop-shadow(0 0 16px rgba(37, 99, 235, 0.4));
+        }
+
+        .map-building.hovered {
+            filter: drop-shadow(0 0 16px rgba(37, 99, 235, 0.4));
         }
 
         .map-park {
-            fill: #f0fdf4;
-            stroke: #bbf7d0;
-            stroke-width: 1.5;
+            fill: #c8dbc0;
+            stroke: none;
         }
 
         .map-tree {
@@ -237,41 +233,42 @@
 
         .map-road {
             fill: none;
-            stroke: #f1f5f9;
-            stroke-width: 24;
+            stroke: #ffffff;
+            stroke-width: 32;
             stroke-linecap: round;
         }
 
-        .map-sidewalk {
+
+        .nav-path-bg {
             fill: none;
-            stroke: #e2e8f0;
-            stroke-width: 28;
+            stroke: white;
+            stroke-width: 8;
             stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 2000;
+            stroke-dashoffset: 2000;
+            opacity: 0;
         }
 
+        .nav-path-bg.active {
+            opacity: 0.9;
+            animation: drawPath 1.2s ease-out forwards;
+        }
 
         .nav-path {
             fill: none;
-            stroke: #115cb9;
+            stroke: #2563eb;
             stroke-width: 5;
             stroke-linecap: round;
             stroke-linejoin: round;
-            stroke-dasharray: 1000;
-            stroke-dashoffset: 1000;
+            stroke-dasharray: 2000;
+            stroke-dashoffset: 2000;
             opacity: 0;
         }
 
         .nav-path.active {
             opacity: 1;
-            animation: drawPath 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-
-        .path-bg {
-            fill: none;
-            stroke: rgba(17, 92, 185, 0.05);
-            stroke-width: 5;
-            stroke-linecap: round;
-            stroke-linejoin: round;
+            animation: drawPath 1.2s ease-out 0.2s forwards;
         }
 
         @keyframes drawPath {
@@ -281,11 +278,75 @@
         .map-label-academic {
             font-family: 'Plus Jakarta Sans', sans-serif;
             font-weight: 700;
-            font-size: 11px;
-            fill: #334155;
+            font-size: 13px;
+            fill: #1e293b;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             pointer-events: none;
+            transition: fill 0.2s ease;
+        }
+
+        .map-label-academic.hovered {
+            fill: #2563eb;
+        }
+
+        @keyframes sonar {
+            0%   { transform: scale(1);   opacity: 0.8; }
+            100% { transform: scale(2.2); opacity: 0;   }
+        }
+
+        .sonar-ring {
+            transform-box: fill-box;
+            transform-origin: center;
+            animation: sonar 2s ease-out infinite;
+        }
+
+        @keyframes popIn {
+            0%   { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .dest-pin {
+            display: none;
+            transform-box: fill-box;
+            transform-origin: center;
+        }
+
+        .dest-pin.active {
+            display: block;
+            animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes sidebarPulse {
+            0%   { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
+            70%  { box-shadow: 0 0 0 8px rgba(37, 99, 235, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+        }
+
+        .sidebar-tile.pulse {
+            animation: sidebarPulse 0.4s ease-out;
+        }
+
+        .dwell-ring {
+            fill: none;
+            stroke: #2563eb;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-dasharray: 283;
+            stroke-dashoffset: 283;
+            opacity: 0;
+            transform-box: fill-box;
+            transform-origin: center;
+            transform: rotate(-90deg);
+        }
+
+        .dwell-ring.active {
+            opacity: 1;
+            animation: dwellProgress 2s linear forwards;
+        }
+
+        @keyframes dwellProgress {
+            to { stroke-dashoffset: 0; }
         }
 
         .totem-marker {
