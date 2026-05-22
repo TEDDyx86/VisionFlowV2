@@ -1462,7 +1462,11 @@
             if (ring) ring.style.strokeDashoffset = offset;
 
             if (progress >= 1) {
-                cancelSvgDwell();
+                // Cancela apenas o estado interno sem resetar o ring visualmente
+                cancelAnimationFrame(svgDwellFrame);
+                svgDwellFrame = null;
+                svgDwellTarget = null;
+                svgDwellStart  = null;
                 window.drawRoute(routeId);
             } else {
                 svgDwellFrame = requestAnimationFrame(tick);
@@ -1511,38 +1515,33 @@
                 }
                 if (el && event.data.x >= 0 && event.data.y >= 0) {
                     el.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+
+                    // Detecta edifício SVG ANTES do guard de elementos interativos
+                    const buildingEl = el.closest('[data-route]');
+                    const routeId    = buildingEl ? buildingEl.getAttribute('data-route') : null;
+
+                    if (routeId && routeId !== svgDwellTarget) {
+                        window.parent.postMessage({ type: 'VISIONFLOW_DWELL_START' }, '*');
+                        startSvgDwell(routeId);
+                        const lbl = document.getElementById(`lbl-${routeId}`);
+                        if (lbl) lbl.classList.add('hovered');
+                        const tile = document.getElementById(`btn-map-${routeId}`);
+                        if (tile) {
+                            tile.classList.remove('pulse');
+                            void tile.offsetWidth;
+                            tile.classList.add('pulse');
+                            setTimeout(() => tile.classList.remove('pulse'), 400);
+                        }
+                    } else if (!routeId && svgDwellTarget) {
+                        window.parent.postMessage({ type: 'VISIONFLOW_DWELL_CANCEL' }, '*');
+                        const lbl = document.getElementById(`lbl-${svgDwellTarget}`);
+                        if (lbl) lbl.classList.remove('hovered');
+                        cancelSvgDwell();
+                    }
+
                     // Only apply hover visual to interactive elements
                     if (el.tagName === 'BUTTON' || el.closest('button') || el.closest('.cursor-pointer')) {
                         el.classList.add('hovered');
-                        // Verifica se o elemento ou ancestral tem data-route (edifício SVG)
-                        const buildingEl = el.closest('[data-route]');
-                        const routeId    = buildingEl ? buildingEl.getAttribute('data-route') : null;
-
-                        if (routeId && routeId !== svgDwellTarget) {
-                            // Entrou em um novo edifício: inicia dwell + sinaliza parent
-                            window.parent.postMessage({ type: 'VISIONFLOW_DWELL_START' }, '*');
-                            startSvgDwell(routeId);
-
-                            // Destaca label do bloco
-                            const lbl = document.getElementById(`lbl-${routeId}`);
-                            if (lbl) lbl.classList.add('hovered');
-
-                            // Pulsa tile correspondente na sidebar
-                            const tile = document.getElementById(`btn-map-${routeId}`);
-                            if (tile) {
-                                tile.classList.remove('pulse');
-                                void tile.offsetWidth; // reset animation
-                                tile.classList.add('pulse');
-                                setTimeout(() => tile.classList.remove('pulse'), 400);
-                            }
-
-                        } else if (!routeId && svgDwellTarget) {
-                            // Saiu de edifício sem completar dwell
-                            window.parent.postMessage({ type: 'VISIONFLOW_DWELL_CANCEL' }, '*');
-                            const lbl = document.getElementById(`lbl-${svgDwellTarget}`);
-                            if (lbl) lbl.classList.remove('hovered');
-                            cancelSvgDwell();
-                        }
                     }
                 }
                 currentHoverElement = el;
