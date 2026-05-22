@@ -1344,51 +1344,83 @@
         btn.classList.add('bg-green-600', 'text-white');
     };
 
-    window.drawRoute = function(id) {
-        const statusText = document.getElementById('map-status-text');
-        const locations = {
-            'Direito': 'Bloco A (Direito)',
-            'Adm': 'Bloco B (Administração)',
-            'Software': 'Bloco C (Tecnologia)',
-            'Biblioteca': 'Biblioteca Central',
-            'RU': 'Restaurante Universitário'
-        };
+    // Stub — Task 6 substitui pela implementação completa
+    let inactivityTimer = null;
+    function resetInactivityTimer() { /* implementado na Task 6 */ }
 
-        // 1. Reset current state
-        document.querySelectorAll('.sidebar-tile').forEach(btn => btn.classList.remove('active'));
-        document.querySelectorAll('.nav-path').forEach(path => {
-            path.classList.remove('active');
-            // Force reset animation by clearing dashoffset if needed, 
-            // though CSS classes handle it mostly
+    const routeInfo = {
+        'Direito':   { label: 'Bloco A (Direito)',           dist: '120m', time: '~2 min' },
+        'Adm':       { label: 'Bloco B (Administração)',     dist: '200m', time: '~3 min' },
+        'Software':  { label: 'Bloco C (Tecnologia)',        dist: '280m', time: '~4 min' },
+        'Biblioteca':{ label: 'Biblioteca Central',          dist: '150m', time: '~2 min' },
+        'RU':        { label: 'Restaurante Universitário',   dist: '310m', time: '~4 min' }
+    };
+
+    window.drawRoute = function(id) {
+        const footerText    = document.getElementById('map-footer-text');
+        const footerSpinner = document.getElementById('map-footer-spinner');
+
+        // 1. Reset todos os estados anteriores
+        document.querySelectorAll('.sidebar-tile').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelectorAll('[id^="badge-"]').forEach(b => b.classList.add('hidden'));
+        document.querySelectorAll('.nav-path, .nav-path-bg').forEach(p => {
+            p.classList.remove('active');
+            void p.offsetWidth; // força reset da animação
         });
         document.querySelectorAll('.map-building').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.dest-pin').forEach(p => p.classList.remove('active'));
 
-        // 2. Set new state
+        // 2. Ativa o tile da sidebar
         const btn = document.getElementById(`btn-map-${id}`);
-        const path = document.getElementById(`path-${id}`);
-        const building = document.getElementById(`svg-${id}`);
-
         if (btn) btn.classList.add('active');
+
+        // Mostra badge "Ativa"
+        const badge = document.getElementById(`badge-${id}`);
+        if (badge) badge.classList.remove('hidden');
+
+        // 3. Destaca o edifício no SVG
+        const building = document.getElementById(`svg-${id}`);
         if (building) building.classList.add('active');
-        
-        if (path) {
-            // Trigger drawing animation
-            const length = path.getTotalLength();
-            path.style.strokeDasharray = length;
-            path.style.strokeDashoffset = length;
-            
-            // Force reflow
-            path.getBoundingClientRect();
-            
-            path.classList.add('active');
-            path.style.strokeDashoffset = '0';
+
+        // 4. Anima as duas paths (bg branca + azul principal)
+        const pathBg   = document.getElementById(`path-bg-${id}`);
+        const pathMain = document.getElementById(`path-${id}`);
+
+        if (pathBg) {
+            const len = pathBg.getTotalLength();
+            pathBg.style.strokeDasharray  = len;
+            pathBg.style.strokeDashoffset = len;
+            void pathBg.offsetWidth; // force reflow
+            pathBg.classList.add('active');
         }
 
-        // 3. Update status text
-        if (statusText && locations[id]) {
-            statusText.textContent = `Rota Calculada: Seguindo para ${locations[id]}`;
-            statusText.classList.add('status-glow');
+        if (pathMain) {
+            const len = pathMain.getTotalLength();
+            pathMain.style.strokeDasharray  = len;
+            pathMain.style.strokeDashoffset = len;
+            void pathMain.offsetWidth; // force reflow
+            pathMain.classList.add('active');
         }
+
+        // 5. Footer: estado "calculando"
+        if (footerSpinner) footerSpinner.classList.remove('hidden');
+        if (footerText)    footerText.textContent = 'Calculando trajeto...';
+
+        // 6. Após animação (~1.4s): exibe pin destino + atualiza footer
+        setTimeout(() => {
+            const pin = document.getElementById(`pin-${id}`);
+            if (pin) pin.classList.add('active');
+
+            if (footerSpinner) footerSpinner.classList.add('hidden');
+            if (footerText && routeInfo[id]) {
+                footerText.textContent = `Siga em frente até ${routeInfo[id].label} — ${routeInfo[id].dist} · ${routeInfo[id].time}`;
+            }
+
+            // Reinicia timer de inatividade
+            resetInactivityTimer();
+        }, 1400);
     };
 
     window.highlightBlock = function(id) {
