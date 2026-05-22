@@ -861,8 +861,8 @@
                 <!-- Sidebar: Locais -->
                 <div class="w-96 flex flex-col gap-3 overflow-y-auto pr-2 custom-scrollbar">
                     <div class="flex gap-2 mb-2 px-1">
-                        <button class="interactable dwellable flex-1 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest bg-blue-600 text-white transition-all" id="filter-todos">Todos</button>
-                        <button class="interactable dwellable flex-1 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-400 transition-all" id="filter-servicos">Serviços</button>
+                        <button class="flex-1 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest bg-blue-600 text-white transition-all" id="filter-todos">Todos</button>
+                        <button class="flex-1 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-400 transition-all" id="filter-servicos">Serviços</button>
                     </div>
                     
                     <button id="btn-map-Direito" onclick="drawRoute('Direito')" class="interactable dwellable sidebar-tile min-h-[88px]">
@@ -1381,6 +1381,8 @@
     };
 
     window.drawRoute = function(id) {
+        cancelSvgDwell();
+
         const footerText    = document.getElementById('map-footer-text');
         const footerSpinner = document.getElementById('map-footer-spinner');
 
@@ -1494,9 +1496,12 @@
                 // Cancela apenas o estado interno sem resetar o ring visualmente
                 cancelAnimationFrame(svgDwellFrame);
                 svgDwellFrame = null;
+                const completedId = svgDwellTarget;
                 svgDwellTarget = null;
                 svgDwellStart  = null;
-                window.drawRoute(routeId);
+                const lbl = document.getElementById(`lbl-${completedId}`);
+                if (lbl) lbl.classList.remove('hovered');
+                window.drawRoute(completedId);
             } else {
                 svgDwellFrame = requestAnimationFrame(tick);
             }
