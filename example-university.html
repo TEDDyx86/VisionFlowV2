@@ -290,16 +290,6 @@
             fill: #2563eb;
         }
 
-        @keyframes sonar {
-            0%   { transform: scale(1);   opacity: 0.8; }
-            100% { transform: scale(2.2); opacity: 0;   }
-        }
-
-        .sonar-ring {
-            transform-box: fill-box;
-            transform-origin: center;
-            animation: sonar 2s ease-out infinite;
-        }
 
         @keyframes popIn {
             0%   { transform: scale(0); opacity: 0; }
@@ -1082,12 +1072,8 @@
                             <circle cx="850" cy="315" r="4"  fill="white" />
                         </g>
 
-                        <!-- Totem: Você Está Aqui com anel sonar -->
+                        <!-- Totem: Você Está Aqui -->
                         <g id="totem-marker">
-                            <!-- Anel sonar animado -->
-                            <g class="sonar-ring" style="transform-origin: 150px 620px;">
-                                <circle cx="150" cy="620" r="18" stroke="#ef4444" stroke-width="1.5" fill="none" />
-                            </g>
                             <!-- Anel estático -->
                             <circle cx="150" cy="620" r="14" fill="white" stroke="#ef4444" stroke-width="2" />
                             <!-- Ponto central -->
