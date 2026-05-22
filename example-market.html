@@ -561,20 +561,20 @@
             } else if (event.data.type === 'VISIONFLOW_DRAG') {
                 const dy = event.data.dy;
                 const modalScroll = document.getElementById('cart-scroll-container');
-                
+
                 if (!cartModal.classList.contains('hidden') && modalScroll) {
-                    modalScroll.scrollBy({ top: -dy * 2, behavior: 'auto' });
+                    modalScroll.scrollBy({ top: -dy * 2, behavior: 'instant' });
                 } else {
-                    window.scrollBy(0, -dy * 2);
+                    window.scrollBy({ top: -dy * 2, behavior: 'instant' });
                 }
             } else if (event.data.type === 'VISIONFLOW_SCROLL') {
                 const dy = event.data.dy;
                 const modalScroll = document.getElementById('cart-scroll-container');
-                
+
                 if (!cartModal.classList.contains('hidden') && modalScroll) {
-                    modalScroll.scrollBy({ top: dy * 2, behavior: 'auto' });
+                    modalScroll.scrollBy({ top: dy * 2, behavior: 'instant' });
                 } else {
-                    window.scrollBy(0, dy * 2);
+                    window.scrollBy({ top: dy * 2, behavior: 'instant' });
                 }
             }
         });

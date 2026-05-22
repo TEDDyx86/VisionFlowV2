@@ -430,10 +430,10 @@
             }
         } else if (event.data.type === 'VISIONFLOW_DRAG') {
             const dy = event.data.dy;
-            window.scrollBy(0, -dy * 2);
+            window.scrollBy({ top: -dy * 2, behavior: 'instant' });
         } else if (event.data.type === 'VISIONFLOW_SCROLL') {
             const dy = event.data.dy;
-            window.scrollBy(0, dy * 2);
+            window.scrollBy({ top: dy * 2, behavior: 'instant' });
         }
     });
 </script>

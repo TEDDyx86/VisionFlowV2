@@ -13,8 +13,17 @@ const filterY = new OneEuroFilter(0.5, 0.05);
 
 let lastCursorX = 0;
 let lastCursorY = 0;
-let lastDragDx = 0;
-let lastDragDy = 0;
+
+// Drag smoothing
+let smoothedDragDx = 0;
+let smoothedDragDy = 0;
+const DRAG_SMOOTH = 0.35;  // peso do novo sample (menor = mais suave)
+const MAX_DRAG_PX = 20;    // cap por frame — previne saltos de frames dropados
+
+// Buffer de velocidade para lançamento de inércia
+const velBufX = [];
+const velBufY = [];
+const VEL_BUF_LEN = 5;
 
 export function processGestures(landmarks) {
     const params = getCalibrationParams();
@@ -83,28 +92,42 @@ export function processGestures(landmarks) {
 
     // Arrastar (Drag) -> Transformado em Scroll Natural
     if (isPinching && wasPinching) {
-        const dragDx = cursorX - lastCursorX;
-        const dragDy = cursorY - lastCursorY;
-        
-        // Salva a velocidade física do último frame para a inércia física
-        lastDragDx = dragDx;
-        lastDragDy = dragDy;
-        
-        if (Math.abs(dragDy) > 2) { // Threshold para evitar micro-tremores
-            // triggerDrag roteia para o iframe ativo ou para o scroll da página principal
-            triggerDrag(cursorX, cursorY, dragDx, dragDy);
+        const rawDx = cursorX - lastCursorX;
+        const rawDy = cursorY - lastCursorY;
+
+        // Cap para prevenir saltos causados por frames dropados
+        const cappedDx = Math.sign(rawDx) * Math.min(Math.abs(rawDx), MAX_DRAG_PX);
+        const cappedDy = Math.sign(rawDy) * Math.min(Math.abs(rawDy), MAX_DRAG_PX);
+
+        // EMA suaviza micro-tremores sem adicionar lag perceptível
+        smoothedDragDx = smoothedDragDx * (1 - DRAG_SMOOTH) + cappedDx * DRAG_SMOOTH;
+        smoothedDragDy = smoothedDragDy * (1 - DRAG_SMOOTH) + cappedDy * DRAG_SMOOTH;
+
+        // Buffer rolante para calcular velocidade de lançamento de inércia
+        velBufX.push(cappedDx);
+        velBufY.push(cappedDy);
+        if (velBufX.length > VEL_BUF_LEN) velBufX.shift();
+        if (velBufY.length > VEL_BUF_LEN) velBufY.shift();
+
+        if (Math.abs(smoothedDragDy) > 1) {
+            triggerDrag(cursorX, cursorY, smoothedDragDx, smoothedDragDy);
         }
     }
 
-    // Ao liberar a pinça, verifica se a velocidade instantânea recente justifica inércia
+    // Ao liberar a pinça, usa média dos últimos frames para velocidade de lançamento estável
     if (!isPinching && wasPinching) {
-        if (Math.abs(lastDragDy) > 3) {
-            logEvent(`Scroll Inercial Ativado: dy=${lastDragDy.toFixed(1)}`);
-            startScrollInertia(cursorX, cursorY, lastDragDx, lastDragDy);
+        const N    = Math.min(3, velBufY.length);
+        const avgX = N ? velBufX.slice(-N).reduce((a, b) => a + b, 0) / N : 0;
+        const avgY = N ? velBufY.slice(-N).reduce((a, b) => a + b, 0) / N : 0;
+
+        if (Math.abs(avgY) > 2 || Math.abs(avgX) > 2) {
+            logEvent(`Scroll Inercial Ativado: dy=${avgY.toFixed(1)}`);
+            startScrollInertia(cursorX, cursorY, avgX, avgY);
         }
-        // Reseta os buffers de velocidade do arrasto
-        lastDragDx = 0;
-        lastDragDy = 0;
+        smoothedDragDx = 0;
+        smoothedDragDy = 0;
+        velBufX.length = 0;
+        velBufY.length = 0;
     }
 
     lastCursorX = cursorX;

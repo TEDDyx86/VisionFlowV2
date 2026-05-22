@@ -1023,24 +1023,24 @@
             } else if (event.data.type === 'VISIONFLOW_DRAG') {
                 if (!modal.classList.contains('hidden')) {
                     const scrollableModal = document.getElementById('modal-scrollable');
-                    if (scrollableModal) scrollableModal.scrollBy(0, -event.data.dy);
+                    if (scrollableModal) scrollableModal.scrollBy({ top: -event.data.dy * 2, behavior: 'instant' });
                 } else if (!cartModal.classList.contains('hidden')) {
                     const scrollableCart = document.getElementById('cart-items');
-                    if (scrollableCart) scrollableCart.scrollBy(0, -event.data.dy);
+                    if (scrollableCart) scrollableCart.scrollBy({ top: -event.data.dy * 2, behavior: 'instant' });
                 } else {
                     const scrollableMain = document.getElementById('scrollable-main');
-                    if(scrollableMain) scrollableMain.scrollBy(0, -event.data.dy);
+                    if (scrollableMain) scrollableMain.scrollBy({ top: -event.data.dy * 2, behavior: 'instant' });
                 }
             } else if (event.data.type === 'VISIONFLOW_SCROLL') {
                 if (!modal.classList.contains('hidden')) {
                     const scrollableModal = document.getElementById('modal-scrollable');
-                    if (scrollableModal) scrollableModal.scrollBy(0, event.data.dy);
+                    if (scrollableModal) scrollableModal.scrollBy({ top: event.data.dy, behavior: 'instant' });
                 } else if (!cartModal.classList.contains('hidden')) {
                     const scrollableCart = document.getElementById('cart-items');
-                    if (scrollableCart) scrollableCart.scrollBy(0, event.data.dy);
+                    if (scrollableCart) scrollableCart.scrollBy({ top: event.data.dy, behavior: 'instant' });
                 } else {
                     const scrollableMain = document.getElementById('scrollable-main');
-                    if(scrollableMain) scrollableMain.scrollBy(0, event.data.dy);
+                    if (scrollableMain) scrollableMain.scrollBy({ top: event.data.dy, behavior: 'instant' });
                 }
             }
         });
