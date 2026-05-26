@@ -1142,37 +1142,51 @@
     };
 
     window.showCheckinSuccess = () => {
-        const variation = checkinVariations[Math.floor(Math.random() * checkinVariations.length)];
-        document.getElementById('checkin-patient-name').textContent = variation.patient;
-        document.getElementById('checkin-specialty').textContent = variation.specialty;
-        document.getElementById('checkin-instruction').textContent = `"${variation.instruction}"`;
-        
-        showModal('modal-checkin-success');
-        
-        const progressBar = document.getElementById('checkin-progress-bar');
-        const timerDisplay = document.getElementById('checkin-timer');
-        
-        // Reset and start animation
-        progressBar.style.transition = 'none';
-        progressBar.style.width = '100%';
-        
-        setTimeout(() => {
-            progressBar.style.transition = 'width 10s linear';
-            progressBar.style.width = '0%';
-        }, 50);
-
-        let timeLeft = 10;
-        timerDisplay.textContent = timeLeft;
-        
-        if (checkinTimerInterval) clearInterval(checkinTimerInterval);
-        checkinTimerInterval = setInterval(() => {
-            timeLeft--;
-            timerDisplay.textContent = timeLeft;
-            if (timeLeft <= 0) {
-                clearInterval(checkinTimerInterval);
-                hideModals();
+        try {
+            console.log('Executando showCheckinSuccess...');
+            const variation = checkinVariations[Math.floor(Math.random() * checkinVariations.length)];
+            
+            const patientEl = document.getElementById('checkin-patient-name');
+            const specialtyEl = document.getElementById('checkin-specialty');
+            const instructionEl = document.getElementById('checkin-instruction');
+            
+            if (patientEl) patientEl.textContent = variation.patient;
+            if (specialtyEl) specialtyEl.textContent = variation.specialty;
+            if (instructionEl) instructionEl.textContent = `"${variation.instruction}"`;
+            
+            console.log('Definidos textos de check-in, chamando showModal...');
+            showModal('modal-checkin-success');
+            
+            const progressBar = document.getElementById('checkin-progress-bar');
+            const timerDisplay = document.getElementById('checkin-timer');
+            
+            // Reset and start animation
+            if (progressBar) {
+                progressBar.style.transition = 'none';
+                progressBar.style.width = '100%';
+                setTimeout(() => {
+                    progressBar.style.transition = 'width 10s linear';
+                    progressBar.style.width = '0%';
+                }, 50);
             }
-        }, 1000);
+            
+            let timeLeft = 10;
+            if (timerDisplay) timerDisplay.textContent = timeLeft;
+            
+            if (checkinTimerInterval) clearInterval(checkinTimerInterval);
+            checkinTimerInterval = setInterval(() => {
+                timeLeft--;
+                if (timerDisplay) timerDisplay.textContent = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(checkinTimerInterval);
+                    hideModals();
+                }
+            }, 1000);
+            console.log('showCheckinSuccess executada com sucesso.');
+        } catch (err) {
+            console.error('Erro em showCheckinSuccess:', err);
+            alert('Erro no check-in: ' + err.message);
+        }
     };
 
     window.nextAppointmentStep = (step) => {
@@ -1268,12 +1282,20 @@
             if (btn.classList.contains('numpad-del')) {
                 currentCpf = currentCpf.slice(0, -1);
             } else if (btn.classList.contains('numpad-ok')) { 
+                console.log('Botão OK clicado. Contexto:', numpadContext, 'CPF:', currentCpf, 'Tamanho:', currentCpf.length);
                 if (currentCpf.length === 11) {
-                    if (numpadContext === 'results') {
-                        showModal('modal-results');
-                    } else {
-                        showCheckinSuccess();
+                    try {
+                        if (numpadContext === 'results') {
+                            showModal('modal-results');
+                        } else {
+                            showCheckinSuccess();
+                        }
+                    } catch (err) {
+                        console.error('Erro na ação do botão OK:', err);
+                        alert('Erro ao processar confirmação: ' + err.message);
                     }
+                } else {
+                    console.warn('Confirmação rejeitada: CPF incompleto (tamanho ' + currentCpf.length + ').');
                 }
             } else if (currentCpf.length < 11) {
                 currentCpf += btn.textContent.trim();
