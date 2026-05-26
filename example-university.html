@@ -169,13 +169,6 @@
         }
     </script>
 <style>
-        /* Estilo premium de foco de teclado */
-        .focus-fallback {
-            outline: 3px solid #3b82f6 !important;
-            outline-offset: 4px;
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.6) !important;
-        }
-
         body {
             background-color: #eef4ff; /* Pale blue academic background */
             background-image: radial-gradient(circle at top right, #ffffff 0%, transparent 40%), radial-gradient(circle at bottom left, #ffffff 0%, transparent 40%);
@@ -204,37 +197,33 @@
 
         /* Map Styles: Modern Academic Theme */
         .university-map-container {
-            background-color: #f8fafc;
-            background-image: 
-                linear-gradient(rgba(203, 213, 225, 0.2) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(203, 213, 225, 0.2) 1px, transparent 1px);
-            background-size: 40px 40px;
+            background-color: #e8e8e8;
             position: relative;
             overflow: hidden;
             border-radius: 32px;
-            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
-            border: 2px solid #e2e8f0;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.08);
+            border: 2px solid #d4d4d4;
         }
 
         .map-building {
-            fill: #ffffff;
-            stroke: #115cb9;
-            stroke-width: 2.5;
+            fill: #fafaf8;
+            stroke: none;
             transition: all 0.3s ease;
-            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.05));
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.12));
         }
 
         .map-building.active {
             fill: #eff6ff;
-            stroke: #3b82f6;
-            stroke-width: 4;
-            filter: drop-shadow(0 0 15px rgba(59, 130, 246, 0.3));
+            filter: drop-shadow(0 0 16px rgba(37, 99, 235, 0.4));
+        }
+
+        .map-building.hovered {
+            filter: drop-shadow(0 0 16px rgba(37, 99, 235, 0.4));
         }
 
         .map-park {
-            fill: #f0fdf4;
-            stroke: #bbf7d0;
-            stroke-width: 1.5;
+            fill: #c8dbc0;
+            stroke: none;
         }
 
         .map-tree {
@@ -244,41 +233,42 @@
 
         .map-road {
             fill: none;
-            stroke: #f1f5f9;
-            stroke-width: 24;
+            stroke: #ffffff;
+            stroke-width: 32;
             stroke-linecap: round;
         }
 
-        .map-sidewalk {
+
+        .nav-path-bg {
             fill: none;
-            stroke: #e2e8f0;
-            stroke-width: 28;
+            stroke: white;
+            stroke-width: 8;
             stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 2000;
+            stroke-dashoffset: 2000;
+            opacity: 0;
         }
 
+        .nav-path-bg.active {
+            opacity: 0.9;
+            animation: drawPath 1.2s ease-out forwards;
+        }
 
         .nav-path {
             fill: none;
-            stroke: #115cb9;
+            stroke: #2563eb;
             stroke-width: 5;
             stroke-linecap: round;
             stroke-linejoin: round;
-            stroke-dasharray: 1000;
-            stroke-dashoffset: 1000;
+            stroke-dasharray: 2000;
+            stroke-dashoffset: 2000;
             opacity: 0;
         }
 
         .nav-path.active {
             opacity: 1;
-            animation: drawPath 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-
-        .path-bg {
-            fill: none;
-            stroke: rgba(17, 92, 185, 0.05);
-            stroke-width: 5;
-            stroke-linecap: round;
-            stroke-linejoin: round;
+            animation: drawPath 1.2s ease-out 0.2s forwards;
         }
 
         @keyframes drawPath {
@@ -288,18 +278,67 @@
         .map-label-academic {
             font-family: 'Plus Jakarta Sans', sans-serif;
             font-weight: 700;
-            font-size: 11px;
-            fill: #334155;
+            font-size: 13px;
+            fill: #1e293b;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             pointer-events: none;
+            transition: fill 0.2s ease;
         }
 
-        .totem-marker {
-            fill: #ba1a1a;
-            stroke: white;
-            stroke-width: 2;
+        .map-label-academic.hovered {
+            fill: #2563eb;
         }
+
+
+        @keyframes popIn {
+            0%   { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .dest-pin {
+            display: none;
+            transform-box: fill-box;
+            transform-origin: center;
+        }
+
+        .dest-pin.active {
+            display: block;
+            animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes sidebarPulse {
+            0%   { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
+            70%  { box-shadow: 0 0 0 8px rgba(37, 99, 235, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+        }
+
+        .sidebar-tile.pulse {
+            animation: sidebarPulse 0.4s ease-out;
+        }
+
+        .dwell-ring {
+            fill: none;
+            stroke: #2563eb;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-dasharray: 138;
+            stroke-dashoffset: 138;
+            opacity: 0;
+            transform-box: fill-box;
+            transform-origin: center;
+            transform: rotate(-90deg);
+        }
+
+        .dwell-ring.active {
+            opacity: 1;
+            animation: dwellProgress 2s linear forwards;
+        }
+
+        @keyframes dwellProgress {
+            to { stroke-dashoffset: 0; }
+        }
+
 
         .sidebar-tile {
             @apply interactable p-5 rounded-3xl border-2 border-transparent transition-all text-left group shadow-sm bg-white;
@@ -374,7 +413,7 @@
             <h1 class="font-headline-xl text-headline-xl text-primary mb-2">Bem-vindo ao Campus</h1>
             <p class="font-body-lg text-body-lg text-on-surface-variant">Sua agenda e serviços do dia em um só lugar.</p>
         </div>
-        <button id="btn-atendimento" class="interactable dwellable bg-primary-container text-on-primary-container font-bold text-xl px-10 py-5 rounded-2xl shadow-lg hover:bg-secondary hover:text-white transition-all duration-300 flex items-center gap-4 group" data-dwell-time="800">
+        <button id="btn-atendimento" class="bg-primary-container text-on-primary-container font-bold text-xl px-10 py-5 rounded-2xl shadow-lg hover:bg-secondary hover:text-white transition-all duration-300 flex items-center gap-4 group">
             <span class="material-symbols-outlined text-[32px] group-hover:rotate-12 transition-transform">forum</span>
             Falar com Atendimento
         </button>
@@ -384,7 +423,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
         
         <!-- Card 1: Biblioteca (Restaurado) -->
-        <div onclick="showModal('modal-biblioteca')" class="interactable dwellable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-blue-500/30" data-dwell-time="800">
+        <div onclick="showModal('modal-biblioteca')" class="interactable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-blue-500/30">
             <div class="w-24 h-24 rounded-3xl bg-blue-50 text-blue-600 flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
                 <span class="material-symbols-outlined text-[48px]">local_library</span>
             </div>
@@ -394,7 +433,7 @@
         </div>
 
         <!-- Card 2: Quadro de Horários -->
-        <div onclick="showModal('modal-schedule')" class="interactable dwellable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30" data-dwell-time="800">
+        <div onclick="showModal('modal-schedule')" class="interactable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30">
             <div class="w-24 h-24 rounded-3xl bg-blue-50 text-secondary flex items-center justify-center mb-6 group-hover:bg-secondary group-hover:text-white transition-all duration-300">
                 <span class="material-symbols-outlined text-[48px]">calendar_month</span>
             </div>
@@ -404,7 +443,7 @@
         </div>
 
         <!-- Card 3: Restaurante (RU) -->
-        <div onclick="showModal('modal-menu')" class="interactable dwellable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30" data-dwell-time="800">
+        <div onclick="showModal('modal-menu')" class="interactable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30">
             <div class="w-24 h-24 rounded-3xl bg-orange-50 text-orange-600 flex items-center justify-center mb-6 group-hover:bg-orange-600 group-hover:text-white transition-all duration-300">
                 <span class="material-symbols-outlined text-[48px]">restaurant</span>
             </div>
@@ -414,7 +453,7 @@
         </div>
 
         <!-- Card 4: Eventos & Palestras -->
-        <div onclick="showModal('modal-events')" class="interactable dwellable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30" data-dwell-time="800">
+        <div onclick="showModal('modal-events')" class="interactable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30">
             <div class="w-24 h-24 rounded-3xl bg-purple-50 text-purple-600 flex items-center justify-center mb-6 group-hover:bg-purple-600 group-hover:text-white transition-all duration-300">
                 <span class="material-symbols-outlined text-[48px]">campaign</span>
             </div>
@@ -424,7 +463,7 @@
         </div>
 
         <!-- Card 5: Mapa do Campus -->
-        <div onclick="showModal('modal-map')" class="interactable dwellable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30" data-dwell-time="800">
+        <div onclick="showModal('modal-map')" class="interactable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30">
             <div class="w-24 h-24 rounded-3xl bg-slate-100 text-slate-600 flex items-center justify-center mb-6 group-hover:bg-slate-600 group-hover:text-white transition-all duration-300">
                 <span class="material-symbols-outlined text-[48px]">map</span>
             </div>
@@ -434,7 +473,7 @@
         </div>
 
         <!-- Card 6: Secretaria Virtual -->
-        <div onclick="showModal('modal-secretaria-qr')" class="interactable dwellable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30" data-dwell-time="800">
+        <div onclick="showModal('modal-secretaria-qr')" class="interactable glass-card rounded-[32px] p-8 flex flex-col items-center text-center group cursor-pointer border-2 border-transparent hover:border-secondary/30">
             <div class="w-24 h-24 rounded-3xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-6 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
                 <span class="material-symbols-outlined text-[48px]">account_balance</span>
             </div>
@@ -450,24 +489,23 @@
 </main>
 
 <!-- BottomNavBar -->
-<nav id="bottom-nav" class="bg-white/80 backdrop-blur-xl dark:bg-tertiary/90 text-secondary dark:text-secondary-fixed-dim font-label-lg text-label-lg fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-28 px-gutter border-t border-white/30 dark:border-white/10 shadow-[0_-8px_24px_rgba(17,92,185,0.06)]">
-    <!-- Botões com altura mínima de 72px para alvo gestual adequado -->
-    <button id="bnav-home" onclick="setActiveBottomNav('home')" class="interactable dwellable flex flex-col items-center justify-center gap-1 min-w-[80px] min-h-[72px] px-6 py-3 rounded-2xl transition-all duration-200 bg-secondary-container text-on-secondary-container" aria-label="Início" data-dwell-time="600">
-        <span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">home</span>
-        <span class="font-label-lg text-label-lg">Início</span>
-    </button>
-    <button id="bnav-map" onclick="setActiveBottomNav('map'); showModal('modal-map')" class="interactable dwellable flex flex-col items-center justify-center gap-1 min-w-[80px] min-h-[72px] px-6 py-3 rounded-2xl transition-all duration-200 text-on-surface-variant hover:bg-surface-container" aria-label="Mapa do Campus" data-dwell-time="600">
-        <span class="material-symbols-outlined text-[28px]">map</span>
-        <span class="font-label-lg text-label-lg">Mapa</span>
-    </button>
-    <button id="bnav-schedule" onclick="setActiveBottomNav('schedule'); showModal('modal-schedule')" class="interactable dwellable flex flex-col items-center justify-center gap-1 min-w-[80px] min-h-[72px] px-6 py-3 rounded-2xl transition-all duration-200 text-on-surface-variant hover:bg-surface-container" aria-label="Horários" data-dwell-time="600">
-        <span class="material-symbols-outlined text-[28px]">calendar_month</span>
-        <span class="font-label-lg text-label-lg">Horários</span>
-    </button>
-    <button id="bnav-emergency" onclick="setActiveBottomNav('emergency')" class="interactable dwellable flex flex-col items-center justify-center gap-1 min-w-[80px] min-h-[72px] px-6 py-3 rounded-2xl transition-all duration-200 text-error hover:bg-error-container" aria-label="Emergência" data-dwell-time="600">
-        <span class="material-symbols-outlined text-[28px]">emergency</span>
-        <span class="font-label-lg text-label-lg">Emergência</span>
-    </button>
+<nav class="bg-white/80 backdrop-blur-xl dark:bg-tertiary/90 text-secondary dark:text-secondary-fixed-dim font-label-lg text-label-lg docked full-width bottom-0 rounded-t-xl border-t border-white/30 dark:border-white/10 shadow-[0_-8px_24px_rgba(17,92,185,0.06)] fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-28 px-gutter pb-4 md:hidden">
+    <a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-6 py-2 active:scale-90 transition-all duration-200 hover:bg-surface-container-high dark:hover:bg-tertiary-container" href="#">
+        <span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">home</span>
+        <span class="font-label-lg text-label-lg">Home</span>
+    </a>
+    <a onclick="showModal('modal-map')" class="interactable flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container px-6 py-2 active:scale-90 transition-all duration-200 hover:bg-surface-container-high dark:hover:bg-tertiary-container" href="javascript:void(0)">
+        <span class="material-symbols-outlined mb-1">map</span>
+        <span class="font-label-lg text-label-lg">Campus Map</span>
+    </a>
+    <a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container px-6 py-2 active:scale-90 transition-all duration-200 hover:bg-surface-container-high dark:hover:bg-tertiary-container" href="#">
+        <span class="material-symbols-outlined mb-1">contact_phone</span>
+        <span class="font-label-lg text-label-lg">Directory</span>
+    </a>
+    <a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container px-6 py-2 active:scale-90 transition-all duration-200 hover:bg-surface-container-high dark:hover:bg-tertiary-container" href="#">
+        <span class="material-symbols-outlined mb-1">emergency</span>
+        <span class="font-label-lg text-label-lg text-error">Emergency</span>
+    </a>
 </nav>
 
 <!-- Modals Container -->
@@ -485,7 +523,7 @@
                     </div>
                     <h2 class="text-3xl font-bold text-primary">Quadro de Horários</h2>
                 </div>
-                <button onclick="hideModal('modal-schedule')" class="interactable w-[72px] h-[72px] rounded-full bg-slate-200 flex items-center justify-center hover:bg-error hover:text-white transition-colors">
+                <button onclick="hideModal('modal-schedule')" class="interactable w-12 h-12 rounded-full bg-slate-200 flex items-center justify-center hover:bg-error hover:text-white transition-colors">
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </div>
@@ -591,7 +629,7 @@
                     </div>
                     <h2 class="text-3xl font-bold text-slate-800">Cardápio da Semana</h2>
                 </div>
-                <button onclick="hideModal('modal-menu')" class="interactable w-[72px] h-[72px] rounded-full bg-white flex items-center justify-center hover:bg-error hover:text-white transition-colors shadow-sm">
+                <button onclick="hideModal('modal-menu')" class="interactable w-12 h-12 rounded-full bg-white flex items-center justify-center hover:bg-error hover:text-white transition-colors shadow-sm">
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </div>
@@ -686,7 +724,7 @@
                     </div>
                     <h2 class="text-3xl font-bold text-slate-800">Calendário de Eventos</h2>
                 </div>
-                <button onclick="hideModal('modal-events')" class="interactable w-[72px] h-[72px] rounded-full bg-white flex items-center justify-center hover:bg-error hover:text-white transition-colors shadow-sm">
+                <button onclick="hideModal('modal-events')" class="interactable w-12 h-12 rounded-full bg-white flex items-center justify-center hover:bg-error hover:text-white transition-colors shadow-sm">
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </div>
@@ -811,66 +849,104 @@
             <div class="flex-grow flex p-6 gap-6 bg-slate-50/50 overflow-hidden">
                 
                 <!-- Sidebar: Locais -->
-                <div class="w-80 flex flex-col gap-3 overflow-y-auto pr-2 custom-scrollbar">
-                    <h3 class="font-bold text-slate-400 uppercase text-[10px] tracking-[0.2em] mb-2 px-2">Destinos no Campus</h3>
+                <div class="w-96 flex flex-col gap-3 overflow-y-auto pr-2 custom-scrollbar">
+                    <div class="flex gap-2 mb-2 px-1">
+                        <button class="flex-1 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest bg-blue-600 text-white transition-all" id="filter-todos">Todos</button>
+                        <button class="flex-1 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-400 transition-all" id="filter-servicos">Serviços</button>
+                    </div>
                     
-                    <button id="btn-map-Direito" onclick="drawRoute('Direito')" class="sidebar-tile">
+                    <button id="btn-map-Direito" onclick="drawRoute('Direito')" class="interactable dwellable sidebar-tile min-h-[88px]">
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100">
-                                <span class="material-symbols-outlined">gavel</span>
+                            <div class="relative w-14 h-14 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100 flex-shrink-0">
+                                <span class="material-symbols-outlined text-[28px]">gavel</span>
+                                <svg class="absolute inset-0 w-full h-full" viewBox="0 0 56 56">
+                                    <circle id="dwell-tile-Direito" cx="28" cy="28" r="26" fill="none" stroke="#2563eb" stroke-width="3"
+                                        stroke-linecap="round" stroke-dasharray="163" stroke-dashoffset="163"
+                                        style="transform: rotate(-90deg); transform-origin: 28px 28px; opacity: 0; transition: opacity 0.1s;" />
+                                </svg>
                             </div>
-                            <div>
-                                <span class="block font-bold text-slate-700">Bloco A</span>
-                                <span class="text-[10px] text-slate-400 uppercase tracking-wider">Direito & RI</span>
+                            <div class="flex-1 text-left">
+                                <span class="block font-bold text-slate-700 text-base">Bloco A</span>
+                                <span class="text-[11px] text-slate-400 uppercase tracking-wider">Direito & RI</span>
+                                <span class="block text-[11px] text-blue-500 font-semibold mt-1">● 120m · ~2 min</span>
                             </div>
+                            <span id="badge-Direito" class="hidden text-[9px] font-black uppercase tracking-wider bg-green-100 text-green-700 px-2 py-1 rounded-full">Ativa</span>
                         </div>
                     </button>
 
-                    <button id="btn-map-Adm" onclick="drawRoute('Adm')" class="sidebar-tile">
+                    <button id="btn-map-Adm" onclick="drawRoute('Adm')" class="interactable dwellable sidebar-tile min-h-[88px]">
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100">
-                                <span class="material-symbols-outlined">business_center</span>
+                            <div class="relative w-14 h-14 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100 flex-shrink-0">
+                                <span class="material-symbols-outlined text-[28px]">business_center</span>
+                                <svg class="absolute inset-0 w-full h-full" viewBox="0 0 56 56">
+                                    <circle id="dwell-tile-Adm" cx="28" cy="28" r="26" fill="none" stroke="#2563eb" stroke-width="3"
+                                        stroke-linecap="round" stroke-dasharray="163" stroke-dashoffset="163"
+                                        style="transform: rotate(-90deg); transform-origin: 28px 28px; opacity: 0; transition: opacity 0.1s;" />
+                                </svg>
                             </div>
-                            <div>
-                                <span class="block font-bold text-slate-700">Bloco B</span>
-                                <span class="text-[10px] text-slate-400 uppercase tracking-wider">Adm & Economia</span>
+                            <div class="flex-1 text-left">
+                                <span class="block font-bold text-slate-700 text-base">Bloco B</span>
+                                <span class="text-[11px] text-slate-400 uppercase tracking-wider">Adm & Economia</span>
+                                <span class="block text-[11px] text-blue-500 font-semibold mt-1">● 200m · ~3 min</span>
                             </div>
+                            <span id="badge-Adm" class="hidden text-[9px] font-black uppercase tracking-wider bg-green-100 text-green-700 px-2 py-1 rounded-full">Ativa</span>
                         </div>
                     </button>
 
-                    <button id="btn-map-Software" onclick="drawRoute('Software')" class="sidebar-tile">
+                    <button id="btn-map-Software" onclick="drawRoute('Software')" class="interactable dwellable sidebar-tile min-h-[88px]">
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100">
-                                <span class="material-symbols-outlined">code</span>
+                            <div class="relative w-14 h-14 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100 flex-shrink-0">
+                                <span class="material-symbols-outlined text-[28px]">code</span>
+                                <svg class="absolute inset-0 w-full h-full" viewBox="0 0 56 56">
+                                    <circle id="dwell-tile-Software" cx="28" cy="28" r="26" fill="none" stroke="#2563eb" stroke-width="3"
+                                        stroke-linecap="round" stroke-dasharray="163" stroke-dashoffset="163"
+                                        style="transform: rotate(-90deg); transform-origin: 28px 28px; opacity: 0; transition: opacity 0.1s;" />
+                                </svg>
                             </div>
-                            <div>
-                                <span class="block font-bold text-slate-700">Bloco C</span>
-                                <span class="text-[10px] text-slate-400 uppercase tracking-wider">Engenharia & TI</span>
+                            <div class="flex-1 text-left">
+                                <span class="block font-bold text-slate-700 text-base">Bloco C</span>
+                                <span class="text-[11px] text-slate-400 uppercase tracking-wider">Engenharia & TI</span>
+                                <span class="block text-[11px] text-blue-500 font-semibold mt-1">● 280m · ~4 min</span>
                             </div>
+                            <span id="badge-Software" class="hidden text-[9px] font-black uppercase tracking-wider bg-green-100 text-green-700 px-2 py-1 rounded-full">Ativa</span>
                         </div>
                     </button>
 
-                    <button id="btn-map-Biblioteca" onclick="drawRoute('Biblioteca')" class="sidebar-tile">
+                    <button id="btn-map-Biblioteca" onclick="drawRoute('Biblioteca')" class="interactable dwellable sidebar-tile min-h-[88px]">
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100">
-                                <span class="material-symbols-outlined">auto_stories</span>
+                            <div class="relative w-14 h-14 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100 flex-shrink-0">
+                                <span class="material-symbols-outlined text-[28px]">auto_stories</span>
+                                <svg class="absolute inset-0 w-full h-full" viewBox="0 0 56 56">
+                                    <circle id="dwell-tile-Biblioteca" cx="28" cy="28" r="26" fill="none" stroke="#2563eb" stroke-width="3"
+                                        stroke-linecap="round" stroke-dasharray="163" stroke-dashoffset="163"
+                                        style="transform: rotate(-90deg); transform-origin: 28px 28px; opacity: 0; transition: opacity 0.1s;" />
+                                </svg>
                             </div>
-                            <div>
-                                <span class="block font-bold text-slate-700">Biblioteca</span>
-                                <span class="text-[10px] text-slate-400 uppercase tracking-wider">Acervo Digital</span>
+                            <div class="flex-1 text-left">
+                                <span class="block font-bold text-slate-700 text-base">Biblioteca</span>
+                                <span class="text-[11px] text-slate-400 uppercase tracking-wider">Acervo Digital</span>
+                                <span class="block text-[11px] text-blue-500 font-semibold mt-1">● 150m · ~2 min</span>
                             </div>
+                            <span id="badge-Biblioteca" class="hidden text-[9px] font-black uppercase tracking-wider bg-green-100 text-green-700 px-2 py-1 rounded-full">Ativa</span>
                         </div>
                     </button>
 
-                    <button id="btn-map-RU" onclick="drawRoute('RU')" class="sidebar-tile">
+                    <button id="btn-map-RU" onclick="drawRoute('RU')" class="interactable dwellable sidebar-tile min-h-[88px]">
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100">
-                                <span class="material-symbols-outlined">restaurant</span>
+                            <div class="relative w-14 h-14 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100 flex-shrink-0">
+                                <span class="material-symbols-outlined text-[28px]">restaurant</span>
+                                <svg class="absolute inset-0 w-full h-full" viewBox="0 0 56 56">
+                                    <circle id="dwell-tile-RU" cx="28" cy="28" r="26" fill="none" stroke="#2563eb" stroke-width="3"
+                                        stroke-linecap="round" stroke-dasharray="163" stroke-dashoffset="163"
+                                        style="transform: rotate(-90deg); transform-origin: 28px 28px; opacity: 0; transition: opacity 0.1s;" />
+                                </svg>
                             </div>
-                            <div>
-                                <span class="block font-bold text-slate-700">Restaurante</span>
-                                <span class="text-[10px] text-slate-400 uppercase tracking-wider">Refeitório Central</span>
+                            <div class="flex-1 text-left">
+                                <span class="block font-bold text-slate-700 text-base">Restaurante</span>
+                                <span class="text-[11px] text-slate-400 uppercase tracking-wider">Refeitório Central</span>
+                                <span class="block text-[11px] text-blue-500 font-semibold mt-1">● 310m · ~4 min</span>
                             </div>
+                            <span id="badge-RU" class="hidden text-[9px] font-black uppercase tracking-wider bg-green-100 text-green-700 px-2 py-1 rounded-full">Ativa</span>
                         </div>
                     </button>
                 </div>
@@ -896,7 +972,6 @@
                         
                         <!-- Roads and Sidewalks -->
                         <path d="M 150 700 L 150 100 M 150 350 L 900 350 M 500 350 L 500 100 M 850 350 L 850 100" class="map-road" />
-                        <path d="M 150 700 L 150 100 M 150 350 L 900 350 M 500 350 L 500 100 M 850 350 L 850 100" class="map-sidewalk" />
 
                         <!-- Central Plaza -->
                         <circle cx="150" cy="350" r="40" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2" />
@@ -916,28 +991,33 @@
 
                         <!-- Buildings -->
                         <!-- Bloco A -->
-                        <rect id="svg-Direito" x="50" y="80" width="120" height="100" rx="15" class="map-building" />
-                        <text x="110" y="135" text-anchor="middle" class="map-label-academic">Bloco A</text>
+                        <rect id="svg-Direito" x="50" y="80" width="120" height="100" rx="15" class="map-building" data-route="Direito" />
+                        <circle id="dwell-Direito" cx="110" cy="130" r="22" class="dwell-ring" />
+                        <text x="110" y="135" text-anchor="middle" id="lbl-Direito" class="map-label-academic">Bloco A</text>
                         <text x="110" y="150" text-anchor="middle" class="map-label-academic" style="font-size: 8px; opacity: 0.6;">Direito</text>
 
                         <!-- Bloco B -->
-                        <rect id="svg-Adm" x="440" y="80" width="120" height="100" rx="15" class="map-building" />
-                        <text x="500" y="135" text-anchor="middle" class="map-label-academic">Bloco B</text>
+                        <rect id="svg-Adm" x="440" y="80" width="120" height="100" rx="15" class="map-building" data-route="Adm" />
+                        <circle id="dwell-Adm" cx="500" cy="130" r="22" class="dwell-ring" />
+                        <text x="500" y="135" text-anchor="middle" id="lbl-Adm" class="map-label-academic">Bloco B</text>
                         <text x="500" y="150" text-anchor="middle" class="map-label-academic" style="font-size: 8px; opacity: 0.6;">Adm</text>
 
                         <!-- Bloco C -->
-                        <rect id="svg-Software" x="790" y="80" width="120" height="100" rx="15" class="map-building" />
-                        <text x="850" y="135" text-anchor="middle" class="map-label-academic">Bloco C</text>
+                        <rect id="svg-Software" x="790" y="80" width="120" height="100" rx="15" class="map-building" data-route="Software" />
+                        <circle id="dwell-Software" cx="850" cy="130" r="22" class="dwell-ring" />
+                        <text x="850" y="135" text-anchor="middle" id="lbl-Software" class="map-label-academic">Bloco C</text>
                         <text x="850" y="150" text-anchor="middle" class="map-label-academic" style="font-size: 8px; opacity: 0.6;">Software</text>
 
                         <!-- Biblioteca -->
-                        <rect id="svg-Biblioteca" x="50" y="300" width="120" height="100" rx="15" class="map-building" />
-                        <text x="110" y="355" text-anchor="middle" class="map-label-academic">Biblio</text>
+                        <rect id="svg-Biblioteca" x="50" y="300" width="120" height="100" rx="15" class="map-building" data-route="Biblioteca" />
+                        <circle id="dwell-Biblioteca" cx="110" cy="350" r="22" class="dwell-ring" />
+                        <text x="110" y="355" text-anchor="middle" id="lbl-Biblioteca" class="map-label-academic">Biblio</text>
                         <text x="110" y="370" text-anchor="middle" class="map-label-academic" style="font-size: 8px; opacity: 0.6;">Central</text>
 
                         <!-- RU -->
-                        <rect id="svg-RU" x="790" y="300" width="120" height="100" rx="15" class="map-building" />
-                        <text x="850" y="355" text-anchor="middle" class="map-label-academic">RU</text>
+                        <rect id="svg-RU" x="790" y="300" width="120" height="100" rx="15" class="map-building" data-route="RU" />
+                        <circle id="dwell-RU" cx="850" cy="350" r="22" class="dwell-ring" />
+                        <text x="850" y="355" text-anchor="middle" id="lbl-RU" class="map-label-academic">RU</text>
                         <text x="850" y="370" text-anchor="middle" class="map-label-academic" style="font-size: 8px; opacity: 0.6;">Restaurante</text>
 
                         <!-- Parking Lot -->
@@ -945,43 +1025,92 @@
                         <path d="M 800 580 L 950 580 M 800 610 L 950 610 M 800 640 L 950 640" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4" />
                         <text x="875" y="660" text-anchor="middle" class="map-label-academic" style="fill: #94a3b8; font-size: 9px;">Estacionamento Principal</text>
 
-                        <!-- Navigation Paths -->
-                        <path id="path-Direito" d="M 150 620 L 150 130 L 110 130" class="nav-path" />
-                        <path id="path-Adm" d="M 150 620 L 150 350 L 500 350 L 500 130" class="nav-path" />
-                        <path id="path-Software" d="M 150 620 L 150 350 L 850 350 L 850 130" class="nav-path" />
-                        <path id="path-Biblioteca" d="M 150 620 L 150 350 L 110 350" class="nav-path" />
-                        <path id="path-RU" d="M 150 620 L 150 350 L 850 350 L 850 330" class="nav-path" />
+                        <!-- Navigation Paths (bg branca + linha azul sobrepostas) -->
+                        <path id="path-bg-Direito"   d="M 150 620 L 150 130 L 110 130"                           class="nav-path-bg" />
+                        <path id="path-Direito"      d="M 150 620 L 150 130 L 110 130"                           class="nav-path" />
 
-                        <!-- Totem -->
-                        <circle cx="150" cy="620" r="12" fill="white" stroke="#ef4444" stroke-width="3" />
-                        <circle cx="150" cy="620" r="5" fill="#ef4444" />
+                        <path id="path-bg-Adm"       d="M 150 620 L 150 350 L 500 350 L 500 130"                 class="nav-path-bg" />
+                        <path id="path-Adm"          d="M 150 620 L 150 350 L 500 350 L 500 130"                 class="nav-path" />
+
+                        <path id="path-bg-Software"  d="M 150 620 L 150 350 L 850 350 L 850 130"                 class="nav-path-bg" />
+                        <path id="path-Software"     d="M 150 620 L 150 350 L 850 350 L 850 130"                 class="nav-path" />
+
+                        <path id="path-bg-Biblioteca" d="M 150 620 L 150 350 L 110 350"                          class="nav-path-bg" />
+                        <path id="path-Biblioteca"    d="M 150 620 L 150 350 L 110 350"                          class="nav-path" />
+
+                        <path id="path-bg-RU"        d="M 150 620 L 150 350 L 850 350 L 850 330"                 class="nav-path-bg" />
+                        <path id="path-RU"           d="M 150 620 L 150 350 L 850 350 L 850 330"                 class="nav-path" />
+
+                        <!-- Destination Pins (aparecem ao fim da animação de rota) -->
+                        <!-- Pin Direito: endpoint de path = (110, 130) -->
+                        <g id="pin-Direito" class="dest-pin">
+                            <circle cx="110" cy="115" r="10" fill="#16a34a" />
+                            <circle cx="110" cy="115" r="4"  fill="white" />
+                        </g>
+
+                        <!-- Pin Adm: endpoint = (500, 130) -->
+                        <g id="pin-Adm" class="dest-pin">
+                            <circle cx="500" cy="115" r="10" fill="#16a34a" />
+                            <circle cx="500" cy="115" r="4"  fill="white" />
+                        </g>
+
+                        <!-- Pin Software: endpoint = (850, 130) -->
+                        <g id="pin-Software" class="dest-pin">
+                            <circle cx="850" cy="115" r="10" fill="#16a34a" />
+                            <circle cx="850" cy="115" r="4"  fill="white" />
+                        </g>
+
+                        <!-- Pin Biblioteca: endpoint = (110, 350) -->
+                        <g id="pin-Biblioteca" class="dest-pin">
+                            <circle cx="110" cy="335" r="10" fill="#16a34a" />
+                            <circle cx="110" cy="335" r="4"  fill="white" />
+                        </g>
+
+                        <!-- Pin RU: endpoint = (850, 330) -->
+                        <g id="pin-RU" class="dest-pin">
+                            <circle cx="850" cy="315" r="10" fill="#16a34a" />
+                            <circle cx="850" cy="315" r="4"  fill="white" />
+                        </g>
+
+                        <!-- Totem: Você Está Aqui -->
+                        <g id="totem-marker">
+                            <!-- Anel estático -->
+                            <circle cx="150" cy="620" r="14" fill="white" stroke="#ef4444" stroke-width="2" />
+                            <!-- Ponto central -->
+                            <circle cx="150" cy="620" r="6" fill="#ef4444" />
+                        </g>
                         <text x="150" y="660" text-anchor="middle" class="map-label-academic" style="font-size: 10px; font-weight: 800; fill: #ef4444;">VOCÊ ESTÁ AQUI</text>
                     </svg>
                 </div>
             </div>
 
-            <!-- Legend Footer (Modern Academic Theme) -->
-            <div class="p-8 border-t border-slate-100 bg-white flex items-center justify-center gap-16">
-                <div class="flex items-center gap-3">
-                    <div class="w-4 h-4 rounded-full bg-white border-2 border-red-500 flex items-center justify-center">
-                        <div class="w-1.5 h-1.5 rounded-full bg-red-500"></div>
+            <!-- Footer Dinâmico -->
+            <div class="p-6 border-t border-slate-100 bg-white flex items-center justify-between gap-8">
+                <!-- Estado do footer -->
+                <div class="flex items-center gap-4 flex-1">
+                    <div id="map-footer-spinner" class="hidden w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                    <span id="map-footer-text" class="text-sm font-semibold text-slate-500">
+                        Selecione um destino na lista ou aponte para um edifício
+                    </span>
+                </div>
+                <!-- Legenda compacta -->
+                <div class="flex items-center gap-8 flex-shrink-0">
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-4 rounded-full bg-white border-2 border-red-500 flex items-center justify-center">
+                            <div class="w-1.5 h-1.5 rounded-full bg-red-500"></div>
+                        </div>
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Você Aqui</span>
                     </div>
-                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Sua Localização</span>
-                </div>
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-1.5 rounded-full bg-blue-600"></div>
-                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Trajeto</span>
-                </div>
-                <div class="flex items-center gap-3">
-                    <div class="w-4 h-4 rounded-md border-2 border-blue-600 bg-white"></div>
-                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Edifícios</span>
-                </div>
-                <div class="flex items-center gap-3">
-                    <div class="flex gap-1.5">
-                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-200"></div>
-                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-100"></div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-1.5 rounded-full bg-blue-600"></div>
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Trajeto</span>
                     </div>
-                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Áreas Verdes</span>
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-4 rounded-full bg-green-600 flex items-center justify-center">
+                            <div class="w-1.5 h-1.5 rounded-full bg-white"></div>
+                        </div>
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Destino</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1201,51 +1330,114 @@
         btn.classList.add('bg-green-600', 'text-white');
     };
 
-    window.drawRoute = function(id) {
-        const statusText = document.getElementById('map-status-text');
-        const locations = {
-            'Direito': 'Bloco A (Direito)',
-            'Adm': 'Bloco B (Administração)',
-            'Software': 'Bloco C (Tecnologia)',
-            'Biblioteca': 'Biblioteca Central',
-            'RU': 'Restaurante Universitário'
-        };
+    let inactivityTimer = null;
+    let drawRouteAnimTimer = null;
 
-        // 1. Reset current state
-        document.querySelectorAll('.sidebar-tile').forEach(btn => btn.classList.remove('active'));
-        document.querySelectorAll('.nav-path').forEach(path => {
-            path.classList.remove('active');
-            // Force reset animation by clearing dashoffset if needed, 
-            // though CSS classes handle it mostly
+    function resetInactivityTimer() {
+        if (inactivityTimer) clearTimeout(inactivityTimer);
+        inactivityTimer = setTimeout(() => {
+            // Reset completo do mapa ao estado padrão
+            document.querySelectorAll('.sidebar-tile').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('[id^="badge-"]').forEach(b => b.classList.add('hidden'));
+            document.querySelectorAll('.nav-path, .nav-path-bg').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.map-building').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.dest-pin').forEach(p => p.classList.remove('active'));
+
+            const footerText    = document.getElementById('map-footer-text');
+            const footerSpinner = document.getElementById('map-footer-spinner');
+            if (footerSpinner) footerSpinner.classList.add('hidden');
+            if (footerText) {
+                footerText.style.transition = 'opacity 0.5s ease';
+                footerText.style.opacity = '0';
+                setTimeout(() => {
+                    footerText.textContent = 'Selecione um destino na lista ou aponte para um edifício';
+                    footerText.style.opacity = '1';
+                    setTimeout(() => { footerText.style.transition = ''; }, 500);
+                }, 500);
+            }
+        }, 8000);
+    }
+
+    const routeInfo = {
+        'Direito':   { label: 'Bloco A (Direito)',           dist: '120m', time: '~2 min' },
+        'Adm':       { label: 'Bloco B (Administração)',     dist: '200m', time: '~3 min' },
+        'Software':  { label: 'Bloco C (Tecnologia)',        dist: '280m', time: '~4 min' },
+        'Biblioteca':{ label: 'Biblioteca Central',          dist: '150m', time: '~2 min' },
+        'RU':        { label: 'Restaurante Universitário',   dist: '310m', time: '~4 min' }
+    };
+
+    window.drawRoute = function(id) {
+        cancelSvgDwell();
+
+        const footerText    = document.getElementById('map-footer-text');
+        const footerSpinner = document.getElementById('map-footer-spinner');
+
+        // Cancela timeouts pendentes de animação anterior
+        if (typeof drawRouteAnimTimer !== 'undefined' && drawRouteAnimTimer) {
+            clearTimeout(drawRouteAnimTimer);
+        }
+
+        // 1. Reset todos os estados anteriores
+        document.querySelectorAll('.sidebar-tile').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelectorAll('[id^="badge-"]').forEach(b => b.classList.add('hidden'));
+        document.querySelectorAll('.nav-path, .nav-path-bg').forEach(p => {
+            p.classList.remove('active');
+            void p.offsetWidth; // força reset da animação
         });
         document.querySelectorAll('.map-building').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.dest-pin').forEach(p => p.classList.remove('active'));
 
-        // 2. Set new state
+        // 2. Ativa o tile da sidebar
         const btn = document.getElementById(`btn-map-${id}`);
-        const path = document.getElementById(`path-${id}`);
-        const building = document.getElementById(`svg-${id}`);
-
         if (btn) btn.classList.add('active');
+
+        // Mostra badge "Ativa"
+        const badge = document.getElementById(`badge-${id}`);
+        if (badge) badge.classList.remove('hidden');
+
+        // 3. Destaca o edifício no SVG
+        const building = document.getElementById(`svg-${id}`);
         if (building) building.classList.add('active');
-        
-        if (path) {
-            // Trigger drawing animation
-            const length = path.getTotalLength();
-            path.style.strokeDasharray = length;
-            path.style.strokeDashoffset = length;
-            
-            // Force reflow
-            path.getBoundingClientRect();
-            
-            path.classList.add('active');
-            path.style.strokeDashoffset = '0';
+
+        // 4. Anima as duas paths (bg branca + azul principal)
+        const pathBg   = document.getElementById(`path-bg-${id}`);
+        const pathMain = document.getElementById(`path-${id}`);
+
+        if (pathBg) {
+            const len = pathBg.getTotalLength();
+            pathBg.style.strokeDasharray  = len;
+            pathBg.style.strokeDashoffset = len;
+            void pathBg.offsetWidth; // force reflow
+            pathBg.classList.add('active');
         }
 
-        // 3. Update status text
-        if (statusText && locations[id]) {
-            statusText.textContent = `Rota Calculada: Seguindo para ${locations[id]}`;
-            statusText.classList.add('status-glow');
+        if (pathMain) {
+            const len = pathMain.getTotalLength();
+            pathMain.style.strokeDasharray  = len;
+            pathMain.style.strokeDashoffset = len;
+            void pathMain.offsetWidth; // force reflow
+            pathMain.classList.add('active');
         }
+
+        // 5. Footer: estado "calculando"
+        if (footerSpinner) footerSpinner.classList.remove('hidden');
+        if (footerText)    footerText.textContent = 'Calculando trajeto...';
+
+        // 6. Após animação (~1.4s): exibe pin destino + atualiza footer
+        drawRouteAnimTimer = setTimeout(() => {
+            const pin = document.getElementById(`pin-${id}`);
+            if (pin) pin.classList.add('active');
+
+            if (footerSpinner) footerSpinner.classList.add('hidden');
+            if (footerText && routeInfo[id]) {
+                footerText.textContent = `Siga em frente até ${routeInfo[id].label} — ${routeInfo[id].dist} · ${routeInfo[id].time}`;
+            }
+
+            // Reinicia timer de inatividade
+            resetInactivityTimer();
+        }, 1400);
     };
 
     window.highlightBlock = function(id) {
@@ -1262,104 +1454,120 @@
 
     // --- Carousel Logic Removed ---
 
-    // VisionFlow Iframe Integration
-    let currentHoverElement = null;
+    // Estado de dwell nos edifícios SVG
+    let svgDwellTarget   = null; // id do destino em dwell (ex: 'Direito')
+    let svgDwellStart    = null; // timestamp de início
+    let svgDwellFrame    = null; // requestAnimationFrame handle
+    const SVG_DWELL_MS   = 2000; // 2 segundos
 
-    function getDwellTime(element) {
-        if (element && element.dataset.dwellTime) {
-            return parseInt(element.dataset.dwellTime, 10);
+    function startSvgDwell(routeId) {
+        cancelSvgDwell();
+        svgDwellTarget = routeId;
+        svgDwellStart  = performance.now();
+
+        const ring = document.getElementById(`dwell-${routeId}`);
+        if (ring) {
+            ring.style.opacity = '1';
+            ring.style.strokeDashoffset = '138';
         }
-        return 800; // Padrão reduzido de dwell
+
+        function tick(now) {
+            const elapsed  = now - svgDwellStart;
+            const progress = Math.min(elapsed / SVG_DWELL_MS, 1);
+            const offset   = 138 * (1 - progress);
+
+            if (ring) ring.style.strokeDashoffset = offset;
+
+            if (progress >= 1) {
+                // Cancela apenas o estado interno sem resetar o ring visualmente
+                cancelAnimationFrame(svgDwellFrame);
+                svgDwellFrame = null;
+                const completedId = svgDwellTarget;
+                svgDwellTarget = null;
+                svgDwellStart  = null;
+                const lbl = document.getElementById(`lbl-${completedId}`);
+                if (lbl) lbl.classList.remove('hovered');
+                window.drawRoute(completedId);
+            } else {
+                svgDwellFrame = requestAnimationFrame(tick);
+            }
+        }
+
+        svgDwellFrame = requestAnimationFrame(tick);
     }
 
-    function getVisibleInteractables() {
-        const list = Array.from(document.querySelectorAll('.interactable, .dwellable, button, a, [role="button"], .glass-card, .sidebar-tile'));
-        return list.filter(el => {
-            const rect = el.getBoundingClientRect();
-            if (rect.width === 0 || rect.height === 0) return false;
-            
-            let curr = el;
-            while (curr) {
-                const style = window.getComputedStyle(curr);
-                if (style.display === 'none' || style.visibility === 'hidden' || curr.classList.contains('hidden')) {
-                    return false;
-                }
-                curr = curr.parentElement;
+    function cancelSvgDwell() {
+        if (svgDwellFrame) cancelAnimationFrame(svgDwellFrame);
+        svgDwellFrame = null;
+
+        if (svgDwellTarget) {
+            const ring = document.getElementById(`dwell-${svgDwellTarget}`);
+            if (ring) {
+                ring.style.transition = 'stroke-dashoffset 0.2s ease, opacity 0.2s ease';
+                ring.style.strokeDashoffset = '138';
+                ring.style.opacity = '0';
+                setTimeout(() => { ring.style.transition = ''; }, 200);
             }
-            return true;
-        });
+        }
+        svgDwellTarget = null;
+        svgDwellStart  = null;
     }
 
     window.addEventListener('message', (event) => {
         if (event.data.type === 'VISIONFLOW_CLICK') {
-            const rawEl = document.elementFromPoint(event.data.x, event.data.y);
-            const el = rawEl ? rawEl.closest('.interactable, .dwellable, button, a, [role="button"], .glass-card, .sidebar-tile') : null;
+            const el = document.elementFromPoint(event.data.x, event.data.y);
             if (el) {
-                document.querySelectorAll('.focus-fallback').forEach(item => item.classList.remove('focus-fallback'));
                 el.click();
             }
         } else if (event.data.type === 'VISIONFLOW_HOVER') {
-            const rawEl = document.elementFromPoint(event.data.x, event.data.y);
-            const el = rawEl ? rawEl.closest('.interactable, .dwellable, button, a, [role="button"], .glass-card, .sidebar-tile') : null;
-            
+            const el = document.elementFromPoint(event.data.x, event.data.y);
             if (currentHoverElement !== el) {
                 if (currentHoverElement) {
                     currentHoverElement.dispatchEvent(new MouseEvent('mouseout', { bubbles: true }));
                     currentHoverElement.classList.remove('hovered');
-                    if (currentHoverElement.classList.contains('dwellable')) {
+                    // Cancela dwell SVG se sair de um edifício
+                    if (svgDwellTarget) {
                         window.parent.postMessage({ type: 'VISIONFLOW_DWELL_CANCEL' }, '*');
+                        const lbl = document.getElementById(`lbl-${svgDwellTarget}`);
+                        if (lbl) lbl.classList.remove('hovered');
+                        cancelSvgDwell();
                     }
                 }
-                
                 if (el && event.data.x >= 0 && event.data.y >= 0) {
                     el.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
-                    el.classList.add('hovered');
-                    if (el.classList.contains('dwellable')) {
-                        const dt = getDwellTime(el);
-                        window.parent.postMessage({ type: 'VISIONFLOW_DWELL_START', dwellTime: dt }, '*');
+
+                    // Detecta edifício SVG ANTES do guard de elementos interativos
+                    const buildingEl = el.closest('[data-route]');
+                    const routeId    = buildingEl ? buildingEl.getAttribute('data-route') : null;
+
+                    if (routeId && routeId !== svgDwellTarget) {
+                        window.parent.postMessage({ type: 'VISIONFLOW_DWELL_START' }, '*');
+                        startSvgDwell(routeId);
+                        const lbl = document.getElementById(`lbl-${routeId}`);
+                        if (lbl) lbl.classList.add('hovered');
+                        const tile = document.getElementById(`btn-map-${routeId}`);
+                        if (tile) {
+                            tile.classList.remove('pulse');
+                            void tile.offsetWidth;
+                            tile.classList.add('pulse');
+                            setTimeout(() => tile.classList.remove('pulse'), 400);
+                        }
+                    } else if (!routeId && svgDwellTarget) {
+                        window.parent.postMessage({ type: 'VISIONFLOW_DWELL_CANCEL' }, '*');
+                        const lbl = document.getElementById(`lbl-${svgDwellTarget}`);
+                        if (lbl) lbl.classList.remove('hovered');
+                        cancelSvgDwell();
+                    }
+
+                    // Only apply hover visual to interactive elements
+                    if (el.tagName === 'BUTTON' || el.closest('button') || el.closest('.cursor-pointer')) {
+                        el.classList.add('hovered');
                     }
                 }
                 currentHoverElement = el;
             }
-        } else if (event.data.type === 'VISIONFLOW_KEY') {
-            const items = getVisibleInteractables();
-            if (items.length === 0) return;
-
-            let activeIdx = items.findIndex(el => el.classList.contains('focus-fallback'));
-            
-            if (['ArrowDown', 'ArrowRight', 's', 'S', 'd', 'D'].includes(event.data.key)) {
-                if (activeIdx >= 0) items[activeIdx].classList.remove('focus-fallback');
-                activeIdx = (activeIdx + 1) % items.length;
-                items[activeIdx].classList.add('focus-fallback');
-                items[activeIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
-            } else if (['ArrowUp', 'ArrowLeft', 'w', 'W', 'a', 'A'].includes(event.data.key)) {
-                if (activeIdx >= 0) items[activeIdx].classList.remove('focus-fallback');
-                activeIdx = (activeIdx - 1 + items.length) % items.length;
-                items[activeIdx].classList.add('focus-fallback');
-                items[activeIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
-            } else if (['Enter', ' '].includes(event.data.key)) {
-                if (activeIdx >= 0 && activeIdx < items.length) {
-                    items[activeIdx].click();
-                }
-            }
-        } else if (event.data.type === 'VISIONFLOW_DRAG') {
-            const dy = event.data.dy;
-            const modalScroll = document.querySelector('.modal:not(.hidden) .overflow-y-auto, .modal:not(.hidden) .overflow-auto');
-            
-            if (modalScroll) {
-                modalScroll.scrollBy({ top: -dy * 2, behavior: 'auto' });
-            } else {
-                window.scrollBy(0, -dy * 2);
-            }
         } else if (event.data.type === 'VISIONFLOW_SCROLL') {
-            const dy = event.data.dy;
-            const modalScroll = document.querySelector('.modal:not(.hidden) .overflow-y-auto, .modal:not(.hidden) .overflow-auto');
-            
-            if (modalScroll) {
-                modalScroll.scrollBy({ top: dy * 2, behavior: 'auto' });
-            } else {
-                window.scrollBy(0, dy * 2);
-            }
+            window.scrollBy(0, event.data.dy);
         }
     });
     function updateDateTime() {
@@ -1369,38 +1577,9 @@
     }
     updateDateTime();
     setInterval(updateDateTime, 1000);
-    // --- BottomNav Active State ---
-    window.setActiveBottomNav = function(key) {
-        const navItems = {
-            home:      document.getElementById('bnav-home'),
-            map:       document.getElementById('bnav-map'),
-            schedule:  document.getElementById('bnav-schedule'),
-            emergency: document.getElementById('bnav-emergency'),
-        };
-        const activeClasses    = ['bg-secondary-container', 'text-on-secondary-container'];
-        const inactiveClasses  = ['text-on-surface-variant', 'hover:bg-surface-container'];
-        Object.entries(navItems).forEach(([k, btn]) => {
-            if (!btn) return;
-            if (k === key) {
-                btn.classList.add(...activeClasses);
-                btn.classList.remove(...inactiveClasses);
-            } else {
-                btn.classList.remove(...activeClasses);
-                btn.classList.add(...inactiveClasses);
-            }
-        });
-    };
-    // Ao fechar um modal, volta o estado do bnav para 'home'
-    const _origHideModal = window.hideModal;
-    window.hideModal = function(id) {
-        if (_origHideModal) _origHideModal(id);
-        setActiveBottomNav('home');
-    };
 </script>
 <style>
     .hovered { filter: brightness(1.05) contrast(1.05); transform: scale(1.02); transition: transform 0.2s, filter 0.2s; cursor: pointer; z-index: 9999; }
-    /* Fix duplo-clique: botões internos dos cards não devem interceptar eventos de cursor gestual */
-    .interactable.glass-card button { pointer-events: none; }
 </style>
 
 </body></html>

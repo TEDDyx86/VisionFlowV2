@@ -259,34 +259,38 @@ export function triggerDrag(x, y, dx, dy, isFromInertia = false) {
 let inertiaFrameId = null;
 let currentInertiaX = 0;
 let currentInertiaY = 0;
-const FRICTION = 0.94; // Amortecimento suave de 6% por frame
+let lastInertiaTime = 0;
+const FRICTION = 0.94; // amortecimento por frame de referência (16.67ms)
 
 export function startScrollInertia(x, y, vx, vy) {
     stopScrollInertia();
-    
+
     const params = getCalibrationParams();
     const multiplier = params && params.scrollMultiplier ? params.scrollMultiplier : 1.8;
-    
-    // A velocidade inicial da inércia é escalada pelo multiplicador de calibração
+
     currentInertiaX = vx * multiplier;
     currentInertiaY = vy * multiplier;
-    
-    function step() {
+    lastInertiaTime = 0;
+
+    function step(now) {
+        // delta-time para friction e deslocamento consistentes em qualquer refresh rate
+        const dt = lastInertiaTime > 0 ? Math.min(now - lastInertiaTime, 50) : 16.67;
+        lastInertiaTime = now;
+        const frames = dt / 16.67;
+
         if (Math.abs(currentInertiaX) < 0.2 && Math.abs(currentInertiaY) < 0.2) {
             stopScrollInertia();
             return;
         }
-        
-        // Disparar o movimento de scroll indicando que é um evento inercial (isFromInertia = true)
-        triggerDrag(x, y, currentInertiaX, currentInertiaY, true);
-        
-        // Desaceleração gradual
-        currentInertiaX *= FRICTION;
-        currentInertiaY *= FRICTION;
-        
+
+        triggerDrag(x, y, currentInertiaX * frames, currentInertiaY * frames, true);
+
+        currentInertiaX *= Math.pow(FRICTION, frames);
+        currentInertiaY *= Math.pow(FRICTION, frames);
+
         inertiaFrameId = requestAnimationFrame(step);
     }
-    
+
     inertiaFrameId = requestAnimationFrame(step);
 }
 
@@ -295,4 +299,5 @@ export function stopScrollInertia() {
         cancelAnimationFrame(inertiaFrameId);
         inertiaFrameId = null;
     }
+    lastInertiaTime = 0;
 }

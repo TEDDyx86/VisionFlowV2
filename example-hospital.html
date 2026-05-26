@@ -1442,20 +1442,20 @@
         } else if (event.data.type === 'VISIONFLOW_DRAG') {
             const dy = event.data.dy;
             const modalScroll = document.querySelector('#modals > div:not(.hidden) .overflow-y-auto, #modals > div:not(.hidden) .overflow-auto');
-            
+
             if (modalScroll) {
-                modalScroll.scrollBy({ top: -dy * 2, behavior: 'auto' });
+                modalScroll.scrollBy({ top: -dy * 2, behavior: 'instant' });
             } else {
-                window.scrollBy(0, -dy * 2);
+                window.scrollBy({ top: -dy * 2, behavior: 'instant' });
             }
         } else if (event.data.type === 'VISIONFLOW_SCROLL') {
             const dy = event.data.dy;
             const modalScroll = document.querySelector('#modals > div:not(.hidden) .overflow-y-auto, #modals > div:not(.hidden) .overflow-auto');
-            
+
             if (modalScroll) {
-                modalScroll.scrollBy({ top: dy * 2, behavior: 'auto' });
+                modalScroll.scrollBy({ top: dy * 2, behavior: 'instant' });
             } else {
-                window.scrollBy(0, dy * 2);
+                window.scrollBy({ top: dy * 2, behavior: 'instant' });
             }
         }
     });
